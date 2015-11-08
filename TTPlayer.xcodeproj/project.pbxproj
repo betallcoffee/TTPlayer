@@ -1,0 +1,447 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EC3D8F541B99BD71006FC622 /* TTPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3D8F531B99BD71006FC622 /* TTPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EC3D8F5A1B99BD71006FC622 /* TTPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC3D8F4E1B99BD71006FC622 /* TTPlayer.framework */; };
+		EC3D8F611B99BD71006FC622 /* TTPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F601B99BD71006FC622 /* TTPlayerTests.m */; };
+		EC3D8FA01B99BDF2006FC622 /* TTPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3D8F9E1B99BDF2006FC622 /* TTPlayerView.h */; };
+		EC3D8FA11B99BDF2006FC622 /* TTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F9F1B99BDF2006FC622 /* TTPlayerView.m */; };
+		EC3D8FA41B9A7D79006FC622 /* TTAVPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3D8FA21B9A7D79006FC622 /* TTAVPlayerView.h */; };
+		EC3D8FA51B9A7D79006FC622 /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8FA31B9A7D79006FC622 /* TTAVPlayerView.m */; };
+		EC3D8FBF1B9C819A006FC622 /* TTAVPlayerViewEx.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3D8FBD1B9C819A006FC622 /* TTAVPlayerViewEx.h */; };
+		EC3D8FC01B9C819A006FC622 /* TTAVPlayerViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8FBE1B9C819A006FC622 /* TTAVPlayerViewEx.m */; };
+		EC3D8FC31B9C848B006FC622 /* TTAVPlayerCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3D8FC11B9C848B006FC622 /* TTAVPlayerCodec.h */; };
+		EC3D8FC41B9C848B006FC622 /* TTAVPlayerCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8FC21B9C848B006FC622 /* TTAVPlayerCodec.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EC3D8F5B1B99BD71006FC622 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EC3D8F451B99BD71006FC622 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EC3D8F4D1B99BD71006FC622;
+			remoteInfo = TTPlayer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EC3D8F4E1B99BD71006FC622 /* TTPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TTPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC3D8F521B99BD71006FC622 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC3D8F531B99BD71006FC622 /* TTPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTPlayer.h; sourceTree = "<group>"; };
+		EC3D8F591B99BD71006FC622 /* TTPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TTPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC3D8F5F1B99BD71006FC622 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC3D8F601B99BD71006FC622 /* TTPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTPlayerTests.m; sourceTree = "<group>"; };
+		EC3D8F9E1B99BDF2006FC622 /* TTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerView.h; sourceTree = "<group>"; };
+		EC3D8F9F1B99BDF2006FC622 /* TTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerView.m; sourceTree = "<group>"; };
+		EC3D8FA21B9A7D79006FC622 /* TTAVPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerView.h; sourceTree = "<group>"; };
+		EC3D8FA31B9A7D79006FC622 /* TTAVPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerView.m; sourceTree = "<group>"; };
+		EC3D8FBD1B9C819A006FC622 /* TTAVPlayerViewEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerViewEx.h; sourceTree = "<group>"; };
+		EC3D8FBE1B9C819A006FC622 /* TTAVPlayerViewEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerViewEx.m; sourceTree = "<group>"; };
+		EC3D8FC11B9C848B006FC622 /* TTAVPlayerCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerCodec.h; sourceTree = "<group>"; };
+		EC3D8FC21B9C848B006FC622 /* TTAVPlayerCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerCodec.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EC3D8F4A1B99BD71006FC622 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC3D8F561B99BD71006FC622 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC3D8F5A1B99BD71006FC622 /* TTPlayer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EC3D8F441B99BD71006FC622 = {
+			isa = PBXGroup;
+			children = (
+				EC3D8F501B99BD71006FC622 /* TTPlayer */,
+				EC3D8F5D1B99BD71006FC622 /* TTPlayerTests */,
+				EC3D8F4F1B99BD71006FC622 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EC3D8F4F1B99BD71006FC622 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EC3D8F4E1B99BD71006FC622 /* TTPlayer.framework */,
+				EC3D8F591B99BD71006FC622 /* TTPlayerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EC3D8F501B99BD71006FC622 /* TTPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				EC3D8F511B99BD71006FC622 /* Supporting Files */,
+				EC3D8F531B99BD71006FC622 /* TTPlayer.h */,
+				EC3D8F9E1B99BDF2006FC622 /* TTPlayerView.h */,
+				EC3D8F9F1B99BDF2006FC622 /* TTPlayerView.m */,
+				EC3D8FA21B9A7D79006FC622 /* TTAVPlayerView.h */,
+				EC3D8FA31B9A7D79006FC622 /* TTAVPlayerView.m */,
+				EC3D8FBD1B9C819A006FC622 /* TTAVPlayerViewEx.h */,
+				EC3D8FBE1B9C819A006FC622 /* TTAVPlayerViewEx.m */,
+				EC3D8FC11B9C848B006FC622 /* TTAVPlayerCodec.h */,
+				EC3D8FC21B9C848B006FC622 /* TTAVPlayerCodec.m */,
+			);
+			path = TTPlayer;
+			sourceTree = "<group>";
+		};
+		EC3D8F511B99BD71006FC622 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EC3D8F521B99BD71006FC622 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EC3D8F5D1B99BD71006FC622 /* TTPlayerTests */ = {
+			isa = PBXGroup;
+			children = (
+				EC3D8F601B99BD71006FC622 /* TTPlayerTests.m */,
+				EC3D8F5E1B99BD71006FC622 /* Supporting Files */,
+			);
+			path = TTPlayerTests;
+			sourceTree = "<group>";
+		};
+		EC3D8F5E1B99BD71006FC622 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EC3D8F5F1B99BD71006FC622 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		EC3D8F4B1B99BD71006FC622 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC3D8FBF1B9C819A006FC622 /* TTAVPlayerViewEx.h in Headers */,
+				EC3D8FA01B99BDF2006FC622 /* TTPlayerView.h in Headers */,
+				EC3D8FC31B9C848B006FC622 /* TTAVPlayerCodec.h in Headers */,
+				EC3D8FA41B9A7D79006FC622 /* TTAVPlayerView.h in Headers */,
+				EC3D8F541B99BD71006FC622 /* TTPlayer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		EC3D8F4D1B99BD71006FC622 /* TTPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC3D8F641B99BD71006FC622 /* Build configuration list for PBXNativeTarget "TTPlayer" */;
+			buildPhases = (
+				EC3D8F491B99BD71006FC622 /* Sources */,
+				EC3D8F4A1B99BD71006FC622 /* Frameworks */,
+				EC3D8F4B1B99BD71006FC622 /* Headers */,
+				EC3D8F4C1B99BD71006FC622 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TTPlayer;
+			productName = TTPlayer;
+			productReference = EC3D8F4E1B99BD71006FC622 /* TTPlayer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		EC3D8F581B99BD71006FC622 /* TTPlayerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC3D8F671B99BD71006FC622 /* Build configuration list for PBXNativeTarget "TTPlayerTests" */;
+			buildPhases = (
+				EC3D8F551B99BD71006FC622 /* Sources */,
+				EC3D8F561B99BD71006FC622 /* Frameworks */,
+				EC3D8F571B99BD71006FC622 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EC3D8F5C1B99BD71006FC622 /* PBXTargetDependency */,
+			);
+			name = TTPlayerTests;
+			productName = TTPlayerTests;
+			productReference = EC3D8F591B99BD71006FC622 /* TTPlayerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EC3D8F451B99BD71006FC622 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = tina;
+				TargetAttributes = {
+					EC3D8F4D1B99BD71006FC622 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+					EC3D8F581B99BD71006FC622 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+				};
+			};
+			buildConfigurationList = EC3D8F481B99BD71006FC622 /* Build configuration list for PBXProject "TTPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EC3D8F441B99BD71006FC622;
+			productRefGroup = EC3D8F4F1B99BD71006FC622 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EC3D8F4D1B99BD71006FC622 /* TTPlayer */,
+				EC3D8F581B99BD71006FC622 /* TTPlayerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EC3D8F4C1B99BD71006FC622 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC3D8F571B99BD71006FC622 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EC3D8F491B99BD71006FC622 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC3D8FC01B9C819A006FC622 /* TTAVPlayerViewEx.m in Sources */,
+				EC3D8FA51B9A7D79006FC622 /* TTAVPlayerView.m in Sources */,
+				EC3D8FC41B9C848B006FC622 /* TTAVPlayerCodec.m in Sources */,
+				EC3D8FA11B99BDF2006FC622 /* TTPlayerView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC3D8F551B99BD71006FC622 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC3D8F611B99BD71006FC622 /* TTPlayerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EC3D8F5C1B99BD71006FC622 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EC3D8F4D1B99BD71006FC622 /* TTPlayer */;
+			targetProxy = EC3D8F5B1B99BD71006FC622 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EC3D8F621B99BD71006FC622 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		EC3D8F631B99BD71006FC622 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		EC3D8F651B99BD71006FC622 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = TTPlayer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		EC3D8F661B99BD71006FC622 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = TTPlayer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		EC3D8F681B99BD71006FC622 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TTPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		EC3D8F691B99BD71006FC622 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TTPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EC3D8F481B99BD71006FC622 /* Build configuration list for PBXProject "TTPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC3D8F621B99BD71006FC622 /* Debug */,
+				EC3D8F631B99BD71006FC622 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EC3D8F641B99BD71006FC622 /* Build configuration list for PBXNativeTarget "TTPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC3D8F651B99BD71006FC622 /* Debug */,
+				EC3D8F661B99BD71006FC622 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EC3D8F671B99BD71006FC622 /* Build configuration list for PBXNativeTarget "TTPlayerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC3D8F681B99BD71006FC622 /* Debug */,
+				EC3D8F691B99BD71006FC622 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EC3D8F451B99BD71006FC622 /* Project object */;
+}
