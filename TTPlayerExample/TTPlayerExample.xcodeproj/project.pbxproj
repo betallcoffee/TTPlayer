@@ -20,6 +20,7 @@
 		EC3EC4A81B9DD9D700C1438F /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */; };
 		EC3EC4A91B9DD9D700C1438F /* TTAVPlayerViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A21B9DD9D700C1438F /* TTAVPlayerViewEx.m */; };
 		EC3EC4AA1B9DD9D700C1438F /* TTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */; };
+		ECEFB8E01C1EEF580027FBEA /* AAPLEAGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		EC3EC4A31B9DD9D700C1438F /* TTPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayer.h; sourceTree = "<group>"; };
 		EC3EC4A41B9DD9D700C1438F /* TTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerView.h; sourceTree = "<group>"; };
 		EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerView.m; sourceTree = "<group>"; };
+		ECEFB8DE1C1EEF580027FBEA /* AAPLEAGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLEAGLLayer.h; sourceTree = "<group>"; };
+		ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLEAGLLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +153,8 @@
 				EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */,
 				EC3EC4A11B9DD9D700C1438F /* TTAVPlayerViewEx.h */,
 				EC3EC4A21B9DD9D700C1438F /* TTAVPlayerViewEx.m */,
+				ECEFB8DE1C1EEF580027FBEA /* AAPLEAGLLayer.h */,
+				ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */,
 				EC3EC4A31B9DD9D700C1438F /* TTPlayer.h */,
 				EC3EC4A41B9DD9D700C1438F /* TTPlayerView.h */,
 				EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */,
@@ -266,6 +271,7 @@
 				EC3EC4A71B9DD9D700C1438F /* TTAVPlayerCodec.m in Sources */,
 				EC3EC4A91B9DD9D700C1438F /* TTAVPlayerViewEx.m in Sources */,
 				EC3EC4A81B9DD9D700C1438F /* TTAVPlayerView.m in Sources */,
+				ECEFB8E01C1EEF580027FBEA /* AAPLEAGLLayer.m in Sources */,
 				EC3D8F791B99BD8F006FC622 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

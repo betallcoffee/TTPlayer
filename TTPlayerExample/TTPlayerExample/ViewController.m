@@ -23,11 +23,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"MOV"];
+    
     [self.view addSubview:self.playerView];
     self.playerView.frame = CGRectMake(0, 64, 320, 100);
-    
-    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"MOV"];
-//    [self.playerView loadAssetFromFile:fileURL];
+    [self.playerView loadAssetFromFile:fileURL];
     
 //    for (int i = 0; i < 5; i++) {
 //        TTAVPlayerView *playerView = [[TTAVPlayerView alloc] init];
@@ -36,10 +36,10 @@
 //        [playerView loadAssetFromFile:fileURL];
 //    }
     
-    [self.view addSubview:self.playerViewEx];
-    self.playerViewEx.frame = CGRectMake(0, 200, 320, 100);
-    [self.playerViewEx loadAssetFromFile:fileURL];
-//    for (int i = 0; i < 5; i++) {
+//    [self.view addSubview:self.playerViewEx];
+//    self.playerViewEx.frame = CGRectMake(0, 200, 320, 100);
+//    [self.playerViewEx loadAssetFromFile:fileURL];
+//    for (int i = 0; i < 7; i++) {
 //        TTAVPlayerViewEx *playerView = [[TTAVPlayerViewEx alloc] init];
 //        [self.view addSubview:playerView];
 //        playerView.frame = CGRectMake(0, 100 * (i + 1), 320, 100);

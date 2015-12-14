@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 tina. All rights reserved.
 //
 
+#import "AAPLEAGLLayer.h"
+
 #import "TTAVPlayerViewEx.h"
 #import "TTAVPlayerCodec.h"
 
