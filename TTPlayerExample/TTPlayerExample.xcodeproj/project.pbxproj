@@ -16,11 +16,12 @@
 		EC3D8F931B99BD8F006FC622 /* TTPlayerExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F921B99BD8F006FC622 /* TTPlayerExampleTests.m */; };
 		EC3D8FBC1B9B1D0F006FC622 /* test.MOV in Resources */ = {isa = PBXBuildFile; fileRef = EC3D8FBB1B9B1D0F006FC622 /* test.MOV */; };
 		EC3EC4A61B9DD9D700C1438F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC3EC49C1B9DD9D700C1438F /* Info.plist */; };
-		EC3EC4A71B9DD9D700C1438F /* TTAVPlayerCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC49E1B9DD9D700C1438F /* TTAVPlayerCodec.m */; };
 		EC3EC4A81B9DD9D700C1438F /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */; };
-		EC3EC4A91B9DD9D700C1438F /* TTAVPlayerViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A21B9DD9D700C1438F /* TTAVPlayerViewEx.m */; };
 		EC3EC4AA1B9DD9D700C1438F /* TTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */; };
 		ECEFB8E01C1EEF580027FBEA /* AAPLEAGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */; };
+		ECEFB8E31C1F17080027FBEA /* TTPlayerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8E21C1F17080027FBEA /* TTPlayerControl.m */; };
+		ECEFB8E61C1F17C30027FBEA /* TTVideoLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8E51C1F17C30027FBEA /* TTVideoLayer.m */; };
+		ECEFB8EC1C2043B60027FBEA /* TTAssetReader.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8EB1C2043B60027FBEA /* TTAssetReader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,17 +51,19 @@
 		EC3D8F9C1B99BDC1006FC622 /* TTPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TTPlayer.framework; path = "../build/Debug-iphoneos/TTPlayer.framework"; sourceTree = "<group>"; };
 		EC3D8FBB1B9B1D0F006FC622 /* test.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = test.MOV; sourceTree = "<group>"; };
 		EC3EC49C1B9DD9D700C1438F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EC3EC49D1B9DD9D700C1438F /* TTAVPlayerCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerCodec.h; sourceTree = "<group>"; };
-		EC3EC49E1B9DD9D700C1438F /* TTAVPlayerCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerCodec.m; sourceTree = "<group>"; };
 		EC3EC49F1B9DD9D700C1438F /* TTAVPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerView.h; sourceTree = "<group>"; };
 		EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerView.m; sourceTree = "<group>"; };
-		EC3EC4A11B9DD9D700C1438F /* TTAVPlayerViewEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerViewEx.h; sourceTree = "<group>"; };
-		EC3EC4A21B9DD9D700C1438F /* TTAVPlayerViewEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerViewEx.m; sourceTree = "<group>"; };
 		EC3EC4A31B9DD9D700C1438F /* TTPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayer.h; sourceTree = "<group>"; };
 		EC3EC4A41B9DD9D700C1438F /* TTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerView.h; sourceTree = "<group>"; };
 		EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerView.m; sourceTree = "<group>"; };
 		ECEFB8DE1C1EEF580027FBEA /* AAPLEAGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLEAGLLayer.h; sourceTree = "<group>"; };
 		ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLEAGLLayer.m; sourceTree = "<group>"; };
+		ECEFB8E11C1F17080027FBEA /* TTPlayerControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerControl.h; sourceTree = "<group>"; };
+		ECEFB8E21C1F17080027FBEA /* TTPlayerControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerControl.m; sourceTree = "<group>"; };
+		ECEFB8E41C1F17C30027FBEA /* TTVideoLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTVideoLayer.h; sourceTree = "<group>"; };
+		ECEFB8E51C1F17C30027FBEA /* TTVideoLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTVideoLayer.m; sourceTree = "<group>"; };
+		ECEFB8EA1C2043B60027FBEA /* TTAssetReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAssetReader.h; sourceTree = "<group>"; };
+		ECEFB8EB1C2043B60027FBEA /* TTAssetReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAssetReader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,17 +150,19 @@
 			isa = PBXGroup;
 			children = (
 				EC3EC49C1B9DD9D700C1438F /* Info.plist */,
-				EC3EC49D1B9DD9D700C1438F /* TTAVPlayerCodec.h */,
-				EC3EC49E1B9DD9D700C1438F /* TTAVPlayerCodec.m */,
 				EC3EC49F1B9DD9D700C1438F /* TTAVPlayerView.h */,
 				EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */,
-				EC3EC4A11B9DD9D700C1438F /* TTAVPlayerViewEx.h */,
-				EC3EC4A21B9DD9D700C1438F /* TTAVPlayerViewEx.m */,
 				ECEFB8DE1C1EEF580027FBEA /* AAPLEAGLLayer.h */,
 				ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */,
 				EC3EC4A31B9DD9D700C1438F /* TTPlayer.h */,
 				EC3EC4A41B9DD9D700C1438F /* TTPlayerView.h */,
 				EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */,
+				ECEFB8E41C1F17C30027FBEA /* TTVideoLayer.h */,
+				ECEFB8E51C1F17C30027FBEA /* TTVideoLayer.m */,
+				ECEFB8EA1C2043B60027FBEA /* TTAssetReader.h */,
+				ECEFB8EB1C2043B60027FBEA /* TTAssetReader.m */,
+				ECEFB8E11C1F17080027FBEA /* TTPlayerControl.h */,
+				ECEFB8E21C1F17080027FBEA /* TTPlayerControl.m */,
 			);
 			name = TTPlayer;
 			path = ../../TTPlayer;
@@ -267,9 +272,10 @@
 			files = (
 				EC3D8F7F1B99BD8F006FC622 /* ViewController.m in Sources */,
 				EC3EC4AA1B9DD9D700C1438F /* TTPlayerView.m in Sources */,
+				ECEFB8E31C1F17080027FBEA /* TTPlayerControl.m in Sources */,
 				EC3D8F7C1B99BD8F006FC622 /* AppDelegate.m in Sources */,
-				EC3EC4A71B9DD9D700C1438F /* TTAVPlayerCodec.m in Sources */,
-				EC3EC4A91B9DD9D700C1438F /* TTAVPlayerViewEx.m in Sources */,
+				ECEFB8EC1C2043B60027FBEA /* TTAssetReader.m in Sources */,
+				ECEFB8E61C1F17C30027FBEA /* TTVideoLayer.m in Sources */,
 				EC3EC4A81B9DD9D700C1438F /* TTAVPlayerView.m in Sources */,
 				ECEFB8E01C1EEF580027FBEA /* AAPLEAGLLayer.m in Sources */,
 				EC3D8F791B99BD8F006FC622 /* main.m in Sources */,

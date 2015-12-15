@@ -7,13 +7,14 @@
 //
 
 #import "TTAVPlayerView.h"
-#import "TTAVPlayerViewEx.h"
+#import "TTPlayerView.h"
 #import "ViewController.h"
 
 @interface ViewController ()
 
+@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) TTAVPlayerView *playerView;
-@property (nonatomic, strong) TTAVPlayerViewEx *playerViewEx;
+@property (nonatomic, strong) TTPlayerView *player;
 
 @end
 
@@ -25,10 +26,9 @@
     
     NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"MOV"];
     
-    [self.view addSubview:self.playerView];
-    self.playerView.frame = CGRectMake(0, 64, 320, 100);
-    [self.playerView loadAssetFromFile:fileURL];
-    
+//    [self.view addSubview:self.playerView];
+//    self.playerView.frame = CGRectMake(0, 64, 320, 100);
+//    [self.playerView loadAssetFromFile:fileURL];
 //    for (int i = 0; i < 5; i++) {
 //        TTAVPlayerView *playerView = [[TTAVPlayerView alloc] init];
 //        [self.view addSubview:playerView];
@@ -36,15 +36,18 @@
 //        [playerView loadAssetFromFile:fileURL];
 //    }
     
-//    [self.view addSubview:self.playerViewEx];
-//    self.playerViewEx.frame = CGRectMake(0, 200, 320, 100);
-//    [self.playerViewEx loadAssetFromFile:fileURL];
-//    for (int i = 0; i < 7; i++) {
-//        TTAVPlayerViewEx *playerView = [[TTAVPlayerViewEx alloc] init];
-//        [self.view addSubview:playerView];
-//        playerView.frame = CGRectMake(0, 100 * (i + 1), 320, 100);
-//        [playerView loadAssetFromFile:fileURL];
-//    }
+    
+    [self.view addSubview:self.player];
+    self.player.frame = CGRectMake(0, 0, 320, 100);
+    self.player.URL = fileURL;
+    [self.player start];
+    for (int i = 1; i < 5; i++) {
+        TTPlayerView *playerView = [[TTPlayerView alloc] init];
+        [self.view addSubview:playerView];
+        playerView.frame = CGRectMake(0, 100 * i, 320, 100);
+        playerView.URL = fileURL;
+        [playerView start];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,11 +64,11 @@
     return _playerView;
 }
 
-- (TTAVPlayerViewEx *)playerViewEx {
-    if (_playerViewEx == nil) {
-        _playerViewEx = [[TTAVPlayerViewEx alloc] init];
+- (TTPlayerView *)player {
+    if (_player == nil) {
+        _player = [[TTPlayerView alloc] init];
     }
-    return _playerViewEx;
+    return _player;
 }
 
 @end

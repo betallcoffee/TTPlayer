@@ -10,4 +10,8 @@
 
 @interface TTPlayerView : UIView
 
+@property (nonatomic, strong) NSURL *URL;
+
+- (void)start;
+
 @end
