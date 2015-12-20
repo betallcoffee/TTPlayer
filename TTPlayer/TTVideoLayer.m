@@ -28,18 +28,23 @@
             CGColorSpaceRef colorSpace;
             CGContextRef cgContext;
             colorSpace = CGColorSpaceCreateDeviceRGB();
-            cgContext = CGBitmapContextCreate(base, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+            cgContext = CGBitmapContextCreate(base, width, height, 8, bytesPerRow, colorSpace,
+                                              kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
             CGColorSpaceRelease(colorSpace);
             
             //透过 CGImageRef 将 CGContextRef 转换成 UIImage
             CGImageRef cgImage;
             cgImage = CGBitmapContextCreateImage(cgContext);
             
-            __weak typeof(&*self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.contents = (__bridge id)(cgImage);
-                CGImageRelease(cgImage);
-            });
+            if (cgImage) {
+                __weak typeof(&*self) weakSelf = self;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.contents = (__bridge id)(cgImage);
+                    CGImageRelease(cgImage);
+                });
+            } else {
+                NSLog(@"create cgImage nil");
+            }
             
             CGContextRelease(cgContext);
         } else {

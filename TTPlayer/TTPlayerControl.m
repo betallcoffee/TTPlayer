@@ -7,6 +7,7 @@
 //
 
 #import "TTAssetReader.h"
+#import "TTFFmpegReader.h"
 #import "TTPlayerControl.h"
 
 @interface TTPlayerControl ()
@@ -21,7 +22,8 @@
 - (void)playWithURL:(NSURL *)URL
 {
     if ([URL isFileURL]) {
-        self.reader = [[TTAssetReader alloc] initWithURL:URL];
+        self.reader = [[TTFFmpegReader alloc] initWithURL:URL];
+//        self.reader = [[TTAssetReader alloc] initWithURL:URL];
         self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(playRoutine) object:nil];
         [self.thread start];
     }
