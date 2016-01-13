@@ -16,6 +16,6 @@
 
 - (instancetype)initWithURL:(NSURL *)URL;
 
-- (CVImageBufferRef)readNextBuffer;
+- (void *)readNextBuffer;
 
 @end

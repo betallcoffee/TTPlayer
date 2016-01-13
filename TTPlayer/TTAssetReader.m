@@ -43,7 +43,7 @@
 }
 
 #pragma mark public
-- (CVImageBufferRef)readNextBuffer
+- (void *)readNextBuffer
 {
     if (self.assetReader.status == AVAssetReaderStatusReading &&
         self.track.nominalFrameRate > 0) {

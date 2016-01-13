@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 tina. All rights reserved.
 //
 
-#import "avformat.h"
 #import "swscale.h"
 
 #import "TTFFmpegReader.h"
@@ -124,7 +123,7 @@
 }
 
 #pragma mark public
-- (CVImageBufferRef)readNextBuffer
+- (AVFrame *)nextFrame
 {
     int err = 0;
     // 6. 读取一帧数据
@@ -135,21 +134,25 @@
         err = av_read_frame(_formatContext, &packet);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not read frame\n");
+            return NULL;
         }
         
         err = avcodec_decode_video2(_codecContext, frame, &gotFrame, &packet);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not decode frame\n");
+            return NULL;
         }
     } while(!gotFrame);
     
-    CVPixelBufferRef pixelBuffer;
-    CFDictionaryRef attrs = (__bridge CFDictionaryRef)@{
-                                                        (id)kCVPixelBufferWidthKey: @(frame->width),
-                                                        (id)kCVPixelBufferHeightKey: @(frame->height),
-                                                        (id)kCVPixelBufferPixelFormatTypeKey: @(PIX_FMT_ARGB),
-                                                        (id)kCVPixelBufferIOSurfacePropertiesKey: @{},
-                                                        };
+    return frame;
+    
+//    CVPixelBufferRef pixelBuffer;
+//    CFDictionaryRef attrs = (__bridge CFDictionaryRef)@{
+//                                                        (id)kCVPixelBufferWidthKey: @(frame->width),
+//                                                        (id)kCVPixelBufferHeightKey: @(frame->height),
+//                                                        (id)kCVPixelBufferPixelFormatTypeKey: @(PIX_FMT_ARGB),
+//                                                        (id)kCVPixelBufferIOSurfacePropertiesKey: @{},
+//                                                        };
     
 //    size_t planeWidth[] = {frame->width, frame->width/2, frame->width/2};
 //    size_t planeHeight[] = {frame->height, frame->height/2, frame->height/2};
@@ -188,37 +191,37 @@
     
     
     // 7. 像素格式转换
-    AVFrame *frameRGB = av_frame_alloc();
-    int bufferSize = avpicture_get_size(PIX_FMT_ARGB, _codecContext->width, _codecContext->height);
-    uint8_t *buffer = malloc(bufferSize);
-    avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_ARGB, _codecContext->width, _codecContext->height);
+//    AVFrame *frameRGB = av_frame_alloc();
+//    int bufferSize = avpicture_get_size(PIX_FMT_ARGB, _codecContext->width, _codecContext->height);
+//    uint8_t *buffer = malloc(bufferSize);
+//    avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_ARGB, _codecContext->width, _codecContext->height);
+//    
+//    struct SwsContext *convertContext = sws_getContext(_codecContext->width,
+//                                                       _codecContext->height,
+//                                                       _codecContext->pix_fmt,
+//                                                       _codecContext->width,
+//                                                       _codecContext->height,
+//                                                       PIX_FMT_ARGB,
+//                                                       SWS_BICUBIC, NULL, NULL, NULL);
+//    
+//    sws_scale(convertContext,
+//              (const uint8_t* const*)frame->data,
+//              frame->linesize,
+//              0,
+//              _codecContext->height,
+//              frameRGB->data,
+//              frameRGB->linesize);
+//    
+//    err = CVPixelBufferCreateWithBytes(kCFAllocatorDefault,
+//                                       frame->width,
+//                                       frame->height,
+//                                       kCVPixelFormatType_32ARGB,
+//                                       frameRGB->data[0],
+//                                       frameRGB->linesize[0],
+//                                       NULL, NULL, attrs, &pixelBuffer);
     
-    struct SwsContext *convertContext = sws_getContext(_codecContext->width,
-                                                       _codecContext->height,
-                                                       _codecContext->pix_fmt,
-                                                       _codecContext->width,
-                                                       _codecContext->height,
-                                                       PIX_FMT_ARGB,
-                                                       SWS_BICUBIC, NULL, NULL, NULL);
-    
-    sws_scale(convertContext,
-              (const uint8_t* const*)frame->data,
-              frame->linesize,
-              0,
-              _codecContext->height,
-              frameRGB->data,
-              frameRGB->linesize);
-    
-    err = CVPixelBufferCreateWithBytes(kCFAllocatorDefault,
-                                       frame->width,
-                                       frame->height,
-                                       kCVPixelFormatType_32ARGB,
-                                       frameRGB->data[0],
-                                       frameRGB->linesize[0],
-                                       NULL, NULL, attrs, &pixelBuffer);
-    
-    av_frame_unref(frame);
-    return pixelBuffer;
+//    av_frame_unref(frame);
+//    return pixelBuffer;
 }
 
 @end

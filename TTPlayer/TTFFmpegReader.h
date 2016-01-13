@@ -6,8 +6,12 @@
 //  Copyright (c) 2015 tina. All rights reserved.
 //
 
+#import "avformat.h"
+
 #import "TTAssetReader.h"
 
 @interface TTFFmpegReader : TTAssetReader
+
+- (AVFrame *)nextFrame;
 
 @end

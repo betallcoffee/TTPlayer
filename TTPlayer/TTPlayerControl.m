@@ -13,6 +13,7 @@
 @interface TTPlayerControl ()
 
 @property (nonatomic, strong) TTAssetReader *reader;
+@property (nonatomic, strong) TTFFmpegReader *ffReader;
 @property (nonatomic, strong) NSThread *thread;
 
 @end
@@ -22,9 +23,9 @@
 - (void)playWithURL:(NSURL *)URL
 {
     if ([URL isFileURL]) {
-        self.reader = [[TTFFmpegReader alloc] initWithURL:URL];
+        self.ffReader = [[TTFFmpegReader alloc] initWithURL:URL];
 //        self.reader = [[TTAssetReader alloc] initWithURL:URL];
-        self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(playRoutine) object:nil];
+        self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(ffmepgRoutine) object:nil];
         [self.thread start];
     }
 }
@@ -39,6 +40,23 @@
             }
         }
         [NSThread sleepForTimeInterval:1/self.reader.nominalFrameRate];
+    }
+    if (self.delegate) {
+        [self.delegate playerFinished:self];
+    }
+
+}
+
+- (void)ffmepgRoutine {
+    AVFrame *frame;
+    while ((frame = [self.ffReader nextFrame])) {
+        if (self.delegate) {
+            if (frame) {
+                [self.delegate playerControl:self pixels:frame->data width:frame->width height:frame->height];
+                av_frame_unref(frame);
+            }
+        }
+//        [NSThread sleepForTimeInterval:1/self.reader.nominalFrameRate];
     }
     if (self.delegate) {
         [self.delegate playerFinished:self];

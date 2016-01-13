@@ -14,10 +14,6 @@
 		EC3D8FA11B99BDF2006FC622 /* TTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F9F1B99BDF2006FC622 /* TTPlayerView.m */; };
 		EC3D8FA41B9A7D79006FC622 /* TTAVPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3D8FA21B9A7D79006FC622 /* TTAVPlayerView.h */; };
 		EC3D8FA51B9A7D79006FC622 /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8FA31B9A7D79006FC622 /* TTAVPlayerView.m */; };
-		EC3D8FBF1B9C819A006FC622 /* TTAVPlayerViewEx.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3D8FBD1B9C819A006FC622 /* TTAVPlayerViewEx.h */; };
-		EC3D8FC01B9C819A006FC622 /* TTAVPlayerViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8FBE1B9C819A006FC622 /* TTAVPlayerViewEx.m */; };
-		EC3D8FC31B9C848B006FC622 /* TTAVPlayerCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = EC3D8FC11B9C848B006FC622 /* TTAVPlayerCodec.h */; };
-		EC3D8FC41B9C848B006FC622 /* TTAVPlayerCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8FC21B9C848B006FC622 /* TTAVPlayerCodec.m */; };
 		ECEFB8DC1C1EEF010027FBEA /* AAPLEAGLLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = ECEFB8DA1C1EEF010027FBEA /* AAPLEAGLLayer.h */; };
 		ECEFB8DD1C1EEF010027FBEA /* AAPLEAGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8DB1C1EEF010027FBEA /* AAPLEAGLLayer.m */; };
 /* End PBXBuildFile section */
@@ -43,10 +39,6 @@
 		EC3D8F9F1B99BDF2006FC622 /* TTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerView.m; sourceTree = "<group>"; };
 		EC3D8FA21B9A7D79006FC622 /* TTAVPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerView.h; sourceTree = "<group>"; };
 		EC3D8FA31B9A7D79006FC622 /* TTAVPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerView.m; sourceTree = "<group>"; };
-		EC3D8FBD1B9C819A006FC622 /* TTAVPlayerViewEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerViewEx.h; sourceTree = "<group>"; };
-		EC3D8FBE1B9C819A006FC622 /* TTAVPlayerViewEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerViewEx.m; sourceTree = "<group>"; };
-		EC3D8FC11B9C848B006FC622 /* TTAVPlayerCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerCodec.h; sourceTree = "<group>"; };
-		EC3D8FC21B9C848B006FC622 /* TTAVPlayerCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerCodec.m; sourceTree = "<group>"; };
 		ECEFB8DA1C1EEF010027FBEA /* AAPLEAGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLEAGLLayer.h; sourceTree = "<group>"; };
 		ECEFB8DB1C1EEF010027FBEA /* AAPLEAGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLEAGLLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,12 +89,8 @@
 				EC3D8F9F1B99BDF2006FC622 /* TTPlayerView.m */,
 				EC3D8FA21B9A7D79006FC622 /* TTAVPlayerView.h */,
 				EC3D8FA31B9A7D79006FC622 /* TTAVPlayerView.m */,
-				EC3D8FBD1B9C819A006FC622 /* TTAVPlayerViewEx.h */,
-				EC3D8FBE1B9C819A006FC622 /* TTAVPlayerViewEx.m */,
 				ECEFB8DA1C1EEF010027FBEA /* AAPLEAGLLayer.h */,
 				ECEFB8DB1C1EEF010027FBEA /* AAPLEAGLLayer.m */,
-				EC3D8FC11B9C848B006FC622 /* TTAVPlayerCodec.h */,
-				EC3D8FC21B9C848B006FC622 /* TTAVPlayerCodec.m */,
 			);
 			path = TTPlayer;
 			sourceTree = "<group>";
@@ -139,9 +127,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC3D8FBF1B9C819A006FC622 /* TTAVPlayerViewEx.h in Headers */,
 				EC3D8FA01B99BDF2006FC622 /* TTPlayerView.h in Headers */,
-				EC3D8FC31B9C848B006FC622 /* TTAVPlayerCodec.h in Headers */,
 				ECEFB8DC1C1EEF010027FBEA /* AAPLEAGLLayer.h in Headers */,
 				EC3D8FA41B9A7D79006FC622 /* TTAVPlayerView.h in Headers */,
 				EC3D8F541B99BD71006FC622 /* TTPlayer.h in Headers */,
@@ -244,9 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC3D8FC01B9C819A006FC622 /* TTAVPlayerViewEx.m in Sources */,
 				EC3D8FA51B9A7D79006FC622 /* TTAVPlayerView.m in Sources */,
-				EC3D8FC41B9C848B006FC622 /* TTAVPlayerCodec.m in Sources */,
 				EC3D8FA11B99BDF2006FC622 /* TTPlayerView.m in Sources */,
 				ECEFB8DD1C1EEF010027FBEA /* AAPLEAGLLayer.m in Sources */,
 			);

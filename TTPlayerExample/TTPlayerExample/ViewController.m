@@ -38,13 +38,11 @@
     
     
     [self.view addSubview:self.player];
-    self.player.frame = CGRectMake(0, 0, 320, 100);
     self.player.URL = fileURL;
     [self.player start];
     for (int i = 1; i < 5; i++) {
-        TTPlayerView *playerView = [[TTPlayerView alloc] init];
+        TTPlayerView *playerView = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 100 * i, 320, 100)];
         [self.view addSubview:playerView];
-        playerView.frame = CGRectMake(0, 100 * i, 320, 100);
         playerView.URL = fileURL;
         [playerView start];
     }
@@ -66,7 +64,7 @@
 
 - (TTPlayerView *)player {
     if (_player == nil) {
-        _player = [[TTPlayerView alloc] init];
+        _player = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
     }
     return _player;
 }

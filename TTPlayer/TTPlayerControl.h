@@ -13,7 +13,8 @@
 
 @protocol TTPlayerControlDelegate <NSObject>
 
-- (void)playerControl:(TTPlayerControl *)control pixelBuffer:(CVPixelBufferRef)pixelBuffer;
+- (void)playerControl:(TTPlayerControl *)control pixelBuffer:(void *)pixelBuffer;
+- (void)playerControl:(TTPlayerControl *)control pixels:(const UInt8 *)pixels width:(const NSUInteger)width height:(const NSUInteger)height;
 - (void)playerFinished:(TTPlayerControl *)control;
 
 @end

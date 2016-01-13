@@ -33,6 +33,7 @@
 		ECEFB96A1C251B390027FBEA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ECEFB9691C251B390027FBEA /* libz.dylib */; };
 		ECEFB96C1C251B420027FBEA /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ECEFB96B1C251B420027FBEA /* libbz2.dylib */; };
 		ECEFB96E1C251B4C0027FBEA /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ECEFB96D1C251B4C0027FBEA /* libiconv.dylib */; };
+		ECEFB9711C284D590027FBEA /* TTOpenGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB9701C284D590027FBEA /* TTOpenGLLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,6 +183,8 @@
 		ECEFB9691C251B390027FBEA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		ECEFB96B1C251B420027FBEA /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
 		ECEFB96D1C251B4C0027FBEA /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		ECEFB96F1C284D590027FBEA /* TTOpenGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTOpenGLLayer.h; sourceTree = "<group>"; };
+		ECEFB9701C284D590027FBEA /* TTOpenGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTOpenGLLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,6 +294,8 @@
 				EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */,
 				ECEFB8E41C1F17C30027FBEA /* TTVideoLayer.h */,
 				ECEFB8E51C1F17C30027FBEA /* TTVideoLayer.m */,
+				ECEFB96F1C284D590027FBEA /* TTOpenGLLayer.h */,
+				ECEFB9701C284D590027FBEA /* TTOpenGLLayer.m */,
 				ECEFB8EA1C2043B60027FBEA /* TTAssetReader.h */,
 				ECEFB8EB1C2043B60027FBEA /* TTAssetReader.m */,
 				ECEFB9661C2512C10027FBEA /* TTFFmpegReader.h */,
@@ -593,6 +598,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECEFB9711C284D590027FBEA /* TTOpenGLLayer.m in Sources */,
 				EC3D8F7F1B99BD8F006FC622 /* ViewController.m in Sources */,
 				EC3EC4AA1B9DD9D700C1438F /* TTPlayerView.m in Sources */,
 				ECEFB8E31C1F17080027FBEA /* TTPlayerControl.m in Sources */,
