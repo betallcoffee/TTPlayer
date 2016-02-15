@@ -18,6 +18,8 @@
 @property (nonatomic, strong) TTVideoLayer *videoLayer;
 @property (nonatomic, strong) TTOpenGLLayer *openglLayer;
 
+@property (nonatomic, strong) UIImageView *imageView;
+
 
 @end
 
@@ -38,6 +40,9 @@
         self.openglLayer.frame = self.bounds;
         [self.openglLayer setup];
         [self.layer addSublayer:self.openglLayer];
+        
+        self.imageView.frame = self.bounds;
+        [self addSubview:self.imageView];
     }
     return self;
 }
@@ -49,7 +54,7 @@
     self.videoLayer.pixelBuffer = pixelBuffer;
 }
 
-- (void)playerControl:(TTPlayerControl *)control pixels:(const UInt8 *)pixels width:(const NSUInteger)width height:(const NSUInteger)height
+- (void)playerControl:(TTPlayerControl *)control pixels:(const UInt8 **)pixels width:(const NSUInteger)width height:(const NSUInteger)height
 {
     [self.openglLayer displayPixels:pixels width:width height:height];
 }
@@ -59,7 +64,20 @@
     
 }
 
+- (void)playerControl:(TTPlayerControl *)control image:(UIImage *)image
+{
+    self.imageView.image = image;
+}
+
 #pragma mark getter/setter
+
+- (UIImageView *)imageView
+{
+    if (_imageView == nil) {
+        _imageView = [UIImageView new];
+    }
+    return _imageView;
+}
 
 #pragma mark public method
 

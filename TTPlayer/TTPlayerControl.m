@@ -52,8 +52,13 @@
     while ((frame = [self.ffReader nextFrame])) {
         if (self.delegate) {
             if (frame) {
-                [self.delegate playerControl:self pixels:frame->data width:frame->width height:frame->height];
-                av_frame_unref(frame);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate playerControl:self
+                                          pixels:frame->data
+                                           width:frame->width
+                                          height:frame->height];
+                    av_frame_unref(frame);
+                });
             }
         }
 //        [NSThread sleepForTimeInterval:1/self.reader.nominalFrameRate];

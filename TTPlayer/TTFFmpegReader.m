@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 tina. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import "swscale.h"
 
 #import "TTFFmpegReader.h"
@@ -15,6 +17,8 @@
     AVFormatContext *_formatContext;
     AVCodecContext *_codecContext;
     AVCodec *_codec;
+    int _videoStream;
+    int _audioStream;
     
     AVPicture           _picture;
     BOOL                _pictureValid;
@@ -56,6 +60,7 @@
             AVCodecContext *codec = _formatContext->streams[i]->codec;
             if (codec->codec_type == AVMEDIA_TYPE_VIDEO) {
                 _codecContext = codec;
+                _videoStream = i;
             }
         }
         if (_codecContext == NULL) {
@@ -73,6 +78,9 @@
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not open codec\n");
         }
+        
+        // 6.
+        [self setupScaler];
     }
     return self;
 }
@@ -109,42 +117,88 @@
     if (!_pictureValid)
         return NO;
     
-    _swsContext = sws_getCachedContext(_swsContext,
-                                       _codecContext->width,
-                                       _codecContext->height,
-                                       _codecContext->pix_fmt,
-                                       _codecContext->width,
-                                       _codecContext->height,
-                                       PIX_FMT_RGB24,
-                                       SWS_FAST_BILINEAR,
-                                       NULL, NULL, NULL);
+    _swsContext = sws_getContext(_codecContext->width,
+                                 _codecContext->height,
+                                 _codecContext->pix_fmt,
+                                 _codecContext->width,
+                                 _codecContext->height,
+                                 PIX_FMT_RGB24,
+                                 SWS_FAST_BILINEAR, NULL, NULL, NULL);
     
     return _swsContext != NULL;
 }
 
+- (UIImage *)currentImage {
+    int width = _codecContext->width;
+    int height = _codecContext->height;
+    
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
+    CFDataRef data = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault,
+                                                 _picture.data[0],
+                                                 _picture.linesize[0]*height,
+                                                 kCFAllocatorNull);
+    CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGImageRef cgImage = CGImageCreate(width,
+                                       height,
+                                       8,
+                                       24,
+                                       _picture.linesize[0],
+                                       colorSpace,
+                                       bitmapInfo,
+                                       provider,
+                                       NULL,
+                                       NO,
+                                       kCGRenderingIntentDefault);
+    CGColorSpaceRelease(colorSpace);
+    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    CGImageRelease(cgImage);
+    CGDataProviderRelease(provider);
+    CFRelease(data);
+    
+    return image;
+}
+
 #pragma mark public
+- (UIImage *)convertFrameToImage:(AVFrame *)avframe {
+    sws_scale (_swsContext,
+               (const uint8_t* const*)avframe->data,
+               avframe->linesize,
+               0,
+               _codecContext->height,
+               _picture.data,
+               _picture.linesize);
+    
+    return [self currentImage];
+}
+
 - (AVFrame *)nextFrame
 {
     int err = 0;
     // 6. 读取一帧数据
-    AVFrame *frame = av_frame_alloc();
-    int gotFrame;
+    AVFrame *avframe = av_frame_alloc();
+    int gotFrame = 0;
     do {
         AVPacket packet;
         err = av_read_frame(_formatContext, &packet);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not read frame\n");
+            av_log(_codecContext, AV_LOG_ERROR, "%s", av_err2str(err));
             return NULL;
         }
+        if (packet.stream_index != _videoStream) {
+            continue;
+        }
         
-        err = avcodec_decode_video2(_codecContext, frame, &gotFrame, &packet);
+        err = avcodec_decode_video2(_codecContext, avframe, &gotFrame, &packet);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not decode frame\n");
+            av_log(_codecContext, AV_LOG_ERROR, "%s", av_err2str(err));
             return NULL;
         }
     } while(!gotFrame);
     
-    return frame;
+    return avframe;
     
 //    CVPixelBufferRef pixelBuffer;
 //    CFDictionaryRef attrs = (__bridge CFDictionaryRef)@{
@@ -192,17 +246,17 @@
     
     // 7. 像素格式转换
 //    AVFrame *frameRGB = av_frame_alloc();
-//    int bufferSize = avpicture_get_size(PIX_FMT_ARGB, _codecContext->width, _codecContext->height);
+//    int bufferSize = avpicture_get_size(PIX_FMT_RGB24, _codecContext->width, _codecContext->height);
 //    uint8_t *buffer = malloc(bufferSize);
-//    avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_ARGB, _codecContext->width, _codecContext->height);
+//    avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_RGB24, _codecContext->width, _codecContext->height);
 //    
 //    struct SwsContext *convertContext = sws_getContext(_codecContext->width,
 //                                                       _codecContext->height,
 //                                                       _codecContext->pix_fmt,
 //                                                       _codecContext->width,
 //                                                       _codecContext->height,
-//                                                       PIX_FMT_ARGB,
-//                                                       SWS_BICUBIC, NULL, NULL, NULL);
+//                                                       PIX_FMT_RGB24,
+//                                                       SWS_FAST_BILINEAR, NULL, NULL, NULL);
 //    
 //    sws_scale(convertContext,
 //              (const uint8_t* const*)frame->data,

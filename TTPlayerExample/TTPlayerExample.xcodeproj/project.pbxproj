@@ -18,6 +18,8 @@
 		EC3EC4A61B9DD9D700C1438F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC3EC49C1B9DD9D700C1438F /* Info.plist */; };
 		EC3EC4A81B9DD9D700C1438F /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */; };
 		EC3EC4AA1B9DD9D700C1438F /* TTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */; };
+		EC4DF24B1C72062200E35CCF /* sophie.mov in Resources */ = {isa = PBXBuildFile; fileRef = EC4DF24A1C72062200E35CCF /* sophie.mov */; };
+		ECD91F571C70DC710096F018 /* test.264 in Resources */ = {isa = PBXBuildFile; fileRef = ECD91F561C70DC710096F018 /* test.264 */; };
 		ECEFB8E01C1EEF580027FBEA /* AAPLEAGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */; };
 		ECEFB8E31C1F17080027FBEA /* TTPlayerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8E21C1F17080027FBEA /* TTPlayerControl.m */; };
 		ECEFB8E61C1F17C30027FBEA /* TTVideoLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8E51C1F17C30027FBEA /* TTVideoLayer.m */; };
@@ -68,6 +70,8 @@
 		EC3EC4A31B9DD9D700C1438F /* TTPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayer.h; sourceTree = "<group>"; };
 		EC3EC4A41B9DD9D700C1438F /* TTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerView.h; sourceTree = "<group>"; };
 		EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerView.m; sourceTree = "<group>"; };
+		EC4DF24A1C72062200E35CCF /* sophie.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = sophie.mov; sourceTree = "<group>"; };
+		ECD91F561C70DC710096F018 /* test.264 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.264; sourceTree = "<group>"; };
 		ECEFB8DE1C1EEF580027FBEA /* AAPLEAGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLEAGLLayer.h; sourceTree = "<group>"; };
 		ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLEAGLLayer.m; sourceTree = "<group>"; };
 		ECEFB8E11C1F17080027FBEA /* TTPlayerControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerControl.h; sourceTree = "<group>"; };
@@ -241,7 +245,6 @@
 			isa = PBXGroup;
 			children = (
 				EC3EC49B1B9DD9D700C1438F /* TTPlayer */,
-				EC3D8FBB1B9B1D0F006FC622 /* test.MOV */,
 				EC3D8F7A1B99BD8F006FC622 /* AppDelegate.h */,
 				EC3D8F7B1B99BD8F006FC622 /* AppDelegate.m */,
 				EC3D8F7D1B99BD8F006FC622 /* ViewController.h */,
@@ -257,6 +260,9 @@
 		EC3D8F761B99BD8F006FC622 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EC4DF24A1C72062200E35CCF /* sophie.mov */,
+				ECD91F561C70DC710096F018 /* test.264 */,
+				EC3D8FBB1B9B1D0F006FC622 /* test.MOV */,
 				EC3D8F771B99BD8F006FC622 /* Info.plist */,
 				EC3D8F781B99BD8F006FC622 /* main.m */,
 			);
@@ -578,9 +584,11 @@
 			files = (
 				EC3D8F821B99BD8F006FC622 /* Main.storyboard in Resources */,
 				EC3D8F871B99BD8F006FC622 /* LaunchScreen.xib in Resources */,
+				ECD91F571C70DC710096F018 /* test.264 in Resources */,
 				EC3D8FBC1B9B1D0F006FC622 /* test.MOV in Resources */,
 				EC3EC4A61B9DD9D700C1438F /* Info.plist in Resources */,
 				EC3D8F841B99BD8F006FC622 /* Images.xcassets in Resources */,
+				EC4DF24B1C72062200E35CCF /* sophie.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

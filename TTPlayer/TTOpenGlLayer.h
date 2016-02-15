@@ -13,6 +13,6 @@
 
 - (void)setup;
 
-- (void)displayPixels:(const UInt8 *)pixels width:(const NSUInteger)width height:(const NSUInteger)height;
+- (void)displayPixels:(const UInt8 **)pixels width:(const NSUInteger)width height:(const NSUInteger)height;
 
 @end

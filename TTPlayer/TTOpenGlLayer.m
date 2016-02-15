@@ -348,7 +348,7 @@ exit:
     _vertices[7] =   h;
 }
 
-- (void)displayPixels:(const UInt8 *)pixels width:(const NSUInteger)width height:(const NSUInteger)height
+- (void)displayPixels:(const UInt8 **)pixels width:(const NSUInteger)width height:(const NSUInteger)height
 {
     [self updateVertices];
     static const GLfloat texCoords[] = {
@@ -394,7 +394,7 @@ exit:
     [self.glContext presentRenderbuffer:GL_RENDERBUFFER];
 }
 
-- (void) setPixels:(const UInt8 *)pixels width:(const NSUInteger)width height:(const NSUInteger)height
+- (void) setPixels:(const UInt8 **)pixels width:(const NSUInteger)width height:(const NSUInteger)height
 {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     

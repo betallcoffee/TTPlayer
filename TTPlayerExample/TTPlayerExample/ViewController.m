@@ -40,7 +40,7 @@
     [self.view addSubview:self.player];
     self.player.URL = fileURL;
     [self.player start];
-    for (int i = 1; i < 5; i++) {
+    for (int i = 1; i < 1; i++) {
         TTPlayerView *playerView = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 100 * i, 320, 100)];
         [self.view addSubview:playerView];
         playerView.URL = fileURL;

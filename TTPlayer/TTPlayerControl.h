@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 tina. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <CoreVideo/CoreVideo.h>
 
@@ -14,8 +15,10 @@
 @protocol TTPlayerControlDelegate <NSObject>
 
 - (void)playerControl:(TTPlayerControl *)control pixelBuffer:(void *)pixelBuffer;
-- (void)playerControl:(TTPlayerControl *)control pixels:(const UInt8 *)pixels width:(const NSUInteger)width height:(const NSUInteger)height;
+- (void)playerControl:(TTPlayerControl *)control pixels:(const UInt8 **)pixels width:(const NSUInteger)width height:(const NSUInteger)height;
 - (void)playerFinished:(TTPlayerControl *)control;
+
+- (void)playerControl:(TTPlayerControl *)control image:(UIImage *)image;
 
 @end
 
