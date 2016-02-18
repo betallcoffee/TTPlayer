@@ -12,6 +12,39 @@
 
 #import "TTFFmpegReader.h"
 
+@interface TTAVPacket : NSObject
+
+@property (nonatomic, assign) AVPacket packet;
+
+- (instancetype)initWithAVPacket:(AVPacket *)packet;
+
+- (AVPacket *)packetPoint;
+
+@end
+
+@implementation TTAVPacket
+
+- (instancetype)initWithAVPacket:(AVPacket *)packet
+{
+    self = [super init];
+    if (self) {
+        self.packet = *packet;
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    av_free_packet(&_packet);
+}
+
+- (AVPacket *)packetPoint
+{
+    return &_packet;
+}
+
+@end
+
 @interface TTFFmpegReader ()
 {
     AVFormatContext *_formatContext;
@@ -25,14 +58,28 @@
     struct SwsContext   *_swsContext;
 }
 
+@property (nonatomic, strong) TTQueue<TTPlayerFrame *> *videoQueue;
+@property (nonatomic, strong) TTQueue<TTPlayerFrame *> *audioQueue;
+
+@property (nonatomic, strong) TTQueue<TTAVPacket *> *videoDecodeQueue;
+@property (nonatomic, strong) TTQueue<TTAVPacket *> *audioDecodeQueue;
+@property (nonatomic, strong) NSThread *readThread;
+@property (nonatomic, strong) NSThread *videoDecodeThread;
+@property (nonatomic, strong) NSThread *audioDecodeThread;
+
 @end
 
 @implementation TTFFmpegReader
 
 - (instancetype)initWithURL:(NSURL *)URL
+                  andVideoQueue:(TTQueue<TTPlayerFrame *> *)videoQueue
+                  andAudioQueue:(TTQueue<TTPlayerFrame *> *)audioQueue
 {
     self = [super init];
     if (self) {
+        self.videoQueue = videoQueue;
+        self.audioQueue = audioQueue;
+        
         av_register_all();
         const char *filename = URL.absoluteString.UTF8String;
         _formatContext = avformat_alloc_context();
@@ -79,8 +126,9 @@
             av_log(_codecContext, AV_LOG_ERROR, "Can not open codec\n");
         }
         
-        // 6.
         [self setupScaler];
+        
+        [self setupThread];
     }
     return self;
 }
@@ -92,7 +140,19 @@
 }
 
 #pragma mark private 
-- (void) closeScaler
+
+- (void)setupThread
+{
+    self.videoDecodeQueue = [TTQueue<TTAVPacket *> new];
+    self.readThread = [[NSThread alloc] initWithTarget:self selector:@selector(readThreadRoutine) object:nil];
+    self.videoDecodeThread = [[NSThread alloc] initWithTarget:self
+                                                     selector:@selector(videoDecodeRoutine)
+                                                       object:nil];
+    [self.readThread start];
+    [self.videoDecodeThread start];
+}
+
+- (void)closeScaler
 {
     if (_swsContext) {
         sws_freeContext(_swsContext);
@@ -105,7 +165,7 @@
     }
 }
 
-- (BOOL) setupScaler
+- (BOOL)setupScaler
 {
     [self closeScaler];
     
@@ -199,7 +259,68 @@
     } while(!gotFrame);
     
     return avframe;
+}
+
+#pragma mark thread routine
+- (void)readThreadRoutine
+{
+    int err = 0;
+    // 6. 读取一帧数据
+    do {
+        AVPacket packet;
+        err = av_read_frame(_formatContext, &packet);
+        if (err < 0) {
+            av_log(_codecContext, AV_LOG_ERROR, "Can not read frame\n");
+            av_log(_codecContext, AV_LOG_ERROR, "%s", av_err2str(err));
+            
+            [self.videoDecodeQueue close];
+            [self.audioDecodeQueue close];
+            
+            break;
+        }
+        
+        if (packet.stream_index == _videoStream) {
+            TTAVPacket *videoPacket = [[TTAVPacket alloc] initWithAVPacket:&packet];
+            [self.videoDecodeQueue push:videoPacket];
+        }
+        
+    } while(true);
+}
+
+- (void)videoDecodeRoutine
+{
+    int err = 0;
+    int gotFrame = 0;
+    do {
+        TTAVPacket *videoPacket = [self.videoDecodeQueue pop];
+        if (videoPacket == nil) {
+            [self.videoQueue close];
+            break;
+        }
+        
+        AVFrame *avframe = av_frame_alloc();
+        err = avcodec_decode_video2(_codecContext, avframe, &gotFrame, [videoPacket packetPoint]);
+        if (err < 0) {
+            av_log(_codecContext, AV_LOG_ERROR, "Can not decode frame\n");
+            av_log(_codecContext, AV_LOG_ERROR, "%s", av_err2str(err));
+            av_frame_unref(avframe);
+            break;
+        }
+        
+        TTPlayerFrame *frame = [[TTPlayerFrame alloc] initWithAVFrame:avframe andType:kTTPlayerFrameYUV];
+        [self.videoQueue push:frame];
+        
+    } while(true);
+}
+
+- (void)audioDecodeRoutine
+{
     
+}
+
+@end
+
+
 //    CVPixelBufferRef pixelBuffer;
 //    CFDictionaryRef attrs = (__bridge CFDictionaryRef)@{
 //                                                        (id)kCVPixelBufferWidthKey: @(frame->width),
@@ -207,7 +328,7 @@
 //                                                        (id)kCVPixelBufferPixelFormatTypeKey: @(PIX_FMT_ARGB),
 //                                                        (id)kCVPixelBufferIOSurfacePropertiesKey: @{},
 //                                                        };
-    
+
 //    size_t planeWidth[] = {frame->width, frame->width/2, frame->width/2};
 //    size_t planeHeight[] = {frame->height, frame->height/2, frame->height/2};
 //    size_t planeBytesPerRow[] = {frame->linesize[0], frame->linesize[1], frame->linesize[2]};
@@ -227,7 +348,7 @@
 //                                             NULL,
 //                                             NULL,
 //                                             &pixelBuffer);
-    
+
 //    uint8_t **buffer = malloc(2*sizeof(int *));
 //    buffer[0] = frame->data[0];
 //    buffer[1] = malloc(frame->linesize[0]*sizeof(int));
@@ -242,40 +363,7 @@
 //                                 frame->width, frame->height,
 //                                 kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange,
 //                                 buffer, frame->linesize[0], NULL, NULL, NULL, &pixelBuffer);
-    
-    
-    // 7. 像素格式转换
-//    AVFrame *frameRGB = av_frame_alloc();
-//    int bufferSize = avpicture_get_size(PIX_FMT_RGB24, _codecContext->width, _codecContext->height);
-//    uint8_t *buffer = malloc(bufferSize);
-//    avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_RGB24, _codecContext->width, _codecContext->height);
-//    
-//    struct SwsContext *convertContext = sws_getContext(_codecContext->width,
-//                                                       _codecContext->height,
-//                                                       _codecContext->pix_fmt,
-//                                                       _codecContext->width,
-//                                                       _codecContext->height,
-//                                                       PIX_FMT_RGB24,
-//                                                       SWS_FAST_BILINEAR, NULL, NULL, NULL);
-//    
-//    sws_scale(convertContext,
-//              (const uint8_t* const*)frame->data,
-//              frame->linesize,
-//              0,
-//              _codecContext->height,
-//              frameRGB->data,
-//              frameRGB->linesize);
-//    
-//    err = CVPixelBufferCreateWithBytes(kCFAllocatorDefault,
-//                                       frame->width,
-//                                       frame->height,
-//                                       kCVPixelFormatType_32ARGB,
-//                                       frameRGB->data[0],
-//                                       frameRGB->linesize[0],
-//                                       NULL, NULL, attrs, &pixelBuffer);
-    
+
+
 //    av_frame_unref(frame);
 //    return pixelBuffer;
-}
-
-@end

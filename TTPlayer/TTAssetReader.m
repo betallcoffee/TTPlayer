@@ -11,9 +11,13 @@
 #import "TTAssetReader.h"
 
 @interface TTAssetReader ()
+
 @property (nonatomic, strong) AVAssetReader *assetReader;
 @property (nonatomic, strong) AVAssetTrack *track;
 @property (nonatomic, strong) AVAssetReaderTrackOutput *trackOutput;
+
+@property (nonatomic, strong) TTQueue<TTPlayerFrame *> *videoQueue;
+@property (nonatomic, strong) TTQueue<TTPlayerFrame *> *audioQueue;
 
 @end
 
@@ -21,8 +25,20 @@
 
 - (instancetype)initWithURL:(NSURL *)URL
 {
+    return [self initWithURL:URL
+                   andVideoQueue:nil
+                   andAudioQueue:nil];
+}
+
+- (instancetype)initWithURL:(NSURL *)URL
+              andVideoQueue:(TTQueue<TTPlayerFrame *> *)videoQueue
+              andAudioQueue:(TTQueue<TTPlayerFrame *> *)audioQueue
+{
     self = [super init];
     if (self) {
+        self.videoQueue = videoQueue;
+        self.audioQueue = audioQueue;
+        
         AVURLAsset *asset = [AVURLAsset URLAssetWithURL:URL options:nil];
         NSError *error;
         self.assetReader = [[AVAssetReader alloc] initWithAsset:asset error:&error];
