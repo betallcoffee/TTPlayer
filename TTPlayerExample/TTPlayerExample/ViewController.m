@@ -24,7 +24,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"MOV"];
+    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"sophie" withExtension:@"mov"];
     
 //    [self.view addSubview:self.playerView];
 //    self.playerView.frame = CGRectMake(0, 64, 320, 100);
@@ -64,7 +64,7 @@
 
 - (TTPlayerView *)player {
     if (_player == nil) {
-        _player = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
+        _player = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
     }
     return _player;
 }

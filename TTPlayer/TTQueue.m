@@ -45,7 +45,7 @@
 {
     [self.cond lock];
     self.isClose = YES;
-    [self.cond broadcast];
+    [self.cond signal];
     [self.cond unlock];
 }
 
@@ -68,7 +68,7 @@
     [self.objectArray removeObject:object];
 
     [self.cond unlock];
-    return  object;
+    return object;
 }
 
 - (id)first

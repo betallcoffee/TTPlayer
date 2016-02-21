@@ -20,6 +20,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) TTPlayerFrameType type;
 @property (nonatomic, assign) CVPixelBufferRef buffer;
 @property (nonatomic, assign) AVFrame *avframe;
+@property (nonatomic, assign) double pts;
 
 - (instancetype)initWithAVFrame:(AVFrame *)avframe andType:(TTPlayerFrameType)type;
 

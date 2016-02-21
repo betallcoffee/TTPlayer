@@ -28,7 +28,7 @@
 {
     self = [super init];
     if (self) {
-        self.packet = *packet;
+        av_copy_packet(&_packet, packet);
     }
     return self;
 }
@@ -51,10 +51,11 @@
     AVCodecContext *_codecContext;
     AVCodec *_codec;
     int _videoStream;
+    double _videoTimeBase;
+    double _videoClock;
+    
     int _audioStream;
     
-    AVPicture           _picture;
-    BOOL                _pictureValid;
     struct SwsContext   *_swsContext;
 }
 
@@ -108,6 +109,7 @@
             if (codec->codec_type == AVMEDIA_TYPE_VIDEO) {
                 _codecContext = codec;
                 _videoStream = i;
+                _videoTimeBase = av_q2d(_formatContext->streams[i]->time_base);
             }
         }
         if (_codecContext == NULL) {
@@ -158,24 +160,11 @@
         sws_freeContext(_swsContext);
         _swsContext = NULL;
     }
-    
-    if (_pictureValid) {
-        avpicture_free(&_picture);
-        _pictureValid = NO;
-    }
 }
 
 - (BOOL)setupScaler
 {
     [self closeScaler];
-    
-    _pictureValid = avpicture_alloc(&_picture,
-                                    PIX_FMT_RGB24,
-                                    _codecContext->width,
-                                    _codecContext->height) == 0;
-    
-    if (!_pictureValid)
-        return NO;
     
     _swsContext = sws_getContext(_codecContext->width,
                                  _codecContext->height,
@@ -188,14 +177,14 @@
     return _swsContext != NULL;
 }
 
-- (UIImage *)currentImage {
+- (UIImage *)covertPictureToImage:(AVPicture *)picture {
     int width = _codecContext->width;
     int height = _codecContext->height;
     
     CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
     CFDataRef data = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault,
-                                                 _picture.data[0],
-                                                 _picture.linesize[0]*height,
+                                                 picture->data[0],
+                                                 picture->linesize[0]*height,
                                                  kCFAllocatorNull);
     CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -203,7 +192,7 @@
                                        height,
                                        8,
                                        24,
-                                       _picture.linesize[0],
+                                       picture->linesize[0],
                                        colorSpace,
                                        bitmapInfo,
                                        provider,
@@ -221,15 +210,26 @@
 
 #pragma mark public
 - (UIImage *)convertFrameToImage:(AVFrame *)avframe {
+    AVPicture picture;
+    BOOL pictureValid = avpicture_alloc(&picture,
+                                    PIX_FMT_RGB24,
+                                    _codecContext->width,
+                                    _codecContext->height) == 0;
+    if (!pictureValid)
+        return nil;
+    
     sws_scale (_swsContext,
                (const uint8_t* const*)avframe->data,
                avframe->linesize,
                0,
                _codecContext->height,
-               _picture.data,
-               _picture.linesize);
+               picture.data,
+               picture.linesize);
     
-    return [self currentImage];
+    UIImage *image = [self covertPictureToImage:&picture];
+    avpicture_free(&picture);
+    
+    return image;
 }
 
 - (AVFrame *)nextFrame
@@ -243,7 +243,7 @@
         err = av_read_frame(_formatContext, &packet);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not read frame\n");
-            av_log(_codecContext, AV_LOG_ERROR, "%s", av_err2str(err));
+            av_log(_codecContext, AV_LOG_ERROR, "%s\n", av_err2str(err));
             return NULL;
         }
         if (packet.stream_index != _videoStream) {
@@ -253,7 +253,7 @@
         err = avcodec_decode_video2(_codecContext, avframe, &gotFrame, &packet);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not decode frame\n");
-            av_log(_codecContext, AV_LOG_ERROR, "%s", av_err2str(err));
+            av_log(_codecContext, AV_LOG_ERROR, "%s\n", av_err2str(err));
             return NULL;
         }
     } while(!gotFrame);
@@ -271,7 +271,7 @@
         err = av_read_frame(_formatContext, &packet);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not read frame\n");
-            av_log(_codecContext, AV_LOG_ERROR, "%s", av_err2str(err));
+            av_log(_codecContext, AV_LOG_ERROR, "%s\n", av_err2str(err));
             
             [self.videoDecodeQueue close];
             [self.audioDecodeQueue close];
@@ -282,15 +282,24 @@
         if (packet.stream_index == _videoStream) {
             TTAVPacket *videoPacket = [[TTAVPacket alloc] initWithAVPacket:&packet];
             [self.videoDecodeQueue push:videoPacket];
+        } else {
+            av_free_packet(&packet);
         }
         
     } while(true);
 }
 
+- (void)saveImage:(UIImage *)image toFile:(NSString *)filePath
+{
+    NSData *data = UIImageJPEGRepresentation(image, 1.0);
+    [data writeToFile:filePath atomically:YES];
+}
+
 - (void)videoDecodeRoutine
 {
-    int err = 0;
-    int gotFrame = 0;
+    NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cacheDir = dirs[0];
+    NSLog(@"cacheDir:%@", cacheDir);
     do {
         TTAVPacket *videoPacket = [self.videoDecodeQueue pop];
         if (videoPacket == nil) {
@@ -299,16 +308,43 @@
         }
         
         AVFrame *avframe = av_frame_alloc();
+        int err = 0;
+        int gotFrame = 0;
         err = avcodec_decode_video2(_codecContext, avframe, &gotFrame, [videoPacket packetPoint]);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not decode frame\n");
-            av_log(_codecContext, AV_LOG_ERROR, "%s", av_err2str(err));
+            av_log(_codecContext, AV_LOG_ERROR, "%s\n", av_err2str(err));
             av_frame_unref(avframe);
             break;
         }
         
-        TTPlayerFrame *frame = [[TTPlayerFrame alloc] initWithAVFrame:avframe andType:kTTPlayerFrameYUV];
-        [self.videoQueue push:frame];
+        if (gotFrame) {
+            double pts = av_frame_get_best_effort_timestamp(avframe);
+            if (pts == AV_NOPTS_VALUE) {
+                pts = 0;
+            }
+            pts *= _videoTimeBase;
+            
+            if (pts != 0) {
+                _videoClock = pts;
+            } else {
+                pts = _videoClock;
+            }
+            
+            double delay = _videoTimeBase * avframe->repeat_pict;
+            _videoClock += delay;
+            
+            TTPlayerFrame *frame = [[TTPlayerFrame alloc] initWithAVFrame:avframe andType:kTTPlayerFrameYUV];
+            av_frame_free(&avframe);
+            frame.pts = pts;
+            
+            NSLog(@"PUSH PTS:%lf, %p", frame.pts, frame.avframe);
+            [self.videoQueue push:frame];
+//            NSString *filename = [NSString stringWithFormat:@"PUSH_PTS_%lf_1", frame.pts];
+//            NSString *filePath = [cacheDir stringByAppendingPathComponent:filename];
+//            UIImage *image = [self convertFrameToImage:frame.avframe];
+//            [self saveImage:image toFile:filePath];
+        }
         
     } while(true);
 }

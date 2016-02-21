@@ -15,7 +15,7 @@
     self = [super init];
     if (self) {
         self.type = type;
-        self.avframe = avframe;
+        self.avframe = av_frame_clone(avframe);
     }
     return self;
 }
@@ -33,7 +33,7 @@
 - (void)dealloc
 {
     if (self.avframe) {
-        av_frame_unref(self.avframe);
+        av_frame_free(&_avframe);
     }
 }
 
