@@ -6,15 +6,22 @@
 //  Copyright (c) 2015 tina. All rights reserved.
 //
 
+#include "TTPlayer.hpp"
+
 #import "TTAVPlayerView.h"
 #import "TTPlayerView.h"
 #import "ViewController.h"
 
+using namespace TT;
+
 @interface ViewController ()
+{
+    Player *_player;
+}
 
 @property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) TTAVPlayerView *playerView;
-@property (nonatomic, strong) TTPlayerView *player;
+@property (nonatomic, strong) TTAVPlayerView *avplayerView;
+@property (nonatomic, strong) TTPlayerView *playerView;
 
 @end
 
@@ -24,7 +31,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"sophie" withExtension:@"mov"];
+    _player = new Player();
+    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
+    _player->play(url);
+    
+//    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"h264"];
     
 //    [self.view addSubview:self.playerView];
 //    self.playerView.frame = CGRectMake(0, 64, 320, 100);
@@ -37,15 +48,15 @@
 //    }
     
     
-    [self.view addSubview:self.player];
-    self.player.URL = fileURL;
-    [self.player start];
-    for (int i = 1; i < 1; i++) {
-        TTPlayerView *playerView = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 100 * i, 320, 100)];
-        [self.view addSubview:playerView];
-        playerView.URL = fileURL;
-        [playerView start];
-    }
+//    [self.view addSubview:self.player];
+//    self.player.URL = fileURL;
+//    [self.player start];
+//    for (int i = 1; i < 1; i++) {
+//        TTPlayerView *playerView = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 100 * i, 320, 100)];
+//        [self.view addSubview:playerView];
+//        playerView.URL = fileURL;
+//        [playerView start];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,17 +67,17 @@
 #pragma mark getter/setter
 
 - (TTAVPlayerView *)playerView {
-    if (_playerView == nil) {
-        _playerView = [[TTAVPlayerView alloc] init];
+    if (_avplayerView == nil) {
+        _avplayerView = [[TTAVPlayerView alloc] init];
     }
-    return _playerView;
+    return _avplayerView;
 }
 
 - (TTPlayerView *)player {
-    if (_player == nil) {
-        _player = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+    if (_playerView == nil) {
+        _playerView = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
     }
-    return _player;
+    return _playerView;
 }
 
 @end

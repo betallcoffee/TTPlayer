@@ -171,7 +171,7 @@
                                  _codecContext->pix_fmt,
                                  _codecContext->width,
                                  _codecContext->height,
-                                 PIX_FMT_RGB24,
+                                 AV_PIX_FMT_RGB24,
                                  SWS_FAST_BILINEAR, NULL, NULL, NULL);
     
     return _swsContext != NULL;
@@ -212,7 +212,7 @@
 - (UIImage *)convertFrameToImage:(AVFrame *)avframe {
     AVPicture picture;
     BOOL pictureValid = avpicture_alloc(&picture,
-                                    PIX_FMT_RGB24,
+                                    AV_PIX_FMT_RGB24,
                                     _codecContext->width,
                                     _codecContext->height) == 0;
     if (!pictureValid)
@@ -310,6 +310,8 @@
         AVFrame *avframe = av_frame_alloc();
         int err = 0;
         int gotFrame = 0;
+        AVPacket *packet = [videoPacket packetPoint];
+        NSLog(@"packet: %@, %@", @(packet->pts), @(packet->dts));
         err = avcodec_decode_video2(_codecContext, avframe, &gotFrame, [videoPacket packetPoint]);
         if (err < 0) {
             av_log(_codecContext, AV_LOG_ERROR, "Can not decode frame\n");

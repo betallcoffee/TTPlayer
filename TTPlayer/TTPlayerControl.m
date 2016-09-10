@@ -109,7 +109,7 @@
             break;
         }
         
-        NSLog(@"POP PTS:%lf, %p", frame.pts, frame.avframe);
+//        NSLog(@"POP PTS:%lf, %p", frame.pts, frame.avframe);
 //        NSString *filename = [NSString stringWithFormat:@"PTS_%lf_2", frame.pts];
 //        NSString *filePath = [cacheDir stringByAppendingPathComponent:filename];
 //        UIImage *image = [self.ffReader convertFrameToImage:frame.avframe];
@@ -117,7 +117,7 @@
         
         if (self.delegate) {
             dispatch_sync(dispatch_get_main_queue(), ^{
-                NSLog(@"mai PTS:%lf, %p", frame.pts, frame.avframe);
+//                NSLog(@"mai PTS:%lf, %p", frame.pts, frame.avframe);
                 [self.delegate playerControl:self
                                       pixels:frame.avframe->data
                                        width:frame.avframe->width
