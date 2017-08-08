@@ -15,6 +15,7 @@
 		EC0189561D81C3EB005E46B9 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC0189501D81C3EB005E46B9 /* libswscale.a */; };
 		EC0189591D81D1E6005E46B9 /* TTQoS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC0189571D81D1E6005E46B9 /* TTQoS.cpp */; };
 		EC01895C1D81D52A005E46B9 /* TTVideoCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC01895A1D81D52A005E46B9 /* TTVideoCodec.cpp */; };
+		EC09E9F61F0AA2710034680D /* TTProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC09E9F41F0AA2710034680D /* TTProtocol.cpp */; };
 		EC12806A1D7BF0A400ACF31A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EC1280691D7BF0A400ACF31A /* libz.tbd */; };
 		EC12806C1D7BF0AB00ACF31A /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EC12806B1D7BF0AB00ACF31A /* libiconv.tbd */; };
 		EC35E7501D7C10C200F0659A /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EC35E74F1D7C10C200F0659A /* libbz2.tbd */; };
@@ -27,20 +28,27 @@
 		EC3D8F871B99BD8F006FC622 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC3D8F851B99BD8F006FC622 /* LaunchScreen.xib */; };
 		EC3D8F931B99BD8F006FC622 /* TTPlayerExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F921B99BD8F006FC622 /* TTPlayerExampleTests.m */; };
 		EC3EC4A61B9DD9D700C1438F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC3EC49C1B9DD9D700C1438F /* Info.plist */; };
-		EC3EC4A81B9DD9D700C1438F /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */; };
-		EC3EC4AA1B9DD9D700C1438F /* TTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */; };
 		EC4727551D0C15100023EE51 /* TTTCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC4727531D0C15100023EE51 /* TTTCPSocket.cpp */; };
 		EC4727631D0C5B4F0023EE51 /* TTURL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC4727611D0C5B4F0023EE51 /* TTURL.cpp */; };
-		EC4DF24E1C73758700E35CCF /* TTPlayerFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4DF24D1C73758700E35CCF /* TTPlayerFrame.m */; };
-		EC4DF2541C7379D900E35CCF /* TTQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4DF2531C7379D900E35CCF /* TTQueue.m */; };
+		EC4E9C6A1F1A6400005C8E36 /* TTMutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C681F1A6400005C8E36 /* TTMutex.cpp */; };
+		EC4E9C6D1F1A6572005C8E36 /* TTCond.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C6B1F1A6572005C8E36 /* TTCond.cpp */; };
+		EC4E9C701F1A7AA6005C8E36 /* TTQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C6E1F1A7AA6005C8E36 /* TTQueue.cpp */; };
+		EC4E9C801F1A7C3E005C8E36 /* TTRender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C7A1F1A7C3E005C8E36 /* TTRender.cpp */; };
+		EC4E9C991F1A7DE5005C8E36 /* AAPLEAGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C851F1A7DE5005C8E36 /* AAPLEAGLLayer.m */; };
+		EC4E9C9A1F1A7DE5005C8E36 /* TTAssetReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C871F1A7DE5005C8E36 /* TTAssetReader.m */; };
+		EC4E9C9B1F1A7DE5005C8E36 /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C891F1A7DE5005C8E36 /* TTAVPlayerView.m */; };
+		EC4E9C9C1F1A7DE5005C8E36 /* TTFFmpegReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C8B1F1A7DE5005C8E36 /* TTFFmpegReader.m */; };
+		EC4E9C9D1F1A7DE5005C8E36 /* TTOpenGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C8D1F1A7DE5005C8E36 /* TTOpenGLLayer.m */; };
+		EC4E9C9E1F1A7DE5005C8E36 /* TTPlayerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C901F1A7DE5005C8E36 /* TTPlayerControl.m */; };
+		EC4E9C9F1F1A7DE5005C8E36 /* TTPlayerFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C921F1A7DE5005C8E36 /* TTPlayerFrame.m */; };
+		EC4E9CA01F1A7DE5005C8E36 /* TTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C941F1A7DE5005C8E36 /* TTPlayerView.m */; };
+		EC4E9CA11F1A7DE5005C8E36 /* TTQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C961F1A7DE5005C8E36 /* TTQueue.m */; };
+		EC4E9CA21F1A7DE5005C8E36 /* TTVideoLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9C981F1A7DE5005C8E36 /* TTVideoLayer.m */; };
+		EC4E9CA51F1B9E99005C8E36 /* TTOpenGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9CA41F1B9E99005C8E36 /* TTOpenGLView.mm */; };
+		EC4E9CA91F1BC21E005C8E36 /* TTShaderYUV420p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9CA71F1BC21E005C8E36 /* TTShaderYUV420p.cpp */; };
+		EC4E9CAB1F1FA937005C8E36 /* TTPlayer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9CAA1F1FA937005C8E36 /* TTPlayer_ios.mm */; };
+		EC4E9CAF1F2390A4005C8E36 /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EC4E9CAE1F2390A4005C8E36 /* test.mp4 */; };
 		EC8D83EC1D846E7B00C25D03 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC8D83EB1D846E7B00C25D03 /* CoreVideo.framework */; };
-		ECEFB8E01C1EEF580027FBEA /* AAPLEAGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */; };
-		ECEFB8E31C1F17080027FBEA /* TTPlayerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8E21C1F17080027FBEA /* TTPlayerControl.m */; };
-		ECEFB8E61C1F17C30027FBEA /* TTVideoLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8E51C1F17C30027FBEA /* TTVideoLayer.m */; };
-		ECEFB8EC1C2043B60027FBEA /* TTAssetReader.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB8EB1C2043B60027FBEA /* TTAssetReader.m */; };
-		ECEFB9681C2512C10027FBEA /* TTFFmpegReader.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB9671C2512C10027FBEA /* TTFFmpegReader.m */; };
-		ECEFB9711C284D590027FBEA /* TTOpenGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECEFB9701C284D590027FBEA /* TTOpenGLLayer.m */; };
-		ECF92A081D675D89006BB111 /* TTQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A061D675D89006BB111 /* TTQueue.cpp */; };
 		ECF92A141D676181006BB111 /* TTFFStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A0E1D676181006BB111 /* TTFFStream.cpp */; };
 		ECF92A161D676181006BB111 /* TTStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A121D676181006BB111 /* TTStream.cpp */; };
 		ECF92A191D67619D006BB111 /* TTFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A171D67619D006BB111 /* TTFrame.cpp */; };
@@ -186,6 +194,8 @@
 		EC0189581D81D1E6005E46B9 /* TTQoS.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTQoS.hpp; sourceTree = "<group>"; };
 		EC01895A1D81D52A005E46B9 /* TTVideoCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTVideoCodec.cpp; sourceTree = "<group>"; };
 		EC01895B1D81D52A005E46B9 /* TTVideoCodec.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTVideoCodec.hpp; sourceTree = "<group>"; };
+		EC09E9F41F0AA2710034680D /* TTProtocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTProtocol.cpp; sourceTree = "<group>"; };
+		EC09E9F51F0AA2710034680D /* TTProtocol.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTProtocol.hpp; sourceTree = "<group>"; };
 		EC1280691D7BF0A400ACF31A /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		EC12806B1D7BF0AB00ACF31A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		EC194A1E1CCE056300032B9A /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "../../../../../../../usr/lib/libstdc++.6.0.9.dylib"; sourceTree = "<group>"; };
@@ -206,34 +216,47 @@
 		EC3D8F911B99BD8F006FC622 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC3D8F921B99BD8F006FC622 /* TTPlayerExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTPlayerExampleTests.m; sourceTree = "<group>"; };
 		EC3EC49C1B9DD9D700C1438F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EC3EC49F1B9DD9D700C1438F /* TTAVPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerView.h; sourceTree = "<group>"; };
-		EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerView.m; sourceTree = "<group>"; };
-		EC3EC4A31B9DD9D700C1438F /* TTPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayer.h; sourceTree = "<group>"; };
-		EC3EC4A41B9DD9D700C1438F /* TTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerView.h; sourceTree = "<group>"; };
-		EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerView.m; sourceTree = "<group>"; };
 		EC4727531D0C15100023EE51 /* TTTCPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTTCPSocket.cpp; sourceTree = "<group>"; };
 		EC4727541D0C15100023EE51 /* TTTCPSocket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTTCPSocket.hpp; sourceTree = "<group>"; };
 		EC4727611D0C5B4F0023EE51 /* TTURL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTURL.cpp; sourceTree = "<group>"; };
 		EC4727621D0C5B4F0023EE51 /* TTURL.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTURL.hpp; sourceTree = "<group>"; };
-		EC4DF24C1C73758700E35CCF /* TTPlayerFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerFrame.h; sourceTree = "<group>"; };
-		EC4DF24D1C73758700E35CCF /* TTPlayerFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerFrame.m; sourceTree = "<group>"; };
-		EC4DF2521C7379D900E35CCF /* TTQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTQueue.h; sourceTree = "<group>"; };
-		EC4DF2531C7379D900E35CCF /* TTQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTQueue.m; sourceTree = "<group>"; };
+		EC4E9C681F1A6400005C8E36 /* TTMutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTMutex.cpp; sourceTree = "<group>"; };
+		EC4E9C691F1A6400005C8E36 /* TTMutex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTMutex.hpp; sourceTree = "<group>"; };
+		EC4E9C6B1F1A6572005C8E36 /* TTCond.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTCond.cpp; sourceTree = "<group>"; };
+		EC4E9C6C1F1A6572005C8E36 /* TTCond.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTCond.hpp; sourceTree = "<group>"; };
+		EC4E9C6E1F1A7AA6005C8E36 /* TTQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTQueue.cpp; sourceTree = "<group>"; };
+		EC4E9C6F1F1A7AA6005C8E36 /* TTQueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTQueue.hpp; sourceTree = "<group>"; };
+		EC4E9C7A1F1A7C3E005C8E36 /* TTRender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTRender.cpp; sourceTree = "<group>"; };
+		EC4E9C7B1F1A7C3E005C8E36 /* TTRender.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTRender.hpp; sourceTree = "<group>"; };
+		EC4E9C841F1A7DE5005C8E36 /* AAPLEAGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLEAGLLayer.h; sourceTree = "<group>"; };
+		EC4E9C851F1A7DE5005C8E36 /* AAPLEAGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLEAGLLayer.m; sourceTree = "<group>"; };
+		EC4E9C861F1A7DE5005C8E36 /* TTAssetReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAssetReader.h; sourceTree = "<group>"; };
+		EC4E9C871F1A7DE5005C8E36 /* TTAssetReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAssetReader.m; sourceTree = "<group>"; };
+		EC4E9C881F1A7DE5005C8E36 /* TTAVPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerView.h; sourceTree = "<group>"; };
+		EC4E9C891F1A7DE5005C8E36 /* TTAVPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerView.m; sourceTree = "<group>"; };
+		EC4E9C8A1F1A7DE5005C8E36 /* TTFFmpegReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFFmpegReader.h; sourceTree = "<group>"; };
+		EC4E9C8B1F1A7DE5005C8E36 /* TTFFmpegReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFFmpegReader.m; sourceTree = "<group>"; };
+		EC4E9C8C1F1A7DE5005C8E36 /* TTOpenGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTOpenGLLayer.h; sourceTree = "<group>"; };
+		EC4E9C8D1F1A7DE5005C8E36 /* TTOpenGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTOpenGLLayer.m; sourceTree = "<group>"; };
+		EC4E9C8E1F1A7DE5005C8E36 /* TTPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayer.h; sourceTree = "<group>"; };
+		EC4E9C8F1F1A7DE5005C8E36 /* TTPlayerControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerControl.h; sourceTree = "<group>"; };
+		EC4E9C901F1A7DE5005C8E36 /* TTPlayerControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerControl.m; sourceTree = "<group>"; };
+		EC4E9C911F1A7DE5005C8E36 /* TTPlayerFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerFrame.h; sourceTree = "<group>"; };
+		EC4E9C921F1A7DE5005C8E36 /* TTPlayerFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerFrame.m; sourceTree = "<group>"; };
+		EC4E9C931F1A7DE5005C8E36 /* TTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerView.h; sourceTree = "<group>"; };
+		EC4E9C941F1A7DE5005C8E36 /* TTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerView.m; sourceTree = "<group>"; };
+		EC4E9C951F1A7DE5005C8E36 /* TTQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTQueue.h; sourceTree = "<group>"; };
+		EC4E9C961F1A7DE5005C8E36 /* TTQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTQueue.m; sourceTree = "<group>"; };
+		EC4E9C971F1A7DE5005C8E36 /* TTVideoLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTVideoLayer.h; sourceTree = "<group>"; };
+		EC4E9C981F1A7DE5005C8E36 /* TTVideoLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTVideoLayer.m; sourceTree = "<group>"; };
+		EC4E9CA31F1B9E99005C8E36 /* TTOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTOpenGLView.h; sourceTree = "<group>"; };
+		EC4E9CA41F1B9E99005C8E36 /* TTOpenGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TTOpenGLView.mm; sourceTree = "<group>"; };
+		EC4E9CA71F1BC21E005C8E36 /* TTShaderYUV420p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTShaderYUV420p.cpp; sourceTree = "<group>"; };
+		EC4E9CA81F1BC21E005C8E36 /* TTShaderYUV420p.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTShaderYUV420p.hpp; sourceTree = "<group>"; };
+		EC4E9CAA1F1FA937005C8E36 /* TTPlayer_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TTPlayer_ios.mm; sourceTree = "<group>"; };
+		EC4E9CAC1F1FAA25005C8E36 /* TTPlayer_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTPlayer_ios.h; sourceTree = "<group>"; };
+		EC4E9CAE1F2390A4005C8E36 /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
 		EC8D83EB1D846E7B00C25D03 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		ECEFB8DE1C1EEF580027FBEA /* AAPLEAGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLEAGLLayer.h; sourceTree = "<group>"; };
-		ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLEAGLLayer.m; sourceTree = "<group>"; };
-		ECEFB8E11C1F17080027FBEA /* TTPlayerControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerControl.h; sourceTree = "<group>"; };
-		ECEFB8E21C1F17080027FBEA /* TTPlayerControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerControl.m; sourceTree = "<group>"; };
-		ECEFB8E41C1F17C30027FBEA /* TTVideoLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTVideoLayer.h; sourceTree = "<group>"; };
-		ECEFB8E51C1F17C30027FBEA /* TTVideoLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTVideoLayer.m; sourceTree = "<group>"; };
-		ECEFB8EA1C2043B60027FBEA /* TTAssetReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAssetReader.h; sourceTree = "<group>"; };
-		ECEFB8EB1C2043B60027FBEA /* TTAssetReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAssetReader.m; sourceTree = "<group>"; };
-		ECEFB9661C2512C10027FBEA /* TTFFmpegReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFFmpegReader.h; sourceTree = "<group>"; };
-		ECEFB9671C2512C10027FBEA /* TTFFmpegReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFFmpegReader.m; sourceTree = "<group>"; };
-		ECEFB96F1C284D590027FBEA /* TTOpenGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTOpenGLLayer.h; sourceTree = "<group>"; };
-		ECEFB9701C284D590027FBEA /* TTOpenGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTOpenGLLayer.m; sourceTree = "<group>"; };
-		ECF92A061D675D89006BB111 /* TTQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTQueue.cpp; sourceTree = "<group>"; };
-		ECF92A071D675D89006BB111 /* TTQueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTQueue.hpp; sourceTree = "<group>"; };
 		ECF92A0E1D676181006BB111 /* TTFFStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFFStream.cpp; sourceTree = "<group>"; };
 		ECF92A0F1D676181006BB111 /* TTFFStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTFFStream.hpp; sourceTree = "<group>"; };
 		ECF92A121D676181006BB111 /* TTStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTStream.cpp; sourceTree = "<group>"; };
@@ -539,6 +562,15 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
+		EC09E9F31F094CA30034680D /* protocol */ = {
+			isa = PBXGroup;
+			children = (
+				EC09E9F41F0AA2710034680D /* TTProtocol.cpp */,
+				EC09E9F51F0AA2710034680D /* TTProtocol.hpp */,
+			);
+			path = protocol;
+			sourceTree = "<group>";
+		};
 		EC3D8F6A1B99BD8F006FC622 = {
 			isa = PBXGroup;
 			children = (
@@ -581,6 +613,7 @@
 		EC3D8F761B99BD8F006FC622 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EC4E9CAE1F2390A4005C8E36 /* test.mp4 */,
 				EC3D8F771B99BD8F006FC622 /* Info.plist */,
 				EC3D8F781B99BD8F006FC622 /* main.m */,
 			);
@@ -612,31 +645,14 @@
 				EC4727601D0C5B3E0023EE51 /* util */,
 				EC47275C1D0C5A0D0023EE51 /* codec */,
 				ECF92A0D1D676181006BB111 /* stream */,
+				EC09E9F31F094CA30034680D /* protocol */,
 				EC4727521D0C14E40023EE51 /* network */,
-				ECF92A011D675C8A006BB111 /* queue */,
+				EC4E9C711F1A7AB5005C8E36 /* render */,
 				ECF92A291D69EFA7006BB111 /* TTPlayer.cpp */,
 				ECF92A2A1D69EFA7006BB111 /* TTPlayer.hpp */,
-				EC3EC49F1B9DD9D700C1438F /* TTAVPlayerView.h */,
-				EC3EC4A01B9DD9D700C1438F /* TTAVPlayerView.m */,
-				ECEFB8DE1C1EEF580027FBEA /* AAPLEAGLLayer.h */,
-				ECEFB8DF1C1EEF580027FBEA /* AAPLEAGLLayer.m */,
-				EC3EC4A31B9DD9D700C1438F /* TTPlayer.h */,
-				EC3EC4A41B9DD9D700C1438F /* TTPlayerView.h */,
-				EC3EC4A51B9DD9D700C1438F /* TTPlayerView.m */,
-				ECEFB8E41C1F17C30027FBEA /* TTVideoLayer.h */,
-				ECEFB8E51C1F17C30027FBEA /* TTVideoLayer.m */,
-				ECEFB96F1C284D590027FBEA /* TTOpenGLLayer.h */,
-				ECEFB9701C284D590027FBEA /* TTOpenGLLayer.m */,
-				ECEFB8EA1C2043B60027FBEA /* TTAssetReader.h */,
-				ECEFB8EB1C2043B60027FBEA /* TTAssetReader.m */,
-				ECEFB9661C2512C10027FBEA /* TTFFmpegReader.h */,
-				ECEFB9671C2512C10027FBEA /* TTFFmpegReader.m */,
-				ECEFB8E11C1F17080027FBEA /* TTPlayerControl.h */,
-				ECEFB8E21C1F17080027FBEA /* TTPlayerControl.m */,
-				EC4DF24C1C73758700E35CCF /* TTPlayerFrame.h */,
-				EC4DF24D1C73758700E35CCF /* TTPlayerFrame.m */,
-				EC4DF2521C7379D900E35CCF /* TTQueue.h */,
-				EC4DF2531C7379D900E35CCF /* TTQueue.m */,
+				EC4E9CAA1F1FA937005C8E36 /* TTPlayer_ios.mm */,
+				EC4E9CAC1F1FAA25005C8E36 /* TTPlayer_ios.h */,
+				EC4E9C831F1A7DE5005C8E36 /* deprecate */,
 			);
 			name = TTPlayer;
 			path = ../../TTPlayer;
@@ -665,12 +681,59 @@
 		EC4727601D0C5B3E0023EE51 /* util */ = {
 			isa = PBXGroup;
 			children = (
+				EC4E9C6E1F1A7AA6005C8E36 /* TTQueue.cpp */,
+				EC4E9C6F1F1A7AA6005C8E36 /* TTQueue.hpp */,
 				EC4727611D0C5B4F0023EE51 /* TTURL.cpp */,
 				EC4727621D0C5B4F0023EE51 /* TTURL.hpp */,
 				EC0189571D81D1E6005E46B9 /* TTQoS.cpp */,
 				EC0189581D81D1E6005E46B9 /* TTQoS.hpp */,
+				EC4E9C681F1A6400005C8E36 /* TTMutex.cpp */,
+				EC4E9C691F1A6400005C8E36 /* TTMutex.hpp */,
+				EC4E9C6B1F1A6572005C8E36 /* TTCond.cpp */,
+				EC4E9C6C1F1A6572005C8E36 /* TTCond.hpp */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		EC4E9C711F1A7AB5005C8E36 /* render */ = {
+			isa = PBXGroup;
+			children = (
+				EC4E9C7A1F1A7C3E005C8E36 /* TTRender.cpp */,
+				EC4E9C7B1F1A7C3E005C8E36 /* TTRender.hpp */,
+				EC4E9CA71F1BC21E005C8E36 /* TTShaderYUV420p.cpp */,
+				EC4E9CA81F1BC21E005C8E36 /* TTShaderYUV420p.hpp */,
+				EC4E9CA31F1B9E99005C8E36 /* TTOpenGLView.h */,
+				EC4E9CA41F1B9E99005C8E36 /* TTOpenGLView.mm */,
+			);
+			path = render;
+			sourceTree = "<group>";
+		};
+		EC4E9C831F1A7DE5005C8E36 /* deprecate */ = {
+			isa = PBXGroup;
+			children = (
+				EC4E9C841F1A7DE5005C8E36 /* AAPLEAGLLayer.h */,
+				EC4E9C851F1A7DE5005C8E36 /* AAPLEAGLLayer.m */,
+				EC4E9C861F1A7DE5005C8E36 /* TTAssetReader.h */,
+				EC4E9C871F1A7DE5005C8E36 /* TTAssetReader.m */,
+				EC4E9C881F1A7DE5005C8E36 /* TTAVPlayerView.h */,
+				EC4E9C891F1A7DE5005C8E36 /* TTAVPlayerView.m */,
+				EC4E9C8A1F1A7DE5005C8E36 /* TTFFmpegReader.h */,
+				EC4E9C8B1F1A7DE5005C8E36 /* TTFFmpegReader.m */,
+				EC4E9C8C1F1A7DE5005C8E36 /* TTOpenGLLayer.h */,
+				EC4E9C8D1F1A7DE5005C8E36 /* TTOpenGLLayer.m */,
+				EC4E9C8E1F1A7DE5005C8E36 /* TTPlayer.h */,
+				EC4E9C8F1F1A7DE5005C8E36 /* TTPlayerControl.h */,
+				EC4E9C901F1A7DE5005C8E36 /* TTPlayerControl.m */,
+				EC4E9C911F1A7DE5005C8E36 /* TTPlayerFrame.h */,
+				EC4E9C921F1A7DE5005C8E36 /* TTPlayerFrame.m */,
+				EC4E9C931F1A7DE5005C8E36 /* TTPlayerView.h */,
+				EC4E9C941F1A7DE5005C8E36 /* TTPlayerView.m */,
+				EC4E9C951F1A7DE5005C8E36 /* TTQueue.h */,
+				EC4E9C961F1A7DE5005C8E36 /* TTQueue.m */,
+				EC4E9C971F1A7DE5005C8E36 /* TTVideoLayer.h */,
+				EC4E9C981F1A7DE5005C8E36 /* TTVideoLayer.m */,
+			);
+			path = deprecate;
 			sourceTree = "<group>";
 		};
 		ECEFB8EE1C2511F40027FBEA /* Vendor */ = {
@@ -679,15 +742,6 @@
 				EC0188C31D81C3EB005E46B9 /* FFmpeg-iOS */,
 			);
 			path = Vendor;
-			sourceTree = "<group>";
-		};
-		ECF92A011D675C8A006BB111 /* queue */ = {
-			isa = PBXGroup;
-			children = (
-				ECF92A061D675D89006BB111 /* TTQueue.cpp */,
-				ECF92A071D675D89006BB111 /* TTQueue.hpp */,
-			);
-			path = queue;
 			sourceTree = "<group>";
 		};
 		ECF92A0D1D676181006BB111 /* stream */ = {
@@ -752,6 +806,7 @@
 				TargetAttributes = {
 					EC3D8F721B99BD8F006FC622 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 4B2QYB9XQX;
 					};
 					EC3D8F8B1B99BD8F006FC622 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -786,6 +841,7 @@
 				EC3D8F821B99BD8F006FC622 /* Main.storyboard in Resources */,
 				EC3D8F871B99BD8F006FC622 /* LaunchScreen.xib in Resources */,
 				EC3EC4A61B9DD9D700C1438F /* Info.plist in Resources */,
+				EC4E9CAF1F2390A4005C8E36 /* test.mp4 in Resources */,
 				EC3D8F841B99BD8F006FC622 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -804,28 +860,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC4E9C991F1A7DE5005C8E36 /* AAPLEAGLLayer.m in Sources */,
+				EC4E9CA51F1B9E99005C8E36 /* TTOpenGLView.mm in Sources */,
 				EC01895C1D81D52A005E46B9 /* TTVideoCodec.cpp in Sources */,
-				ECEFB9711C284D590027FBEA /* TTOpenGLLayer.m in Sources */,
+				EC4E9C801F1A7C3E005C8E36 /* TTRender.cpp in Sources */,
+				EC09E9F61F0AA2710034680D /* TTProtocol.cpp in Sources */,
 				EC3D8F7F1B99BD8F006FC622 /* ViewController.mm in Sources */,
-				EC3EC4AA1B9DD9D700C1438F /* TTPlayerView.m in Sources */,
+				EC4E9C6A1F1A6400005C8E36 /* TTMutex.cpp in Sources */,
+				EC4E9C9D1F1A7DE5005C8E36 /* TTOpenGLLayer.m in Sources */,
+				EC4E9CA21F1A7DE5005C8E36 /* TTVideoLayer.m in Sources */,
+				EC4E9CA11F1A7DE5005C8E36 /* TTQueue.m in Sources */,
 				EC35E7551D7C327700F0659A /* TTPacket.cpp in Sources */,
-				ECEFB8E31C1F17080027FBEA /* TTPlayerControl.m in Sources */,
-				ECEFB9681C2512C10027FBEA /* TTFFmpegReader.m in Sources */,
+				EC4E9C9A1F1A7DE5005C8E36 /* TTAssetReader.m in Sources */,
 				EC3D8F7C1B99BD8F006FC622 /* AppDelegate.m in Sources */,
+				EC4E9C9F1F1A7DE5005C8E36 /* TTPlayerFrame.m in Sources */,
+				EC4E9CAB1F1FA937005C8E36 /* TTPlayer_ios.mm in Sources */,
+				EC4E9C9E1F1A7DE5005C8E36 /* TTPlayerControl.m in Sources */,
 				EC0189591D81D1E6005E46B9 /* TTQoS.cpp in Sources */,
-				ECEFB8EC1C2043B60027FBEA /* TTAssetReader.m in Sources */,
-				EC4DF2541C7379D900E35CCF /* TTQueue.m in Sources */,
-				ECEFB8E61C1F17C30027FBEA /* TTVideoLayer.m in Sources */,
+				EC4E9C701F1A7AA6005C8E36 /* TTQueue.cpp in Sources */,
+				EC4E9CA01F1A7DE5005C8E36 /* TTPlayerView.m in Sources */,
 				ECF92A161D676181006BB111 /* TTStream.cpp in Sources */,
-				EC3EC4A81B9DD9D700C1438F /* TTAVPlayerView.m in Sources */,
-				ECF92A081D675D89006BB111 /* TTQueue.cpp in Sources */,
+				EC4E9C6D1F1A6572005C8E36 /* TTCond.cpp in Sources */,
 				EC4727631D0C5B4F0023EE51 /* TTURL.cpp in Sources */,
 				ECF92A2B1D69EFA7006BB111 /* TTPlayer.cpp in Sources */,
 				EC4727551D0C15100023EE51 /* TTTCPSocket.cpp in Sources */,
 				ECF92A191D67619D006BB111 /* TTFrame.cpp in Sources */,
 				ECF92A141D676181006BB111 /* TTFFStream.cpp in Sources */,
-				ECEFB8E01C1EEF580027FBEA /* AAPLEAGLLayer.m in Sources */,
-				EC4DF24E1C73758700E35CCF /* TTPlayerFrame.m in Sources */,
+				EC4E9C9C1F1A7DE5005C8E36 /* TTFFmpegReader.m in Sources */,
+				EC4E9C9B1F1A7DE5005C8E36 /* TTAVPlayerView.m in Sources */,
+				EC4E9CA91F1BC21E005C8E36 /* TTShaderYUV420p.cpp in Sources */,
 				EC3D8F791B99BD8F006FC622 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -956,6 +1019,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4B2QYB9XQX;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
@@ -980,6 +1044,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4B2QYB9XQX;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (

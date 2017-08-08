@@ -21,10 +21,10 @@ extern "C" {
 
 namespace TT {
     typedef enum {
-        kFrameTypeRGB,
-        kFrameTypeY420p,
-        kFrameTypeY420sp
-    }eFrameType;
+        kTextureTypeRGB,
+        kTextureTypeY420p,
+        kTextureTypeY420sp
+    } TextureType;
     
     class Frame {
     public:
@@ -33,7 +33,7 @@ namespace TT {
         
         static const size_t kNumOfPlanars = 3;
         
-        eFrameType type;
+        TextureType type;
         
         uint8_t *data[kNumOfPlanars];
         size_t lineSize[kNumOfPlanars];

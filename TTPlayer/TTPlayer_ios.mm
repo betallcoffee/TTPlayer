@@ -1,0 +1,55 @@
+//
+//  TTPlayer_ios.m
+//  TTPlayerExample
+//
+//  Created by liang on 19/7/17.
+//  Copyright © 2017年 tina. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+#import "TTPlayer_ios.h"
+
+static bool renderSetup(void *opaque, TT::Render *render) {
+    if (opaque == nullptr || render == nullptr) {
+        return false;
+    }
+    
+    TTOpenGLView *view = (__bridge TTOpenGLView *)opaque;
+    return [view setupRender:render];
+}
+
+static void renderTeardown(void *opaque) {
+    
+}
+
+static bool renderDisplay(void *opaque, std::shared_ptr<Frame> frame) {
+    if (opaque == nullptr) {
+        return false;
+    }
+    
+    TTOpenGLView *view = (__bridge  TTOpenGLView *)opaque;
+    return [view render:frame];
+}
+
+Player *createPlayer_ios() {
+    Player *player = new(std::nothrow) Player;
+    
+    return player;
+}
+
+BOOL bindGLView_ios(Player *player, TTOpenGLView *view) {
+    if (player == nullptr || view == nil) {
+        return NO;
+    }
+    
+    RenderContext ctx;
+    ctx.opaque = (__bridge void *)view;
+    ctx.setup = renderSetup;
+    ctx.teardown = renderTeardown;
+    ctx.display = renderDisplay;
+    
+    player->bindRenderContext(&ctx);
+    
+    return YES;
+}

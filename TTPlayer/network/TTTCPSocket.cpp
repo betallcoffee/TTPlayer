@@ -14,14 +14,12 @@ using namespace TT;
 
 static const int kValidFD = -1;
 
-TCPSocket::TCPSocket() {
-    _fd = ::socket(AF_INET, SOCK_STREAM, 0);
+TCPSocket::TCPSocket() : _fd(kValidFD) {
+    
 }
 
 TCPSocket::~TCPSocket() {
-    if (_fd != kValidFD) {
-        ::close(_fd);
-    }
+    uninit();
 }
 
 bool TCPSocket::setNonBlock() {
@@ -37,7 +35,27 @@ bool TCPSocket::setNonBlock() {
     return false;
 }
 
+bool TCPSocket::init() {
+    _fd = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (_fd != kValidFD) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void TCPSocket::uninit() {
+    if (_fd != kValidFD) {
+        ::close(_fd);
+        _fd = kValidFD;
+    }
+}
+
 bool TCPSocket::setTimeout(int seconds) {
+    if (_fd == kValidFD) {
+        return false;
+    }
+    
     struct timeval timeout = {seconds, 0};
     
     /* set receive timeout */
@@ -49,11 +67,17 @@ bool TCPSocket::setTimeout(int seconds) {
     if (setsockopt(_fd, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(timeout))) {
         return false;
     }
+    
+    _timeout = seconds;
 
     return true;
 }
 
 bool TCPSocket::connect(const char *ip, uint8_t port) {
+    if (ip == NULL) {
+        return false;
+    }
+    
     memset(&_addr, 0, sizeof(struct sockaddr_in));
     _addr.sin_family = AF_INET;
     _addr.sin_port = htons(port);
@@ -63,3 +87,28 @@ bool TCPSocket::connect(const char *ip, uint8_t port) {
     
     return ret == 0;
 }
+
+size_t TCPSocket::read(uint8_t *buf, size_t size) {
+    if (_fd == kValidFD || buf == NULL || size <= 0) {
+        return -1;
+    }
+    
+    size_t ret = ::read(_fd, buf, size);
+    return ret;
+}
+
+size_t TCPSocket::write(const uint8_t *buf, size_t size) {
+    if (_fd == kValidFD || buf == NULL || size <= 0) {
+        return -1;
+    }
+    
+    size_t ret = ::write(_fd, buf, size);
+    return ret;
+}
+
+
+
+
+
+
+

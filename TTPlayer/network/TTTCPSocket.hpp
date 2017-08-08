@@ -22,15 +22,21 @@ namespace TT {
         TCPSocket();
         ~TCPSocket();
         
-        bool setNonBlock();
+        bool init();
+        void uninit();
+        
         bool setTimeout(int seconds);
         bool connect(const char *ip, uint8_t port);
-        int read(uint8_t *buf, size_t size);
-        int write(const uint8_t *buf, size_t size);
+        size_t read(uint8_t *buf, size_t size);
+        size_t write(const uint8_t *buf, size_t size);
+        
+    private:
+        bool setNonBlock();
         
     private:
         int _fd;
         struct sockaddr_in _addr;
+        int _timeout; // 单位秒
     };
 }
 

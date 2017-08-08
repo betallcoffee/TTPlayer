@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 tina. All rights reserved.
 //
 
-#include "TTPlayer.hpp"
+#import "TTPlayer_ios.h"
 
 #import "TTAVPlayerView.h"
 #import "TTPlayerView.h"
@@ -20,6 +20,8 @@ using namespace TT;
 }
 
 @property (nonatomic, strong) UIScrollView *scrollView;
+
+@property (nonatomic, strong) TTOpenGLView *glView;
 @property (nonatomic, strong) TTAVPlayerView *avplayerView;
 @property (nonatomic, strong) TTPlayerView *playerView;
 
@@ -31,15 +33,24 @@ using namespace TT;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    _player = new Player();
-    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
+//    _player = new Player();
+//    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
+    
+    self.glView.frame = self.view.bounds;
+    [self.view addSubview:self.glView];
+    
+    _player = createPlayer_ios();
+    bindGLView_ios(_player, self.glView);
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
+    const char *cFilePath = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
+    std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
     _player->play(url);
     
-//    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"h264"];
-    
+//    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"video" withExtension:@"h264"];
+
 //    [self.view addSubview:self.playerView];
-//    self.playerView.frame = CGRectMake(0, 64, 320, 100);
-//    [self.playerView loadAssetFromFile:fileURL];
+//    self.avplayerView.frame = CGRectMake(0, 64, 320, 100);
+//    [self.avplayerView loadAssetFromFile:fileURL];
 //    for (int i = 0; i < 5; i++) {
 //        TTAVPlayerView *playerView = [[TTAVPlayerView alloc] init];
 //        [self.view addSubview:playerView];
@@ -48,7 +59,7 @@ using namespace TT;
 //    }
     
     
-//    [self.view addSubview:self.player];
+//    [self.view addSubview:self.playerView];
 //    self.player.URL = fileURL;
 //    [self.player start];
 //    for (int i = 1; i < 1; i++) {
@@ -65,6 +76,13 @@ using namespace TT;
 }
 
 #pragma mark getter/setter
+
+- (TTOpenGLView *)glView {
+    if (_glView == nil) {
+        _glView = [TTOpenGLView new];
+    }
+    return _glView;
+}
 
 - (TTAVPlayerView *)playerView {
     if (_avplayerView == nil) {

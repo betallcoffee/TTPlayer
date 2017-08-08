@@ -28,3 +28,5 @@ DerivedData
 # media
 *.MOV
 *.264
+
+.DS_Store

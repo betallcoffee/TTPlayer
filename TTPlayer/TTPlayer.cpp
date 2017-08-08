@@ -7,30 +7,45 @@
 //
 
 #include "TTPlayer.hpp"
+
+#include "TTMutex.hpp"
 #include "TTURL.hpp"
+
 #include "TTFFStream.hpp"
 #include "TTVideoCodec.hpp"
 
 using namespace TT;
 
-Player::Player() : _vPacketQueue("video_packet_queue"), _aPacketQueue("audio_packet_queue"),
+Player::Player() : _status(kPlayerNone),
+_statusCond(PTHREAD_COND_INITIALIZER), _statusMutex(PTHREAD_MUTEX_INITIALIZER),
+_vPacketQueue("video_packet_queue"), _aPacketQueue("audio_packet_queue"),
 _vFrameQueue("video_frame_queue"),
 _inputCond(PTHREAD_COND_INITIALIZER), _inputMutex(PTHREAD_MUTEX_INITIALIZER),
-_videoCond(PTHREAD_COND_INITIALIZER), _videoMutex(PTHREAD_MUTEX_INITIALIZER),
-_status(kPlayerNone), _videoPause(false) {
+_videoCond(PTHREAD_COND_INITIALIZER), _videoMutex(PTHREAD_MUTEX_INITIALIZER) {
     av_register_all();
     avformat_network_init();
     printf("ffmpeg build configure: %s\n", avcodec_configuration());
     pthread_create(&_inputThread, nullptr, Player::inputThreadEntry, this);
     pthread_create(&_videoThread, nullptr, Player::videoThreadEntry, this);
+    pthread_create(&_renderThread, nullptr, Player::renderThreadEntry, this);
 }
 
 Player::~Player() {
     stop();
 }
 
+void Player::bindRenderContext(const RenderContext *context) {
+    _render.bindContext(context);
+}
+
 void Player::play(shared_ptr<URL> url) {
-    pthread_mutex_lock(&_inputMutex);
+    Mutex m(&_statusMutex);
+    
+    if (_status == kPlayerPlaying ||
+        _status == kPlayerPaused ||
+        _status == kPlayerQuit) {
+        return;
+    }
     
     _stream = std::make_shared<FFStream>();
     _stream->open(url);
@@ -40,21 +55,58 @@ void Player::play(shared_ptr<URL> url) {
     
     _status = kPlayerPlaying;
     
-    pthread_cond_broadcast(&_inputCond);
-    pthread_mutex_unlock(&_inputMutex);
+    pthread_cond_broadcast(&_statusCond);
 }
 
 void Player::stop() {
-    pthread_mutex_lock(&_inputMutex);
-    _status = kPlayerQuit;
-    pthread_cond_broadcast(&_inputCond);
-    pthread_mutex_unlock(&_inputMutex);
-    pthread_join(_inputThread, nullptr);
+    Mutex m(&_statusMutex);
+    if (_status != kPlayerPlaying && _status != kPlayerPaused) {
+        return;
+    }
+    _status = kPlayerStoped;
+
     _stream->close();
-    
     _vPacketQueue.close();
-    pthread_join(_videoThread, nullptr);
     _videoCodec->close();
+}
+
+void Player::pause() {
+    Mutex m(&_statusMutex);
+    if (_status != kPlayerPlaying) {
+        return;
+    }
+    _status = kPlayerPaused;
+}
+
+void Player::resume() {
+    Mutex m(&_statusMutex);
+    if (_status != kPlayerPaused) {
+        return;
+    }
+    _status = kPlayerPlaying;
+}
+
+void Player::quit() {
+    do {
+        Mutex m(&_statusMutex);
+        _status = kPlayerQuit;
+        pthread_cond_broadcast(&_inputCond);
+    } while (0);
+    pthread_join(_inputThread, nullptr);
+}
+
+bool Player::isQuit() {
+    Mutex m(&_statusMutex);
+    while (_status != kPlayerPlaying && _status != kPlayerQuit) {
+        pthread_cond_wait(&_statusCond, &_statusMutex);
+        printf("thread loop wakeup: status(%d)\n", _status);
+    }
+    
+    if (_status == kPlayerQuit) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void *Player::inputThreadEntry(void *arg) {
@@ -64,16 +116,8 @@ void *Player::inputThreadEntry(void *arg) {
 }
 
 void Player::inputLoop() {
-    while (true) {
-        pthread_mutex_lock(&_inputMutex);
-        while (_status != kPlayerPlaying && _status != kPlayerQuit) {
-            pthread_cond_wait(&_inputCond, &_inputMutex);
-        }
-        if (_status == kPlayerQuit) {
-            pthread_mutex_unlock(&_inputMutex);
-            break;
-        }
-        
+    while (!isQuit()) {
+    
         std::shared_ptr<Packet> packet = _stream->read();
         if (packet) {
             switch (packet->type) {
@@ -81,20 +125,14 @@ void Player::inputLoop() {
                     _aPacketQueue.push(packet);
                     break;
                 case kPacketTypeVideo:
-                    printf("video packet : %lld\n", packet->pts);
+//                    printf("video packet : %lld\n", packet->pts);
                     _vPacketQueue.push(packet);
                     break;
                 default:
                     break;
             }
         }
-        
-        pthread_mutex_unlock(&_inputMutex);
     }
-}
-
-void Player::inputQuit() {
-    
 }
 
 void *Player::videoThreadEntry(void *arg) {
@@ -104,30 +142,35 @@ void *Player::videoThreadEntry(void *arg) {
 }
 
 void Player::videoLoop() {
-    while (true) {
-        pthread_mutex_lock(&_videoMutex);
-        while (_videoPause) {
-            pthread_cond_wait(&_videoCond, &_videoMutex);
-        }
+    while (!isQuit()) {
         
         std::shared_ptr<Packet> packet = _vPacketQueue.pop();
         if (packet) {
             std::shared_ptr<Frame> frame = _videoCodec->decode(packet);
             if (frame) {
-                printf("video frame: %lld\n", frame->pts);
+//                printf("video frame: %lld\n", frame->pts);
                 _vFrameQueue.push(frame);
             }
-        } else {
-            pthread_mutex_unlock(&_videoMutex);
-            break;
         }
-        
-        pthread_mutex_unlock(&_videoMutex);
     }
 }
 
-void Player::videoQuit() {
-    
+void *Player::renderThreadEntry(void *arg) {
+    Player *self = (Player *)arg;
+    self->renderLoop();
+    return nullptr;
+}
+
+void Player::renderLoop() {
+    while (!isQuit()) {
+        
+        std::shared_ptr<Frame> frame = _vFrameQueue.pop();
+        if (frame) {
+            printf("render frame: %lld\n", frame->pts);
+            _render.displayFrame(frame);
+            usleep(33 * 1000);
+        }
+    }
 }
 
 
