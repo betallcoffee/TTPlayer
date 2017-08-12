@@ -59,6 +59,10 @@ void FFStream::close() {
 }
 
 std::shared_ptr<Packet> FFStream::read() {
+    if (_formatContext == nullptr) {
+        return nullptr;
+    }
+    
     AVPacket *avpacket=(AVPacket *)av_malloc(sizeof(AVPacket));
     int ret = av_read_frame(_formatContext, avpacket);
     if (ret == 0) {

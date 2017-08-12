@@ -47,7 +47,7 @@ namespace TT {
         Shader();
         virtual ~Shader() {}
         
-        TextureType type() { return _type; }
+        DataType type() { return _type; }
         
         virtual bool resolveUniforms(GLuint program);
         virtual bool uploadTexture(std::shared_ptr<Frame> frame) = 0;
@@ -59,7 +59,7 @@ namespace TT {
         int texCoordLocation() { return _texCoordLocation; }
         
     protected:
-        TextureType _type;
+        DataType _type;
         
         const GLchar *_vertexShader;
         const GLchar *_fragmentShader;
@@ -74,7 +74,7 @@ namespace TT {
         explicit Render();
         ~Render() {}
         
-        void bindContext(const RenderContext *context);
+        void bindContext(const RenderContext &context);
         bool displayFrame(std::shared_ptr<Frame> frame);
         
         bool createFrameBuffer();
@@ -112,7 +112,7 @@ namespace TT {
         
     private:
         RenderContext _renderCtx;
-        TextureType _textureType;
+        DataType _textureType;
         
         GLuint _framebuffer;
         GLuint _renderbuffer;

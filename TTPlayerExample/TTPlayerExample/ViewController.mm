@@ -33,17 +33,16 @@ using namespace TT;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-//    _player = new Player();
-//    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
-    
     self.glView.frame = self.view.bounds;
     [self.view addSubview:self.glView];
     
     _player = createPlayer_ios();
     bindGLView_ios(_player, self.glView);
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"audio_HEv2" ofType:@"flv"];
     const char *cFilePath = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
-    std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
+//    std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
+    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
     _player->play(url);
     
 //    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"video" withExtension:@"h264"];

@@ -14,19 +14,22 @@
 
 #include "TTMutex.hpp"
 
-using namespace std;
-
 namespace TT {
     template<class T>
     class Queue {
     public:
-        Queue(const char *name) : _name(name), _isClosed(false), _mutex(PTHREAD_MUTEX_INITIALIZER), _cond(PTHREAD_COND_INITIALIZER){}
+        Queue(const char *name, int capacity = 0) : _name(name), _capacity(capacity), _isClosed(false), _mutex(PTHREAD_MUTEX_INITIALIZER), _cond(PTHREAD_COND_INITIALIZER){}
         ~Queue() {}
         
         bool empty() {
             Mutex m(&_mutex);
             bool ret = _list.empty();
             return ret;
+        }
+        
+        bool full() {
+            Mutex m(&_mutex);
+            return _full();
         }
         
         size_t size() {
@@ -40,6 +43,10 @@ namespace TT {
             while (_list.empty() && !_isClosed) {
                 pthread_cond_wait(&_cond, &_mutex);
             }
+            if (_full()) {
+                pthread_cond_broadcast(&_cond);
+            }
+            
             T elm = _list.front();
             if (elm) {
                 _list.pop_front();
@@ -50,6 +57,10 @@ namespace TT {
         
         void push(T elm) {
             Mutex m(&_mutex);
+            
+            while (_full() && !_isClosed) {
+                pthread_cond_wait(&_cond, &_mutex);
+            }
 
             if (elm) {
                 _list.push_back(elm);
@@ -66,9 +77,18 @@ namespace TT {
         }
         
     private:
+        bool _full() {
+            if (_capacity <= 0) return false;
+            
+            bool ret = _list.size() >= _capacity ? true : false;
+            return ret;
+        }
+        
+    private:
         const char *_name;
+        int _capacity;
         bool _isClosed;
-        list<T> _list;
+        std::list<T> _list;
         
         pthread_mutex_t _mutex;
         pthread_cond_t _cond;

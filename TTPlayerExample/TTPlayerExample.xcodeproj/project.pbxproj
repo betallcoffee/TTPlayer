@@ -49,6 +49,12 @@
 		EC4E9CAB1F1FA937005C8E36 /* TTPlayer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC4E9CAA1F1FA937005C8E36 /* TTPlayer_ios.mm */; };
 		EC4E9CAF1F2390A4005C8E36 /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EC4E9CAE1F2390A4005C8E36 /* test.mp4 */; };
 		EC8D83EC1D846E7B00C25D03 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC8D83EB1D846E7B00C25D03 /* CoreVideo.framework */; };
+		ECB053DA1F3C13AB00A49FA5 /* TTAudioCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB053D81F3C13AB00A49FA5 /* TTAudioCodec.cpp */; };
+		ECB053E01F3C629100A49FA5 /* TTAudioQueue_ios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB053DE1F3C629100A49FA5 /* TTAudioQueue_ios.cpp */; };
+		ECB053E31F3C632D00A49FA5 /* TTAudioQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB053E11F3C632D00A49FA5 /* TTAudioQueue.cpp */; };
+		ECB053E81F3DE7AA00A49FA5 /* TTClock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB053E61F3DE7AA00A49FA5 /* TTClock.cpp */; };
+		ECB053EC1F3E94EC00A49FA5 /* easylogging++.cc in Sources */ = {isa = PBXBuildFile; fileRef = ECB053EA1F3E94EC00A49FA5 /* easylogging++.cc */; };
+		ECB053EE1F3EA6C800A49FA5 /* audio_HEv2.flv in Resources */ = {isa = PBXBuildFile; fileRef = ECB053ED1F3EA6C800A49FA5 /* audio_HEv2.flv */; };
 		ECF92A141D676181006BB111 /* TTFFStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A0E1D676181006BB111 /* TTFFStream.cpp */; };
 		ECF92A161D676181006BB111 /* TTStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A121D676181006BB111 /* TTStream.cpp */; };
 		ECF92A191D67619D006BB111 /* TTFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A171D67619D006BB111 /* TTFrame.cpp */; };
@@ -257,6 +263,17 @@
 		EC4E9CAC1F1FAA25005C8E36 /* TTPlayer_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTPlayer_ios.h; sourceTree = "<group>"; };
 		EC4E9CAE1F2390A4005C8E36 /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
 		EC8D83EB1D846E7B00C25D03 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		ECB053D81F3C13AB00A49FA5 /* TTAudioCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTAudioCodec.cpp; sourceTree = "<group>"; };
+		ECB053D91F3C13AB00A49FA5 /* TTAudioCodec.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTAudioCodec.hpp; sourceTree = "<group>"; };
+		ECB053DE1F3C629100A49FA5 /* TTAudioQueue_ios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTAudioQueue_ios.cpp; sourceTree = "<group>"; };
+		ECB053DF1F3C629100A49FA5 /* TTAudioQueue_ios.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTAudioQueue_ios.hpp; sourceTree = "<group>"; };
+		ECB053E11F3C632D00A49FA5 /* TTAudioQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTAudioQueue.cpp; sourceTree = "<group>"; };
+		ECB053E21F3C632D00A49FA5 /* TTAudioQueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTAudioQueue.hpp; sourceTree = "<group>"; };
+		ECB053E61F3DE7AA00A49FA5 /* TTClock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTClock.cpp; sourceTree = "<group>"; };
+		ECB053E71F3DE7AA00A49FA5 /* TTClock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTClock.hpp; sourceTree = "<group>"; };
+		ECB053EA1F3E94EC00A49FA5 /* easylogging++.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "easylogging++.cc"; sourceTree = "<group>"; };
+		ECB053EB1F3E94EC00A49FA5 /* easylogging++.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "easylogging++.h"; sourceTree = "<group>"; };
+		ECB053ED1F3EA6C800A49FA5 /* audio_HEv2.flv */ = {isa = PBXFileReference; lastKnownFileType = file; path = audio_HEv2.flv; sourceTree = "<group>"; };
 		ECF92A0E1D676181006BB111 /* TTFFStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFFStream.cpp; sourceTree = "<group>"; };
 		ECF92A0F1D676181006BB111 /* TTFFStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTFFStream.hpp; sourceTree = "<group>"; };
 		ECF92A121D676181006BB111 /* TTStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTStream.cpp; sourceTree = "<group>"; };
@@ -613,6 +630,7 @@
 		EC3D8F761B99BD8F006FC622 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ECB053ED1F3EA6C800A49FA5 /* audio_HEv2.flv */,
 				EC4E9CAE1F2390A4005C8E36 /* test.mp4 */,
 				EC3D8F771B99BD8F006FC622 /* Info.plist */,
 				EC3D8F781B99BD8F006FC622 /* main.m */,
@@ -674,6 +692,8 @@
 				ECF92A181D67619D006BB111 /* TTFrame.hpp */,
 				EC01895A1D81D52A005E46B9 /* TTVideoCodec.cpp */,
 				EC01895B1D81D52A005E46B9 /* TTVideoCodec.hpp */,
+				ECB053D81F3C13AB00A49FA5 /* TTAudioCodec.cpp */,
+				ECB053D91F3C13AB00A49FA5 /* TTAudioCodec.hpp */,
 			);
 			path = codec;
 			sourceTree = "<group>";
@@ -691,6 +711,8 @@
 				EC4E9C691F1A6400005C8E36 /* TTMutex.hpp */,
 				EC4E9C6B1F1A6572005C8E36 /* TTCond.cpp */,
 				EC4E9C6C1F1A6572005C8E36 /* TTCond.hpp */,
+				ECB053E61F3DE7AA00A49FA5 /* TTClock.cpp */,
+				ECB053E71F3DE7AA00A49FA5 /* TTClock.hpp */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -704,6 +726,10 @@
 				EC4E9CA81F1BC21E005C8E36 /* TTShaderYUV420p.hpp */,
 				EC4E9CA31F1B9E99005C8E36 /* TTOpenGLView.h */,
 				EC4E9CA41F1B9E99005C8E36 /* TTOpenGLView.mm */,
+				ECB053E11F3C632D00A49FA5 /* TTAudioQueue.cpp */,
+				ECB053E21F3C632D00A49FA5 /* TTAudioQueue.hpp */,
+				ECB053DE1F3C629100A49FA5 /* TTAudioQueue_ios.cpp */,
+				ECB053DF1F3C629100A49FA5 /* TTAudioQueue_ios.hpp */,
 			);
 			path = render;
 			sourceTree = "<group>";
@@ -736,9 +762,19 @@
 			path = deprecate;
 			sourceTree = "<group>";
 		};
+		ECB053E91F3E94EC00A49FA5 /* easylogging */ = {
+			isa = PBXGroup;
+			children = (
+				ECB053EA1F3E94EC00A49FA5 /* easylogging++.cc */,
+				ECB053EB1F3E94EC00A49FA5 /* easylogging++.h */,
+			);
+			path = easylogging;
+			sourceTree = "<group>";
+		};
 		ECEFB8EE1C2511F40027FBEA /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				ECB053E91F3E94EC00A49FA5 /* easylogging */,
 				EC0188C31D81C3EB005E46B9 /* FFmpeg-iOS */,
 			);
 			path = Vendor;
@@ -838,6 +874,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECB053EE1F3EA6C800A49FA5 /* audio_HEv2.flv in Resources */,
 				EC3D8F821B99BD8F006FC622 /* Main.storyboard in Resources */,
 				EC3D8F871B99BD8F006FC622 /* LaunchScreen.xib in Resources */,
 				EC3EC4A61B9DD9D700C1438F /* Info.plist in Resources */,
@@ -862,6 +899,7 @@
 			files = (
 				EC4E9C991F1A7DE5005C8E36 /* AAPLEAGLLayer.m in Sources */,
 				EC4E9CA51F1B9E99005C8E36 /* TTOpenGLView.mm in Sources */,
+				ECB053E31F3C632D00A49FA5 /* TTAudioQueue.cpp in Sources */,
 				EC01895C1D81D52A005E46B9 /* TTVideoCodec.cpp in Sources */,
 				EC4E9C801F1A7C3E005C8E36 /* TTRender.cpp in Sources */,
 				EC09E9F61F0AA2710034680D /* TTProtocol.cpp in Sources */,
@@ -874,6 +912,8 @@
 				EC4E9C9A1F1A7DE5005C8E36 /* TTAssetReader.m in Sources */,
 				EC3D8F7C1B99BD8F006FC622 /* AppDelegate.m in Sources */,
 				EC4E9C9F1F1A7DE5005C8E36 /* TTPlayerFrame.m in Sources */,
+				ECB053E01F3C629100A49FA5 /* TTAudioQueue_ios.cpp in Sources */,
+				ECB053E81F3DE7AA00A49FA5 /* TTClock.cpp in Sources */,
 				EC4E9CAB1F1FA937005C8E36 /* TTPlayer_ios.mm in Sources */,
 				EC4E9C9E1F1A7DE5005C8E36 /* TTPlayerControl.m in Sources */,
 				EC0189591D81D1E6005E46B9 /* TTQoS.cpp in Sources */,
@@ -885,7 +925,9 @@
 				ECF92A2B1D69EFA7006BB111 /* TTPlayer.cpp in Sources */,
 				EC4727551D0C15100023EE51 /* TTTCPSocket.cpp in Sources */,
 				ECF92A191D67619D006BB111 /* TTFrame.cpp in Sources */,
+				ECB053EC1F3E94EC00A49FA5 /* easylogging++.cc in Sources */,
 				ECF92A141D676181006BB111 /* TTFFStream.cpp in Sources */,
+				ECB053DA1F3C13AB00A49FA5 /* TTAudioCodec.cpp in Sources */,
 				EC4E9C9C1F1A7DE5005C8E36 /* TTFFmpegReader.m in Sources */,
 				EC4E9C9B1F1A7DE5005C8E36 /* TTAVPlayerView.m in Sources */,
 				EC4E9CA91F1BC21E005C8E36 /* TTShaderYUV420p.cpp in Sources */,
@@ -1022,7 +1064,12 @@
 				DEVELOPMENT_TEAM = 4B2QYB9XQX;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					ELPP_FEATURE_PERFORMANCE_TRACKING,
+					"DEBUG=1",
+				);
 				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../TTPlayer/Vendor/easylogging/",
 					"$(PROJECT_DIR)/../TTPlayer/Vendor/FFmpeg-iOS/include/",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1047,7 +1094,9 @@
 				DEVELOPMENT_TEAM = 4B2QYB9XQX;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PREPROCESSOR_DEFINITIONS = ELPP_FEATURE_PERFORMANCE_TRACKING;
 				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../TTPlayer/Vendor/easylogging/",
 					"$(PROJECT_DIR)/../TTPlayer/Vendor/FFmpeg-iOS/include/",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

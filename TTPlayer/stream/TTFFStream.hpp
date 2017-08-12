@@ -24,7 +24,8 @@ extern "C" {
 namespace TT {
     class FFStream : public Stream {
     public:
-        FFStream() {};
+        FFStream() : _formatContext(nullptr), _option(nullptr),
+        _audioStream(nullptr), _videoStream(nullptr) {};
         ~FFStream() {};
         
         bool open(std::shared_ptr<URL> url);
@@ -34,6 +35,9 @@ namespace TT {
         bool write(std::shared_ptr<Packet> packet);
         
         bool seek(uint64_t pos);
+        
+        bool hasAudio() { return _audioStream == nullptr ? false : true; }
+        bool hasVideo() { return _videoStream == nullptr ? false : true; }
         
         AVStream *audioStream() { return _audioStream; }
         AVStream *videoStream() { return _videoStream; }
@@ -46,8 +50,6 @@ namespace TT {
         
         AVStream *_audioStream;
         AVStream *_videoStream;
-        
-        uint8_t *buf;
     };
 }
 

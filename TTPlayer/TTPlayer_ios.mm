@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "TTPlayer_ios.h"
+#include "TTAudioQueue_ios.hpp"
 
 static bool renderSetup(void *opaque, TT::Render *render) {
     if (opaque == nullptr || render == nullptr) {
@@ -34,7 +35,9 @@ static bool renderDisplay(void *opaque, std::shared_ptr<Frame> frame) {
 
 Player *createPlayer_ios() {
     Player *player = new(std::nothrow) Player;
-    
+    if (player != nullptr) {
+        player->bindAudioQueue(std::make_shared<TT::AudioQueue_ios>());
+    }
     return player;
 }
 
@@ -49,7 +52,7 @@ BOOL bindGLView_ios(Player *player, TTOpenGLView *view) {
     ctx.teardown = renderTeardown;
     ctx.display = renderDisplay;
     
-    player->bindRenderContext(&ctx);
+    player->bindRenderContext(ctx);
     
     return YES;
 }

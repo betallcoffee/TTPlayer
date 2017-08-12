@@ -6,6 +6,7 @@
 //  Copyright © 2017年 tina. All rights reserved.
 //
 
+#include "easylogging++.h"
 #import "TTOpenGLView.h"
 
 @interface TTOpenGLView ()
@@ -122,6 +123,7 @@
         return NO;
     }
     
+    TIMED_FUNC(timed);
     [self.lock lock];
     [EAGLContext setCurrentContext:_context];
     
@@ -130,10 +132,14 @@
         _render->updateBuffers(_sarNum, _sarDen, frame->width, frame->height);
     }
     
+    PERFORMANCE_CHECKPOINT(timed);
+    
     _render->uploadTexture(frame);
     _render->bindRenderBuffer();
     
+    PERFORMANCE_CHECKPOINT(timed);
     [_context presentRenderbuffer:GL_RENDERBUFFER];
+    PERFORMANCE_CHECKPOINT(timed);
     
     [self.lock unlock];
     return YES;

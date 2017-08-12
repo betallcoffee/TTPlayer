@@ -27,6 +27,9 @@ namespace TT {
         virtual bool write(std::shared_ptr<Packet> packet) = 0;
         
         virtual bool seek(uint64_t pos) = 0;
+        
+        virtual bool hasAudio() = 0;
+        virtual bool hasVideo() = 0;
     };
 }
 

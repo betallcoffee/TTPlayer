@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <algorithm>
 
+#include "easylogging++.h"###
+
 #include "TTRender.hpp"
 #include "TTShaderYUV420p.hpp"
 
@@ -55,12 +57,11 @@ Render::Render() : _framebuffer(kInvalid),
     
 }
 
-void Render::bindContext(const RenderContext *context) {
-    assert(context);
-    _renderCtx.opaque = context->opaque;
-    _renderCtx.setup = context->setup;
-    _renderCtx.teardown = context->teardown;
-    _renderCtx.display = context->display;
+void Render::bindContext(const RenderContext &context) {
+    _renderCtx.opaque = context.opaque;
+    _renderCtx.setup = context.setup;
+    _renderCtx.teardown = context.teardown;
+    _renderCtx.display = context.display;
 }
 
 bool Render::displayFrame(std::shared_ptr<Frame> frame) {
@@ -455,6 +456,7 @@ void Render::updateIndicesBuffers() {
 }
 
 bool Render::uploadTexture(std::shared_ptr<Frame> frame) {
+    TIMED_FUNC(timer);
     if (_shader == nullptr) {
         return false;
     } else {
@@ -466,9 +468,12 @@ bool Render::uploadTexture(std::shared_ptr<Frame> frame) {
         glClear(GL_COLOR_BUFFER_BIT);
         glViewport(0, 0, _backingWidth, _backingHeight);
         
+        PERFORMANCE_CHECKPOINT(timer);
         bool ret = _shader->uploadTexture(frame);
+        PERFORMANCE_CHECKPOINT(timer);
         if (ret) {
             glDrawElements(GL_TRIANGLES, _indicesCount, GL_UNSIGNED_INT, 0);
+            PERFORMANCE_CHECKPOINT(timer);
         }
         
         return ret;

@@ -10,15 +10,14 @@
 
 using namespace TT;
 
-VideoCodec::VideoCodec(AVStream *avStream) : _avStream(avStream), _avCodecContext(avStream->codec) {
+VideoCodec::VideoCodec(AVStream *avStream) : _avStream(avStream) {
+    if (_avStream) {
+        _avCodecContext = _avStream->codec;
+    }
 }
 
 VideoCodec::~VideoCodec() {
-    if (_avCodecContext) {
-        avcodec_close(_avCodecContext);
-        _avCodecContext = nullptr;
-        _avCodec = nullptr;
-    }
+    close();
 }
 
 bool VideoCodec::open() {
@@ -36,21 +35,22 @@ bool VideoCodec::open() {
 void VideoCodec::close() {
     if (_avCodecContext) {
         avcodec_close(_avCodecContext);
+        _avCodecContext = nullptr;
         _avCodec = nullptr;
     }
 }
 
 std::shared_ptr<Frame> VideoCodec::decode(std::shared_ptr<Packet> packet) {
-    AVFrame *avframe = av_frame_alloc();
-    int len, got_frame;
-    len = avcodec_decode_video2(_avCodecContext, avframe, &got_frame, packet->avpacket());
+    AVFrame *avFrame = av_frame_alloc();
+    int len, gotFrame;
+    len = avcodec_decode_video2(_avCodecContext, avFrame, &gotFrame, packet->avpacket());
     
     if (len < 0) {
         printf("soft decoder fail (%d)\n", len);
-        av_frame_free(&avframe);
-    } else if (got_frame) {
-        std::shared_ptr<Frame> frame = std::make_shared<Frame>(avframe);
-        frame->pts = avframe->pts == AV_NOPTS_VALUE ? packet->dts  : avframe->pts;
+        av_frame_free(&avFrame);
+    } else if (gotFrame) {
+        std::shared_ptr<Frame> frame = std::make_shared<Frame>(avFrame);
+        frame->pts = avFrame->pts == AV_NOPTS_VALUE ? packet->dts : avFrame->pts;
         frame->type = kTextureTypeY420p;
         AVRational tb = _avStream->time_base;
         frame->pts = frame->pts * av_q2d(tb) * 1000;
