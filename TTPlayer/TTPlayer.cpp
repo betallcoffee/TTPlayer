@@ -19,6 +19,8 @@
 #include "TTAudioCodec.hpp"
 #include "TTVideoCodec.hpp"
 
+#include "TTFilter.hpp"
+
 using namespace TT;
 
 INITIALIZE_EASYLOGGINGPP
@@ -66,6 +68,10 @@ void Player::bindAudioQueue(std::shared_ptr<AudioQueue> audioQueue) {
     if (_audioQueue) {
         _audioQueue->setQueueCallback(std::bind(&Player::audioQueueCB, this));
     }
+}
+
+void Player::bindFilter(std::shared_ptr<Filter> filter) {
+    _filter.addFilter(filter);
 }
 
 void Player::play(std::shared_ptr<URL> url) {
@@ -247,7 +253,8 @@ void Player::renderLoop() {
             }
             
             LOG(TRACE) << "render video frame " << frame->pts;
-            _render.displayFrame(frame);
+//            _render.displayFrame(frame);
+            _filter.updateFrame(frame);
             _vPTS = frame->pts;
             _vClock.setClock(frame->pts);
             LOG(TRACE) << "render delay2 " << delay;

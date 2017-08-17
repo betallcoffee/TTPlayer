@@ -30,7 +30,7 @@ namespace TT {
     
     struct AudioDesc {
         int sampleRate;
-        int64_t channels;
+        int channels;
         enum AVSampleFormat fmt;
         int nbSamples;
     };

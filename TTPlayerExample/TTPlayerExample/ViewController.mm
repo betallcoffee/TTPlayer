@@ -6,21 +6,27 @@
 //  Copyright (c) 2015 tina. All rights reserved.
 //
 
+#include <memory>
+
 #import "TTPlayer_ios.h"
 
 #import "TTAVPlayerView.h"
 #import "TTPlayerView.h"
 #import "ViewController.h"
 
+#include "TTProcess.h"
+
 using namespace TT;
 
 @interface ViewController ()
 {
     Player *_player;
+    
+    std::shared_ptr<ContrastFilter> _contrast;
+    std::shared_ptr<ImageView> _imageView;
 }
 
 @property (nonatomic, strong) UIScrollView *scrollView;
-
 @property (nonatomic, strong) TTOpenGLView *glView;
 @property (nonatomic, strong) TTAVPlayerView *avplayerView;
 @property (nonatomic, strong) TTPlayerView *playerView;
@@ -33,16 +39,26 @@ using namespace TT;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.glView.frame = self.view.bounds;
-    [self.view addSubview:self.glView];
+//    self.glView.frame = self.view.bounds;
+//    [self.view addSubview:self.glView];
+    
+    _contrast = std::make_shared<ContrastFilter>();
+    
+    _imageView = std::make_shared<ImageView>();
+    _imageView->imageView().frame = self.view.bounds;
+    _imageView->imageView().contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:_imageView->imageView()];
+    _contrast->addFilter(_imageView);
     
     _player = createPlayer_ios();
     bindGLView_ios(_player, self.glView);
+    _player->bindFilter(_contrast);
+    
 //    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"audio_HEv2" ofType:@"flv"];
     const char *cFilePath = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
-//    std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
-    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
+    std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
+//    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
     _player->play(url);
     
 //    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"video" withExtension:@"h264"];

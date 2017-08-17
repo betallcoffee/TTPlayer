@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <algorithm>
 
-#include "easylogging++.h"###
+#include "easylogging++.h"
 
 #include "TTRender.hpp"
 #include "TTShaderYUV420p.hpp"
@@ -55,6 +55,33 @@ Render::Render() : _framebuffer(kInvalid),
  _program(kInvalid), _shader(nullptr),
  _contentMode(kContentModeScaleAspectFit), _rotationMode(kNoRotation){
     
+}
+
+Render::~Render() {
+    if (_framebuffer) {
+        glDeleteFramebuffers(1, &_framebuffer);
+        _framebuffer = 0;
+    }
+    if (_renderbuffer) {
+        glDeleteRenderbuffers(1, &_renderbuffer);
+        _renderbuffer = 0;
+    }
+    if (_program) {
+        glDeleteProgram(_program);
+        _program = 0;
+    }
+    if (_verticesBuffer) {
+        glDeleteBuffers(1, &_verticesBuffer);
+        _verticesBuffer = 0;
+    }
+    if (_texCoordsBuffer) {
+        glDeleteBuffers(1, &_texCoordsBuffer);
+        _texCoordsBuffer = 0;
+    }
+    if (_indicesBuffer) {
+        glDeleteBuffers(1, &_indicesBuffer);
+        _indicesBuffer = 0;
+    }
 }
 
 void Render::bindContext(const RenderContext &context) {
@@ -201,14 +228,14 @@ exit:
     return result;
 }
 
-GLuint Render::compileShader(GLenum type, const GLchar *sources) {
+GLuint Render::compileShader(GLenum type, const GLchar *source) {
     
     GLuint shader = glCreateShader(type);
     if (shader == kInvalid || shader == GL_INVALID_ENUM) {
         return kInvalid;
     }
     
-    glShaderSource(shader, 1, &sources, nullptr);
+    glShaderSource(shader, 1, &source, nullptr);
     glCompileShader(shader);
     
 #ifdef DEBUG
@@ -354,8 +381,8 @@ void Render::updateTexCoordsBuffers(float width, float heigth) {
     //            w = (frameSize.width - 1) / planeWidth;
     //        }
     
-    GLfloat texCoords[8];
-    GLsizeiptr texCoordSize = sizeof(texCoords);
+    GLfloat *texCoords;
+    GLsizeiptr texCoordSize = 0;
     
     switch(_rotationMode)
     {
@@ -368,7 +395,8 @@ void Render::updateTexCoordsBuffers(float width, float heigth) {
             };
             rotateLeftTextureCoordinates[0] = w;
             rotateLeftTextureCoordinates[2] = w;
-            memcpy(texCoords, rotateLeftTextureCoordinates, sizeof(GLfloat) * 8);
+            texCoords = rotateLeftTextureCoordinates;
+            texCoordSize = sizeof(rotateLeftTextureCoordinates);
             break;
         case kRotateRight:
             static GLfloat rotateRightTextureCoordinates[] = {
@@ -379,7 +407,8 @@ void Render::updateTexCoordsBuffers(float width, float heigth) {
             };
             rotateRightTextureCoordinates[4] = w;
             rotateRightTextureCoordinates[6] = w;
-            memcpy(texCoords, rotateRightTextureCoordinates, sizeof(GLfloat) * 8);
+            texCoords = rotateRightTextureCoordinates;
+            texCoordSize = sizeof(rotateRightTextureCoordinates);
             break;
         case kFlipVertical:
             static GLfloat verticalFlipTextureCoordinates[] = {
@@ -390,7 +419,8 @@ void Render::updateTexCoordsBuffers(float width, float heigth) {
             };
             verticalFlipTextureCoordinates[2] = w;
             verticalFlipTextureCoordinates[6] = w;
-            memcpy(texCoords, verticalFlipTextureCoordinates, sizeof(GLfloat) * 8);
+            texCoords = verticalFlipTextureCoordinates;
+            texCoordSize = sizeof(verticalFlipTextureCoordinates);
             break;
         case kFlipHorizonal:
             static GLfloat horizontalFlipTextureCoordinates[] = {
@@ -401,7 +431,8 @@ void Render::updateTexCoordsBuffers(float width, float heigth) {
             };
             horizontalFlipTextureCoordinates[0] = w;
             horizontalFlipTextureCoordinates[4] = w;
-            memcpy(texCoords, horizontalFlipTextureCoordinates, sizeof(GLfloat) * 8);
+            texCoords = horizontalFlipTextureCoordinates;
+            texCoordSize = sizeof(horizontalFlipTextureCoordinates);
             break;
         case kRotate180:
             static GLfloat rotate180TextureCoordinates[] = {
@@ -412,7 +443,8 @@ void Render::updateTexCoordsBuffers(float width, float heigth) {
             };
             rotate180TextureCoordinates[0] = w;
             rotate180TextureCoordinates[4] = w;
-            memcpy(texCoords, rotate180TextureCoordinates, sizeof(GLfloat) * 8);
+            texCoords = rotate180TextureCoordinates;
+            texCoordSize = sizeof(rotate180TextureCoordinates);
             break;
         default:
             static GLfloat noRotationTextureCoordinates[] = {
@@ -423,7 +455,8 @@ void Render::updateTexCoordsBuffers(float width, float heigth) {
             };
             noRotationTextureCoordinates[2] = w;
             noRotationTextureCoordinates[6] = w;
-            memcpy(texCoords, noRotationTextureCoordinates, sizeof(GLfloat) * 8);
+            texCoords = noRotationTextureCoordinates;
+            texCoordSize = sizeof(noRotationTextureCoordinates);
             break;
     }
     

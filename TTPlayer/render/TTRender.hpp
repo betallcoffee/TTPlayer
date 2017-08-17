@@ -72,7 +72,7 @@ namespace TT {
     class Render {
     public:
         explicit Render();
-        ~Render() {}
+        ~Render();
         
         void bindContext(const RenderContext &context);
         bool displayFrame(std::shared_ptr<Frame> frame);
@@ -98,7 +98,7 @@ namespace TT {
         Render(const Render &r);
         const Render & operator=(const Render &r);
         
-        GLuint compileShader(GLenum type, const GLchar *sources);
+        GLuint compileShader(GLenum type, const GLchar *source);
         bool validateProgram(GLuint prog);
         
         void updateVerticesBuffers(int sarNum, int sarDen, float width, float height);

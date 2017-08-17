@@ -18,6 +18,7 @@
 
 #include "TTAudioQueue.hpp"
 #include "TTRender.hpp"
+#include "TTColorConvertFilter.hpp"
 
 namespace TT {
     class FFStream;
@@ -49,6 +50,8 @@ namespace TT {
         
         void bindRenderContext(const RenderContext &context);
         void bindAudioQueue(std::shared_ptr<AudioQueue> audioQueue);
+        
+        void bindFilter(std::shared_ptr<Filter> filter);
         
     private:
         void quit();
@@ -103,6 +106,7 @@ namespace TT {
         
         std::shared_ptr<AudioQueue> _audioQueue;
         Render _render;
+        ColorConvertFilter _filter;
         
         AVSyncClock _clock;
         Clock _aClock;
