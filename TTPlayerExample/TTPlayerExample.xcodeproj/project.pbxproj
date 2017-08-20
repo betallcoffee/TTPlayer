@@ -27,6 +27,7 @@
 		EC1A209E1F45333E00632C0D /* TTColorConvertFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC1A209C1F45333E00632C0D /* TTColorConvertFilter.cpp */; };
 		EC1A20AA1F45816000632C0D /* TTImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC1A20A91F45816000632C0D /* TTImageView.mm */; };
 		EC1A20AD1F46C50C00632C0D /* TTContrastFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC1A20AB1F46C50C00632C0D /* TTContrastFilter.cpp */; };
+		EC1A20B21F498EA200632C0D /* TTFilter_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC1A20B11F498EA200632C0D /* TTFilter_ios.mm */; };
 		EC35E7501D7C10C200F0659A /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EC35E74F1D7C10C200F0659A /* libbz2.tbd */; };
 		EC35E7551D7C327700F0659A /* TTPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC35E7531D7C327700F0659A /* TTPacket.cpp */; };
 		EC3D8F791B99BD8F006FC622 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F781B99BD8F006FC622 /* main.m */; };
@@ -234,6 +235,8 @@
 		EC1A20AC1F46C50C00632C0D /* TTContrastFilter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTContrastFilter.hpp; sourceTree = "<group>"; };
 		EC1A20AE1F46C59600632C0D /* TTdef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTdef.h; sourceTree = "<group>"; };
 		EC1A20AF1F46C7AD00632C0D /* TTProcess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTProcess.h; sourceTree = "<group>"; };
+		EC1A20B01F498EA200632C0D /* TTFilter_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFilter_ios.h; sourceTree = "<group>"; };
+		EC1A20B11F498EA200632C0D /* TTFilter_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TTFilter_ios.mm; sourceTree = "<group>"; };
 		EC35E74F1D7C10C200F0659A /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		EC35E7531D7C327700F0659A /* TTPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTPacket.cpp; sourceTree = "<group>"; };
 		EC35E7541D7C327700F0659A /* TTPacket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTPacket.hpp; sourceTree = "<group>"; };
@@ -635,6 +638,8 @@
 				EC1A20AC1F46C50C00632C0D /* TTContrastFilter.hpp */,
 				EC1A209C1F45333E00632C0D /* TTColorConvertFilter.cpp */,
 				EC1A209D1F45333E00632C0D /* TTColorConvertFilter.hpp */,
+				EC1A20B01F498EA200632C0D /* TTFilter_ios.h */,
+				EC1A20B11F498EA200632C0D /* TTFilter_ios.mm */,
 				EC1A20A81F45816000632C0D /* TTImageView.h */,
 				EC1A20A91F45816000632C0D /* TTImageView.mm */,
 			);
@@ -987,6 +992,7 @@
 				EC4E9C6D1F1A6572005C8E36 /* TTCond.cpp in Sources */,
 				EC4727631D0C5B4F0023EE51 /* TTURL.cpp in Sources */,
 				ECF92A2B1D69EFA7006BB111 /* TTPlayer.cpp in Sources */,
+				EC1A20B21F498EA200632C0D /* TTFilter_ios.mm in Sources */,
 				EC4727551D0C15100023EE51 /* TTTCPSocket.cpp in Sources */,
 				ECF92A191D67619D006BB111 /* TTFrame.cpp in Sources */,
 				ECB053EC1F3E94EC00A49FA5 /* easylogging++.cc in Sources */,

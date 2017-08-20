@@ -10,30 +10,10 @@
 
 #include "TTFilter.hpp"
 #include "TTClass.hpp"
+#import "TTFilter_ios.h"
 
-@interface TTImageView : UIView
+@interface TTImageView : UIView <TTFilterDelegate>
 
 @property(readonly, nonatomic) CGSize sizeInPixels;
 
 @end
-
-namespace TT {
-    class ImageView : public Filter {
-    public:
-        ImageView();
-        ~ImageView();
-        
-        TTImageView *imageView() { return (__bridge TTImageView*)_imageView; }
-        
-    protected:
-        virtual bool bindFramebuffer();
-        virtual const GLfloat *positionVertices();
-        virtual const GLfloat *texCoordForRotation(TexRotations rotation);
-        virtual void draw();
-        
-    private:
-        void *_imageView;
-        
-        NoCopy(ImageView);
-    };
-}

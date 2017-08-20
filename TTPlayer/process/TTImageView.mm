@@ -13,7 +13,7 @@
 
 @interface TTImageView ()
 {
-    TT::Framebuffer *_framebuffer;
+    std::shared_ptr<TT::Filter> _filter;
     GLuint displayRenderbuffer, displayFramebuffer;
     
     CGSize imageSize;
@@ -31,7 +31,9 @@
 }
 
 - (void)dealloc {
-    
+    if (_filter) {
+        _filter.reset();
+    }
 }
 
 - (void)layoutSubview {
@@ -45,6 +47,18 @@
     } else if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
         [self calculateVertices];
     }
+}
+
+- (std::shared_ptr<TT::Filter>)filter {
+    // TODO no thread safe
+    if (_filter == nullptr) {
+        std::shared_ptr<TT::Filter_ios> filter = std::make_shared<TT::Filter_ios>();
+        if (filter) {
+            filter->setObject(self);
+        }
+        _filter = filter;
+    }
+    return _filter;
 }
 
 - (void)setImageSize:(CGSize)size {
@@ -173,66 +187,25 @@
     [context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
-@end
-
-TT::ImageView::ImageView() {
-    _imageView = (__bridge_retained void *)[TTImageView new];
-}
-
-TT::ImageView::~ImageView() {
-    if (_imageView) {
-        CFBridgingRelease(_imageView);
-    }
-    _imageView = nullptr;
-}
-
-//void TT::ImageView::process() {
-//    if (_srcFramebuffer) {
-//        GLContext::sharedProcessContext().use();
-//        
-//        
-//        if (!_program.isCompiled())
-//            compileShader();
-//        _program.use();
-//        
-//        
-//        
-//        glClearColor(0, 0, 0, 0);
-//        glClear(GL_COLOR_BUFFER_BIT);
-//        
-//        glActiveTexture(GL_TEXTURE1);
-//        glBindTexture(GL_TEXTURE_2D, _srcFramebuffer->textrue());
-//        
-//        glUniform1i(_textureUniform, 1);
-//        
-//        resolveAttribLocations();
-//        
-//        
-//    }
-//}
-
-bool TT::ImageView::bindFramebuffer() {
-    TTImageView *imageView = (__bridge TTImageView *)_imageView;
-    [imageView setDisplayFramebuffer];
+- (BOOL)bindFramebuffer {
+    [self setDisplayFramebuffer];
+    CGSize size = CGSizeMake([self filter]->srcFramebuffer()->width(),
+                                  [self filter]->srcFramebuffer()->height());
+    [self setImageSize:size];
     
-    CGSize imageSize = CGSizeMake(_srcFramebuffer->width(), _srcFramebuffer->height());
-    [imageView setImageSize:imageSize];
-    
-    return true;
+    return YES;
 }
 
-void TT::ImageView::draw() {
+- (void)draw {
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
-    TTImageView *imageView = (__bridge TTImageView *)_imageView;
-    [imageView presentFramebuffer];
+    [self presentFramebuffer];
 }
 
-const GLfloat *TT::ImageView::positionVertices() {
-    return [(__bridge TTImageView *)_imageView imageVertices];
+- (const GLfloat *)positionVertices {
+    return [self imageVertices];
 }
 
-const GLfloat *TT::ImageView::texCoordForRotation(TexRotations rotation) {
+- (const GLfloat *)texCoordForRotation:(TT::TexRotations)rotation {
     static const GLfloat noRotationTextureCoordinates[] = {
         0.0f, 1.0f,
         1.0f, 1.0f,
@@ -277,13 +250,15 @@ const GLfloat *TT::ImageView::texCoordForRotation(TexRotations rotation) {
     
     switch(rotation)
     {
-        case kTexNoRotation: return noRotationTextureCoordinates;
-        case kTexRotateLeft: return rotateLeftTextureCoordinates;
-        case kTexRotateRight: return rotateRightTextureCoordinates;
-        case kTexFlipVertical: return verticalFlipTextureCoordinates;
-        case kTexFlipHorizonal: return horizontalFlipTextureCoordinates;
-        case kTexRotate180: return rotate180TextureCoordinates;
+        case TT::kTexNoRotation: return noRotationTextureCoordinates;
+        case TT::kTexRotateLeft: return rotateLeftTextureCoordinates;
+        case TT::kTexRotateRight: return rotateRightTextureCoordinates;
+        case TT::kTexFlipVertical: return verticalFlipTextureCoordinates;
+        case TT::kTexFlipHorizonal: return horizontalFlipTextureCoordinates;
+        case TT::kTexRotate180: return rotate180TextureCoordinates;
         default: return noRotationTextureCoordinates;
     }
 }
+
+@end
 

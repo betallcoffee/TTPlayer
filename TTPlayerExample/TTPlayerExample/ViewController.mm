@@ -23,7 +23,8 @@ using namespace TT;
     Player *_player;
     
     std::shared_ptr<ContrastFilter> _contrast;
-    std::shared_ptr<ImageView> _imageView;
+    
+    TTImageView *_imageView;
 }
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -44,15 +45,15 @@ using namespace TT;
     
     _contrast = std::make_shared<ContrastFilter>();
     
-    _imageView = std::make_shared<ImageView>();
-    _imageView->imageView().frame = self.view.bounds;
-    _imageView->imageView().contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:_imageView->imageView()];
-    _contrast->addFilter(_imageView);
+    _imageView = [TTImageView new];
+    _imageView.frame = self.view.bounds;
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:_imageView];
+//    _contrast->addFilter(_imageView);
     
     _player = createPlayer_ios();
     bindGLView_ios(_player, self.glView);
-    _player->bindFilter(_contrast);
+    _player->bindFilter([_imageView filter]);
     
 //    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"audio_HEv2" ofType:@"flv"];

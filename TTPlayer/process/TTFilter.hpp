@@ -1,13 +1,13 @@
 //
-//  TTTarget.hpp
+//  TTFilter.hpp
 //  TTPlayerExample
 //
 //  Created by liang on 15/8/17.
 //  Copyright © 2017年 tina. All rights reserved.
 //
 
-#ifndef TTTarget_hpp
-#define TTTarget_hpp
+#ifndef TTFilter_hpp
+#define TTFilter_hpp
 
 #include <memory>
 #include <map>
@@ -33,6 +33,7 @@ namespace TT {
 
         void notifyFramebufferToFilters(int64_t timestamp);
         void setSrcFramebuffer(std::shared_ptr<Framebuffer> frameBuffer);
+        std::shared_ptr<Framebuffer> srcFramebuffer() { return _srcFramebuffer; }
         
         virtual void process(int64_t timestamp);
         
@@ -71,4 +72,4 @@ namespace TT {
     };
 }
 
-#endif /* TTTarget_hpp */
+#endif /* TTFilter_hpp */
