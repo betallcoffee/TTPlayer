@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#include "TTFilter.hpp"
-#include "TTClass.hpp"
 #import "TTFilter_ios.h"
 
 @interface TTImageView : UIView <TTFilterDelegate>

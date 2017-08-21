@@ -31,11 +31,12 @@ namespace TT {
         void removeFilter(std::shared_ptr<Filter> filter, int index = 0);
         void removeAllFilters();
 
-        void notifyFramebufferToFilters(int64_t timestamp);
         void setSrcFramebuffer(std::shared_ptr<Framebuffer> frameBuffer);
         std::shared_ptr<Framebuffer> srcFramebuffer() { return _srcFramebuffer; }
         
         virtual void process(int64_t timestamp);
+        
+        virtual void notifyFramebufferToFilters(int64_t timestamp);
         
     protected:
         virtual bool bindFramebuffer();

@@ -8,6 +8,35 @@
 
 #import "TTFilter_ios.h"
 
+@interface TTFilter ()
+{
+    std::shared_ptr<TT::Filter> _filter;
+}
+
+@end
+
+@implementation TTFilter
+
+- (void)dealloc {
+    if (_filter) {
+        _filter.reset();
+    }
+}
+
+- (std::shared_ptr<TT::Filter>)filter {
+    // TODO no thread safe
+    if (_filter == nullptr) {
+        std::shared_ptr<TT::Filter_ios> filter = std::make_shared<TT::Filter_ios>();
+        if (filter) {
+            filter->setObject(self);
+        }
+        _filter = filter;
+    }
+    return _filter;
+}
+
+@end
+
 #define CHECK_SEL(func_name)  ([object() respondsToSelector:@selector(func_name)])
 
 #define CALL_SEL(func_name) \
@@ -16,6 +45,15 @@ if (CHECK_SEL(func_name)) { \
 [object() func_name]; \
 } else { \
 Filter::func_name(); \
+} \
+}while(0)
+
+#define CALL_SEL_1(func_name, first) \
+do { \
+if (CHECK_SEL(func_name:)) { \
+[object() func_name:first]; \
+} else { \
+Filter::func_name(first); \
 } \
 }while(0)
 
@@ -86,3 +124,9 @@ void Filter_ios::updateTexture() {
 void Filter_ios::draw() {
     CALL_SEL(draw);
 }
+
+void Filter_ios::notifyFramebufferToFilters(int64_t timestamp) {
+    CALL_SEL_1(notifyFramebufferToFilters, timestamp);
+}
+
+

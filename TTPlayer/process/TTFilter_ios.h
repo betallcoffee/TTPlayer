@@ -34,6 +34,11 @@
 
 - (void)updateTexture;
 - (void)draw;
+- (void)notifyFramebufferToFilters:(int64_t)timestamp;
+
+@end
+
+@interface TTFilter : NSObject <TTFilterDelegate>
 
 @end
 
@@ -49,6 +54,7 @@ namespace TT {
         
         void setObject(id<TTFilterDelegate> object) { _object = object; }
         id<TTFilterDelegate> object() { return _object; }
+        
         
     protected:
         virtual bool bindFramebuffer();
@@ -68,6 +74,8 @@ namespace TT {
         virtual void updateTexture();
         
         virtual void draw();
+        
+        virtual void notifyFramebufferToFilters(int64_t timestamp);
         
     protected:
         id<TTFilterDelegate> _object;

@@ -22,9 +22,11 @@ using namespace TT;
 {
     Player *_player;
     
+    std::shared_ptr<FilterGroup> _filterGroup;
     std::shared_ptr<ContrastFilter> _contrast;
     
     TTImageView *_imageView;
+    TTMovieWriter *_movieWriter;
 }
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -43,17 +45,26 @@ using namespace TT;
 //    self.glView.frame = self.view.bounds;
 //    [self.view addSubview:self.glView];
     
-    _contrast = std::make_shared<ContrastFilter>();
+    _filterGroup = std::make_shared<FilterGroup>();
     
     _imageView = [TTImageView new];
     _imageView.frame = self.view.bounds;
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:_imageView];
-//    _contrast->addFilter(_imageView);
+    _filterGroup->addFilter([_imageView filter]);
+    
+    // In addition to displaying to the screen, write out a processed version of the movie to disk
+    NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
+    unlink([pathToMovie UTF8String]); // If a file already exists, AVAssetWriter won't let you record new frames, so delete the old movie
+    NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
+    
+    _movieWriter = [[TTMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 480.0)];
+    _filterGroup->addFilter([_movieWriter filter], 1);
+    
     
     _player = createPlayer_ios();
     bindGLView_ios(_player, self.glView);
-    _player->bindFilter([_imageView filter]);
+    _player->bindFilter(_filterGroup);
     
 //    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"audio_HEv2" ofType:@"flv"];

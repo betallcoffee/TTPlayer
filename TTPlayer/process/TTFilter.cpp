@@ -108,6 +108,7 @@ void Filter::process(int64_t timestamp) {
             
             PERFORMANCE_CHECKPOINT(timer);
             notifyFramebufferToFilters(timestamp);
+            PERFORMANCE_CHECKPOINT(timer);
         }
     }
 }

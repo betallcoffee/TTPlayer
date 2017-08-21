@@ -10,11 +10,14 @@
 #define TTProcess_h
 
 #include "TTFilter.hpp"
+#include "TTFilterGroup.hpp"
+
 #include "TTContrastFilter.hpp"
 
 #include "TTColorConvertFilter.hpp"
 
 #include "TTImageView.h"
+#include "TTMovieWriter.h"
 
 
 #endif /* TTProcess_h */
