@@ -29,6 +29,9 @@ namespace TT {
     
     typedef enum {
         kPlayerNone,
+        kPlayerError,
+        kPlayerOpen,
+        kPlayerClose,
         kPlayerPlaying,
         kPlayerPaused,
         kPlayerStoped,
@@ -54,6 +57,11 @@ namespace TT {
         void bindFilter(std::shared_ptr<Filter> filter);
         
     private:
+        void setStatus(ePlayerStatus status);
+        void waitStatusChange();
+        bool open();
+        bool close();
+        
         void quit();
         bool isQuit();
         
@@ -72,10 +80,12 @@ namespace TT {
         void audioCodecCB(AudioDesc &desc);
         std::shared_ptr<Frame> audioQueueCB();
         
-        int getMasterSyncType();
+        void setMasterSyncType(AVSyncClock clock);
         double getMasterClock();
         
     private:
+        std::shared_ptr<URL> _url;
+        
         ePlayerStatus _status;
         pthread_cond_t _statusCond;
         pthread_mutex_t _statusMutex;
@@ -97,12 +107,17 @@ namespace TT {
         pthread_t _audioThread;
         pthread_cond_t _audioCond;
         pthread_mutex_t _audioMutex;
+        bool _audioDecoding;
         
         pthread_t _videoThread;
         pthread_cond_t _videoCond;
         pthread_mutex_t _videoMutex;
+        bool _videoDecoding;
         
         pthread_t _renderThread;
+        pthread_cond_t _renderCond;
+        pthread_mutex_t _renderMutex;
+        bool _renderring;
         
         std::shared_ptr<AudioQueue> _audioQueue;
         Render _render;

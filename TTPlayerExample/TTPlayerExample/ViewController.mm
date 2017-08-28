@@ -11,7 +11,6 @@
 #import "TTPlayer_ios.h"
 
 #import "TTAVPlayerView.h"
-#import "TTPlayerView.h"
 #import "ViewController.h"
 
 #include "TTProcess.h"
@@ -29,10 +28,9 @@ using namespace TT;
     TTMovieWriter *_movieWriter;
 }
 
-@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) TTOpenGLView *glView;
 @property (nonatomic, strong) TTAVPlayerView *avplayerView;
-@property (nonatomic, strong) TTPlayerView *playerView;
+@property (nonatomic, strong) UIButton *playButton;
 
 @end
 
@@ -41,9 +39,6 @@ using namespace TT;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-//    self.glView.frame = self.view.bounds;
-//    [self.view addSubview:self.glView];
     
     _filterGroup = std::make_shared<FilterGroup>();
     
@@ -61,18 +56,10 @@ using namespace TT;
     _movieWriter = [[TTMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 480.0)];
     _filterGroup->addFilter([_movieWriter filter], 1);
     
-    
     _player = createPlayer_ios();
-    bindGLView_ios(_player, self.glView);
     _player->bindFilter(_filterGroup);
     
-//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"audio_HEv2" ofType:@"flv"];
-    const char *cFilePath = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
-    std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
-//    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
-    _player->play(url);
-    
+
 //    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"video" withExtension:@"h264"];
 
 //    [self.view addSubview:self.playerView];
@@ -84,17 +71,12 @@ using namespace TT;
 //        playerView.frame = CGRectMake(0, 100 * (i + 1), 320, 100);
 //        [playerView loadAssetFromFile:fileURL];
 //    }
-    
-    
-//    [self.view addSubview:self.playerView];
-//    self.player.URL = fileURL;
-//    [self.player start];
-//    for (int i = 1; i < 1; i++) {
-//        TTPlayerView *playerView = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 100 * i, 320, 100)];
-//        [self.view addSubview:playerView];
-//        playerView.URL = fileURL;
-//        [playerView start];
-//    }
+
+    self.playButton.bounds = CGRectMake(0, 0, 44, 44);
+    self.playButton.backgroundColor = [UIColor blueColor];
+    self.playButton.center = self.view.center;
+    [self.playButton addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.playButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -113,16 +95,37 @@ using namespace TT;
 
 - (TTAVPlayerView *)playerView {
     if (_avplayerView == nil) {
-        _avplayerView = [[TTAVPlayerView alloc] init];
+        _avplayerView = [TTAVPlayerView new];
     }
     return _avplayerView;
 }
 
-- (TTPlayerView *)player {
-    if (_playerView == nil) {
-        _playerView = [[TTPlayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+- (UIButton *)playButton {
+    if (_playButton == nil) {
+        _playButton = [UIButton new];
     }
-    return _playerView;
+    return _playButton;
 }
+
+#pragma mark button selector
+
+- (void)onClickPlay:(UIButton *)button {
+    assert(_player);
+    
+    if (button.selected) {
+        button.selected = NO;
+        _player->stop();
+//        [_movieWriter finish];
+    } else {
+        button.selected = YES;
+        //    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"audio_HEv2" ofType:@"flv"];
+        const char *cFilePath = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
+        std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
+        //    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
+        _player->play(url);
+    }
+}
+
 
 @end

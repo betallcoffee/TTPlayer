@@ -17,6 +17,7 @@
 		EC01895C1D81D52A005E46B9 /* TTVideoCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC01895A1D81D52A005E46B9 /* TTVideoCodec.cpp */; };
 		EC09E9F61F0AA2710034680D /* TTProtocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC09E9F41F0AA2710034680D /* TTProtocol.cpp */; };
 		EC11654D1F52B9B100AF56ED /* TTFilterGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC11654B1F52B9B100AF56ED /* TTFilterGroup.cpp */; };
+		EC1165551F52E3AD00AF56ED /* TTPlayerBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1165541F52E3AD00AF56ED /* TTPlayerBar.m */; };
 		EC12806A1D7BF0A400ACF31A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EC1280691D7BF0A400ACF31A /* libz.tbd */; };
 		EC12806C1D7BF0AB00ACF31A /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EC12806B1D7BF0AB00ACF31A /* libiconv.tbd */; };
 		EC1A20831F42FAE000632C0D /* TTClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC1A20811F42FAE000632C0D /* TTClass.cpp */; };
@@ -216,6 +217,8 @@
 		EC09E9F51F0AA2710034680D /* TTProtocol.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTProtocol.hpp; sourceTree = "<group>"; };
 		EC11654B1F52B9B100AF56ED /* TTFilterGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFilterGroup.cpp; sourceTree = "<group>"; };
 		EC11654C1F52B9B100AF56ED /* TTFilterGroup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTFilterGroup.hpp; sourceTree = "<group>"; };
+		EC1165531F52E3AD00AF56ED /* TTPlayerBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerBar.h; sourceTree = "<group>"; };
+		EC1165541F52E3AD00AF56ED /* TTPlayerBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerBar.m; sourceTree = "<group>"; };
 		EC1280691D7BF0A400ACF31A /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		EC12806B1D7BF0AB00ACF31A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		EC194A1E1CCE056300032B9A /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "../../../../../../../usr/lib/libstdc++.6.0.9.dylib"; sourceTree = "<group>"; };
@@ -626,6 +629,23 @@
 			path = protocol;
 			sourceTree = "<group>";
 		};
+		EC1165511F52E36B00AF56ED /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				EC1165521F52E36B00AF56ED /* Views */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		EC1165521F52E36B00AF56ED /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EC1165531F52E3AD00AF56ED /* TTPlayerBar.h */,
+				EC1165541F52E3AD00AF56ED /* TTPlayerBar.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		EC1A20891F43FB0200632C0D /* process */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,6 +703,7 @@
 			isa = PBXGroup;
 			children = (
 				EC3EC49B1B9DD9D700C1438F /* TTPlayer */,
+				EC1165511F52E36B00AF56ED /* Sources */,
 				EC3D8F7A1B99BD8F006FC622 /* AppDelegate.h */,
 				EC3D8F7B1B99BD8F006FC622 /* AppDelegate.m */,
 				EC3D8F7D1B99BD8F006FC622 /* ViewController.h */,
@@ -1003,6 +1024,7 @@
 				EC1A20AD1F46C50C00632C0D /* TTContrastFilter.cpp in Sources */,
 				EC4E9C6D1F1A6572005C8E36 /* TTCond.cpp in Sources */,
 				EC4727631D0C5B4F0023EE51 /* TTURL.cpp in Sources */,
+				EC1165551F52E3AD00AF56ED /* TTPlayerBar.m in Sources */,
 				ECF92A2B1D69EFA7006BB111 /* TTPlayer.cpp in Sources */,
 				EC1A20B21F498EA200632C0D /* TTFilter_ios.mm in Sources */,
 				EC4727551D0C15100023EE51 /* TTTCPSocket.cpp in Sources */,

@@ -40,11 +40,16 @@ namespace TT {
         
         T pop() {
             Mutex m(&_mutex);
-            while (_list.empty() && !_isClosed) {
+            if (_list.empty() && !_isClosed) {
                 pthread_cond_wait(&_cond, &_mutex);
             }
+            
             if (_full()) {
                 pthread_cond_broadcast(&_cond);
+            }
+            
+            if (_list.empty()) {
+                return static_cast<T>(0);
             }
             
             T elm = _list.front();
@@ -65,6 +70,12 @@ namespace TT {
             if (elm) {
                 _list.push_back(elm);
             }
+            pthread_cond_broadcast(&_cond);
+        }
+        
+        void clear() {
+            Mutex m(&_mutex);
+            _list.clear();
             pthread_cond_broadcast(&_cond);
         }
         

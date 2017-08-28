@@ -25,6 +25,10 @@ using namespace TT;
 static const int AV_NOSYNC_THRESHOLD = 100.0;
 
 Clock::Clock() {
+    reset();
+}
+
+void Clock::reset() {
     _speed = 1.0;
     _paused = 0;
     setClock(NAN);

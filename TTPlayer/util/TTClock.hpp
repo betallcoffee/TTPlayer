@@ -23,6 +23,7 @@ namespace TT {
         Clock();
         ~Clock() {}
         
+        void reset();
         int64_t getClock();
         void setClockAt(int64_t pts, int64_t time);
         void setClock(int64_t pts);
