@@ -23,21 +23,25 @@ Frame::Frame() : _avFrame(nullptr),
 }
 
 Frame::Frame(AVFrame *avFrame) : _avFrame(avFrame),
- type(kTextureTypeY420p),
- numOfPlanars(kNumOfPlanars),
- width(avFrame->width), height(avFrame->height),
- pts(avFrame->pts), pkt_pts(avFrame->pkt_pts), pkt_dts(avFrame->pkt_dts),
- sampleFormat(AV_SAMPLE_FMT_NONE) {
-    memcpy(data, _avFrame->data, numOfPlanars * sizeof(data[0]));
+type(kTextureTypeY420p),
+numOfPlanars(kNumOfPlanars),
+width(avFrame->width), height(avFrame->height),
+pts(avFrame->pts), pkt_pts(avFrame->pkt_pts), pkt_dts(avFrame->pkt_dts),
+sampleFormat(AV_SAMPLE_FMT_NONE) {
     memcpy(lineSize, _avFrame->linesize, numOfPlanars * sizeof(lineSize[0]));
+    memset(data, 0, sizeof(data));
+    for (int i = 0; i < numOfPlanars; i++) {
+        size_t dataSize = lineSize[i] * height;
+        if (i) dataSize /= 2;
+        reallocData(dataSize, i);
+        memcpy(data[i], _avFrame->data[i], dataSize);
+    }
 }
 
 Frame::~Frame() {
     for (int i = 0; i < kNumOfPlanars; i++) {
         if (data[i]) {
-            if (_avFrame == nullptr) {
-                free(data[i]);
-            }
+            free(data[i]);
             data[i] = nullptr;
         }
     }
@@ -62,7 +66,6 @@ bool Frame::reallocData(size_t dataSize, int index) {
     if (data[index] == nullptr) {
         return false;
     }
-    lineSize[index] = dataSize;
     
     return true;
 }

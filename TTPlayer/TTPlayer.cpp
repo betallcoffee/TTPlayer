@@ -368,7 +368,13 @@ void Player::videoLoop() {
                     std::shared_ptr<Frame> frame;
                     frame = _videoCodec->decode(packet);
                     if (frame) {
-                        _vFrameQueue.push(frame);
+                        // Reorder with pts for B frame.
+                        LOG(TRACE) << "Reorder begin " << frame->pts;
+                        _vFrameQueue.insert(frame, [&](std::shared_ptr<Frame> l, std::shared_ptr<Frame> r) -> bool {
+                            LOG(TRACE) << "Reorder " << l->pts << " " << r->pts;
+                            return l->pts <= r->pts;
+                        });
+                        LOG(TRACE) << "Reorder end " << frame->pts;
                     }
                 }
                 _videoDecoding = false;
@@ -422,11 +428,15 @@ void Player::renderLoop() {
                     }
                     
                     LOG(TRACE) << "render video frame " << frame->pts;
-                    //            _render.displayFrame(frame);
+//                    _render.displayFrame(frame);
                     _filter.updateFrame(frame);
                     _vPTS = frame->pts;
                     _vClock.setClock(frame->pts);
                     LOG(TRACE) << "render delay2 " << delay;
+                    if (delay < 0) {
+                        LOG(WARNING) << "delay is negative " << delay;
+                        delay = 0;
+                    }
                     usleep(delay * 1000);
                 }
                 _renderring = false;

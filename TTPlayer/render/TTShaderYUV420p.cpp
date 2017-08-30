@@ -49,6 +49,7 @@ using namespace TT;
 ShaderYUV420p::ShaderYUV420p() {
     _fragmentShader = yuvFragmentShaderString;
     _type = kTextureTypeY420p;
+    memset(_textures, 0, sizeof(_textures));
 }
 
 bool ShaderYUV420p::resolveUniforms(GLuint program) {

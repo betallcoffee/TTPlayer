@@ -10,6 +10,7 @@
 #define TTQueue_hpp
 
 #include <list>
+#include <functional>
 #include <pthread.h>
 
 #include "TTMutex.hpp"
@@ -58,6 +59,33 @@ namespace TT {
             }
 
             return elm;
+        }
+        
+        void insert(T elm, std::function<bool(T, T)> cmp) {
+            Mutex m(&_mutex);
+            
+            while (_full() && !_isClosed) {
+                pthread_cond_wait(&_cond, &_mutex);
+            }
+            
+            if (elm) {
+                typename std::list<T>::const_reverse_iterator it = _list.rbegin();
+                for (; it != _list.rend(); it++) {
+                    if (cmp(*it, elm)) {
+                        break;
+                    }
+                }
+                if (it == _list.rend()) {
+                    _list.push_front(elm);
+                } else if (it == _list.rbegin()) {
+                    _list.push_back(elm);
+                } else {
+                    it--;
+                    typename std::list<T>::const_iterator pos = it.base();
+                    _list.insert(pos, elm);
+                }
+            }
+            pthread_cond_broadcast(&_cond);
         }
         
         void push(T elm) {

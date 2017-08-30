@@ -59,7 +59,10 @@ using namespace TT;
     _player = createPlayer_ios();
     _player->bindFilter(_filterGroup);
     
-
+//    bindGLView_ios(_player, self.glView);
+//    self.glView.frame = self.view.bounds;
+//    [self.view addSubview:self.glView];
+   
 //    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"video" withExtension:@"h264"];
 
 //    [self.view addSubview:self.playerView];
@@ -121,8 +124,8 @@ using namespace TT;
         //    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"audio_HEv2" ofType:@"flv"];
         const char *cFilePath = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
-        std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
-        //    std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
+//        std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
+        std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
         _player->play(url);
     }
 }
