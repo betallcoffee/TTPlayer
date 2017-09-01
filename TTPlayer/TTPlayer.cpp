@@ -35,12 +35,12 @@ const static int kMaxFrameCount = 3;
 /* If a frame duration is longer than this, it will not be duplicated to compensate AV sync */
 #define AV_SYNC_FRAMEDUP_THRESHOLD 150
 /* no AV correction is done if too big error */
-#define AV_NOSYNC_THRESHOLD 100.0
+#define AV_NOSYNC_THRESHOLD 10000.0
 
 Player::Player() : _status(kPlayerNone),
  _statusCond(PTHREAD_COND_INITIALIZER), _statusMutex(PTHREAD_MUTEX_INITIALIZER),
  _vPacketQueue("video_packet_queue", kMaxPacketCount), _aPacketQueue("audio_packet_queue", kMaxPacketCount),
- _vFrameQueue("video_frame_queue", kMaxFrameCount), _aFrameQueue("audio_frame_queue"),
+ _vFrameQueue("video_frame_queue", kMaxFrameCount), _aFrameQueue("audio_frame_queue", kMaxFrameCount),
  _inputCond(PTHREAD_COND_INITIALIZER), _inputMutex(PTHREAD_MUTEX_INITIALIZER),
  _audioCond(PTHREAD_COND_INITIALIZER), _audioMutex(PTHREAD_MUTEX_INITIALIZER), _audioDecoding(false),
  _videoCond(PTHREAD_COND_INITIALIZER), _videoMutex(PTHREAD_MUTEX_INITIALIZER), _videoDecoding(false),
@@ -416,14 +416,17 @@ void Player::renderLoop() {
                         /* skip or repeat frame. We take into account the
                          delay to compute the threshold. I still don't know
                          if it is the best guess */
-                        int64_t sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN, FFMIN(AV_SYNC_THRESHOLD_MAX, delay));
+                        int64_t syncThreshold = FFMAX(AV_SYNC_THRESHOLD_MIN, FFMIN(AV_SYNC_THRESHOLD_MAX, delay));
+                        LOG(TRACE) << "sync threshold " << syncThreshold;
                         if (!isnan(diff) && abs(diff) < AV_NOSYNC_THRESHOLD) {
-                            if (diff <= -sync_threshold)
+                            if (diff <= -syncThreshold)
                                 delay = FFMAX(0, delay + diff);
-                            else if (diff >= sync_threshold && delay > AV_SYNC_FRAMEDUP_THRESHOLD)
+                            else if (diff >= syncThreshold && delay > AV_SYNC_FRAMEDUP_THRESHOLD)
                                 delay = delay + diff;
-                            else if (diff >= sync_threshold)
+                            else if (diff >= syncThreshold)
                                 delay = 2 * delay;
+                        } else {
+                            LOG(WARNING) << "diff is lager " << diff;
                         }
                     }
                     
