@@ -13,7 +13,11 @@
 @interface TTMovieWriter : TTFilter
 
 - (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize;
-- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize fileType:(NSString *)newFileType outputSettings:(NSDictionary *)outputSettings;
+
+- (id)initWithMovieURL:(NSURL *)newMovieURL
+                  size:(CGSize)newSize
+              fileType:(NSString *)newFileType
+        outputSettings:(NSDictionary *)outputSettings;
 
 - (void)start;
 - (void)finish;

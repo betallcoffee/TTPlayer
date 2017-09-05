@@ -14,7 +14,8 @@
 
 #include "TTContrastFilter.hpp"
 
-#include "TTColorConvertFilter.hpp"
+#include "TTY420ToRGBFilter.hpp"
+#include "TTNV12ToRGBFilter.hpp"
 
 #include "TTImageView.h"
 #include "TTMovieWriter.h"

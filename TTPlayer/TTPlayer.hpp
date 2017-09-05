@@ -18,7 +18,7 @@
 
 #include "TTAudioQueue.hpp"
 #include "TTRender.hpp"
-#include "TTColorConvertFilter.hpp"
+#include "TTY420ToRGBFilter.hpp"
 
 namespace TT {
     class FFStream;
@@ -121,7 +121,7 @@ namespace TT {
         
         std::shared_ptr<AudioQueue> _audioQueue;
         Render _render;
-        ColorConvertFilter _filter;
+        Y420ToRGBFilter _filter;
         
         AVSyncClock _clock;
         Clock _aClock;

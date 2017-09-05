@@ -16,8 +16,8 @@
     std::shared_ptr<TT::Filter> _filter;
     GLuint displayRenderbuffer, displayFramebuffer;
     
-    CGSize imageSize;
-    GLfloat imageVertices[8];
+    CGSize _imageSize;
+    GLfloat _imageVertices[8];
     
     CGSize boundsSizeAtFrameBufferEpoch;
 }
@@ -62,23 +62,23 @@
 }
 
 - (void)setImageSize:(CGSize)size {
-    if (!CGSizeEqualToSize(imageSize, size)) {
-        imageSize = size;
+    if (!CGSizeEqualToSize(_imageSize, size)) {
+        _imageSize = size;
         [self calculateVertices];
     }
 }
 
-- (CGFloat *)imageVertices {
-    return imageVertices;
+- (GLfloat *)imageVertices {
+    return _imageVertices;
 }
 
 - (void)calculateVertices {
-    if (imageSize.height == 0 || imageSize.width == 0) {
+    if (_imageSize.height == 0 || _imageSize.width == 0) {
         return;
     }
     
-    float dH = (float)_sizeInPixels.height / imageSize.height;
-    float dW = (float)_sizeInPixels.width / imageSize.width;
+    float dH = (float)_sizeInPixels.height / _imageSize.height;
+    float dW = (float)_sizeInPixels.width / _imageSize.width;
     
     switch (self.contentMode) {
         case UIViewContentModeScaleToFill:
@@ -100,8 +100,8 @@
         }
     }
     
-    const float w = (imageSize.width  * dW / (float)_sizeInPixels.width);
-    const float h = (imageSize.height * dH / (float)_sizeInPixels.height);
+    const float w = (_imageSize.width  * dW / (float)_sizeInPixels.width);
+    const float h = (_imageSize.height * dH / (float)_sizeInPixels.height);
     
     static const GLfloat baseVertices[] = {
         -1.0f, -1.0f,
@@ -111,9 +111,9 @@
     };
     for (int i = 0; i < 8; i++) {
         if (i % 2) {
-            imageVertices[i] = baseVertices[i] * h;
+            _imageVertices[i] = baseVertices[i] * h;
         } else {
-            imageVertices[i] = baseVertices[i] * w;
+            _imageVertices[i] = baseVertices[i] * w;
         }
     }
 }
@@ -190,7 +190,7 @@
 - (BOOL)bindFramebuffer {
     [self setDisplayFramebuffer];
     CGSize size = CGSizeMake([self filter]->srcFramebuffer()->width(),
-                                  [self filter]->srcFramebuffer()->height());
+                            [self filter]->srcFramebuffer()->height());
     [self setImageSize:size];
     
     return YES;

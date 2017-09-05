@@ -55,7 +55,6 @@ namespace TT {
         void setObject(id<TTFilterDelegate> object) { _object = object; }
         id<TTFilterDelegate> object() { return _object; }
         
-        
     protected:
         virtual bool bindFramebuffer();
         

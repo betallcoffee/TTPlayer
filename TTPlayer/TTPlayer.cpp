@@ -432,7 +432,7 @@ void Player::renderLoop() {
                     
                     LOG(TRACE) << "render video frame " << frame->pts;
 //                    _render.displayFrame(frame);
-                    _filter.updateFrame(frame);
+                    _filter.processFrame(frame);
                     _vPTS = frame->pts;
                     _vClock.setClock(frame->pts);
                     LOG(TRACE) << "render delay2 " << delay;

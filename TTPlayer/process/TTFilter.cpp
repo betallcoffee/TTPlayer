@@ -40,7 +40,10 @@ static const GLchar *const kFragmentShader = STRINGIZE
  }
  );
 
-Filter::Filter() {
+Filter::Filter() :
+ _srcFramebuffer(nullptr), _framebuffer(nullptr),
+ _width(0), _height(0),
+ _positionLocation(0), _texCoordLocation(0), _textureUniform(0) {
     _framebuffer = std::make_shared<Framebuffer>();
 }
 
@@ -81,40 +84,45 @@ void Filter::notifyFramebufferToFilters(int64_t timestamp) {
 
 void Filter::setSrcFramebuffer(std::shared_ptr<Framebuffer> framebuffer) {
     _srcFramebuffer = framebuffer;
+    if (_srcFramebuffer) {
+        _width = _srcFramebuffer->width();
+        _height = _srcFramebuffer->height();
+    } else {
+        _width = 0;
+        _height = 0;
+    }
     
 }
 
 void Filter::process(int64_t timestamp) {
-    if (_srcFramebuffer) {
-        TIMED_FUNC(timer);
-        GLContext::sharedProcessContext().use();
+    TIMED_FUNC(timer);
+    GLContext::sharedProcessContext().use();
+    
+    PERFORMANCE_CHECKPOINT(timer);
+    if (bindFramebuffer()) {
+        if (!_program.isCompiled())
+            compileShader();
+        _program.use();
+        
+        glClearColor(0, 0, 0, 0);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        updateTexture();
+        
+        resolveAttribLocations();
+        resolveUniformLocations();
         
         PERFORMANCE_CHECKPOINT(timer);
-        if (bindFramebuffer()) {
-            if (!_program.isCompiled())
-                compileShader();
-            _program.use();
-            
-            glClearColor(0, 0, 0, 0);
-            glClear(GL_COLOR_BUFFER_BIT);
-            
-            updateTexture();
-            
-            resolveAttribLocations();
-            resolveUniformLocations();
-            
-            PERFORMANCE_CHECKPOINT(timer);
-            draw();
-            
-            PERFORMANCE_CHECKPOINT(timer);
-            notifyFramebufferToFilters(timestamp);
-            PERFORMANCE_CHECKPOINT(timer);
-        }
+        draw();
+        
+        PERFORMANCE_CHECKPOINT(timer);
+        notifyFramebufferToFilters(timestamp);
+        PERFORMANCE_CHECKPOINT(timer);
     }
 }
 
 bool Filter::bindFramebuffer() {
-    if (_framebuffer->setUp(_srcFramebuffer->width(), _srcFramebuffer->height())) {
+    if (_framebuffer->setUp(_width, _height)) {
         _framebuffer->active();
         return true;
     }
@@ -169,10 +177,12 @@ const GLfloat *Filter::texCoordForRotation(TexRotations rotation) {
 }
 
 void Filter::updateTexture() {
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, _srcFramebuffer->textrue());
-    
-    glUniform1i(_textureUniform, 2);
+    if (_srcFramebuffer) {
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, _srcFramebuffer->textrue());
+        
+        glUniform1i(_textureUniform, 2);
+    }
 }
 
 void Filter::draw() {

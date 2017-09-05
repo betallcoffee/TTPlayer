@@ -25,9 +25,9 @@ namespace TT {
         void active();
         void *newImage;
         
-        size_t width() { return _width; }
-        size_t height() { return _height; }
-        GLuint textrue() { return _texture; }
+        size_t width() const { return _width; }
+        size_t height() const { return _height; }
+        GLuint textrue() const { return _texture; }
         
     private:
         size_t _width;

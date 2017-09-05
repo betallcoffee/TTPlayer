@@ -32,7 +32,7 @@ namespace TT {
         void removeAllFilters();
 
         void setSrcFramebuffer(std::shared_ptr<Framebuffer> frameBuffer);
-        std::shared_ptr<Framebuffer> srcFramebuffer() { return _srcFramebuffer; }
+        std::shared_ptr<const Framebuffer> srcFramebuffer() { return _srcFramebuffer; }
         
         virtual void process(int64_t timestamp);
         
@@ -61,6 +61,9 @@ namespace TT {
         std::shared_ptr<Framebuffer> _srcFramebuffer;
         std::shared_ptr<Framebuffer> _framebuffer;
         std::map<int, std::shared_ptr<Filter>> _filters;
+        
+        size_t _width;
+        size_t _height;
         
         Program _program;
         
