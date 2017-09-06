@@ -107,7 +107,6 @@ std::shared_ptr<Frame> AudioCodec::decode(std::shared_ptr<Packet> packet) {
                                                      AV_SAMPLE_FMT_FLT, 1);
         // TODO reuse outBuff;
         std::shared_ptr<Frame> frame = std::make_shared<Frame>();
-        uint8_t *outBuff = (uint8_t *)malloc(outBuffSize);
         if (frame->reallocData(outBuffSize, 0)) {
             int nbSamples = swr_convert(_swrContext,
                                         &frame->data[0],

@@ -210,7 +210,9 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
     } else {
         LOG(WARNING) << "Couldn't write a frame at time: " << timestamp;
     }
+
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    CVPixelBufferRelease(pixelBuffer);
 
     _previousFrameTime = frameTime;
 }
