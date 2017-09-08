@@ -9,12 +9,13 @@
 #include <memory>
 
 #import "TTPlayer_ios.h"
+#include "TTProcess.h"
+#include "TTCapture.h"
 
 #import "TTAVPlayerView.h"
 #import "ViewController.h"
+#import "TTFileManager.h"
 
-#include "TTProcess.h"
-#include "TTCapture.h"
 
 using namespace TT;
 
@@ -185,6 +186,7 @@ using namespace TT;
         button.selected = NO;
         [self.capture stopCameraCapture];
     } else {
+        button.selected = YES;
         [self.capture startCameraCapture];
     }
 }

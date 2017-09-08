@@ -1,26 +1,22 @@
 //
-//  TTBaseViewController.m
+//  TTBaseTabViewController.m
 //  TTPlayerExample
 //
-//  Created by liang on 31/8/17.
+//  Created by liang on 8/9/17.
 //  Copyright © 2017年 tina. All rights reserved.
 //
 
-#import "TTBaseViewController.h"
+#import "TTBaseTabViewController.h"
 
-@interface TTBaseViewController ()
+@interface TTBaseTabViewController ()
 
 @end
 
-@implementation TTBaseViewController
+@implementation TTBaseTabViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [self setupUI];
-    
-    [self configViewModel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,22 +33,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-#pragma mark -
-#pragma mark UI
-
-- (void)setupUI {
-
-}
-
-
-#pragma mark -
-#pragma mark ViewModel
-
-- (void)configViewModel {
-    
-}
-
-
 
 @end

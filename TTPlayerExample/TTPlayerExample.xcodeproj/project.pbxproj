@@ -72,6 +72,15 @@
 		ECC66E461F60E2D1003F2076 /* TTBaseViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66E3C1F60E2D1003F2076 /* TTBaseViewModel.m */; };
 		ECC66E471F60E2D1003F2076 /* TTHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66E3F1F60E2D1003F2076 /* TTHomeViewController.m */; };
 		ECC66E481F60E2D1003F2076 /* TTPlayerBar.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66E441F60E2D1003F2076 /* TTPlayerBar.m */; };
+		ECC66F761F614DAB003F2076 /* TTFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F751F614DAB003F2076 /* TTFileManager.m */; };
+		ECC66F7A1F6180F1003F2076 /* TTMovieListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F791F6180F1003F2076 /* TTMovieListViewController.m */; };
+		ECC66F7D1F62313D003F2076 /* TTMovieListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F7C1F62313D003F2076 /* TTMovieListViewModel.m */; };
+		ECC66F801F6281A8003F2076 /* TTMovieItemViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F7F1F6281A8003F2076 /* TTMovieItemViewModel.m */; };
+		ECC66F831F629E1C003F2076 /* TTBaseTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F821F629E1C003F2076 /* TTBaseTabViewController.m */; };
+		ECC66F871F629ECF003F2076 /* TTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F861F629ECF003F2076 /* TTMainViewController.m */; };
+		ECC66F8C1F62A3E0003F2076 /* TTCaptureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F8B1F62A3E0003F2076 /* TTCaptureViewController.mm */; };
+		ECC66F8F1F62B98D003F2076 /* TTCaptureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F8E1F62B98D003F2076 /* TTCaptureButton.m */; };
+		ECC66F921F639EAD003F2076 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC66F911F639EAD003F2076 /* MediaPlayer.framework */; };
 		ECE49F571F59AEDA004FE7C2 /* TTCapture.mm in Sources */ = {isa = PBXBuildFile; fileRef = ECE49F561F59AEDA004FE7C2 /* TTCapture.mm */; };
 		ECE49F5A1F59D22F004FE7C2 /* TTNV12ToRGBFilter_ios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE49F581F59D22F004FE7C2 /* TTNV12ToRGBFilter_ios.cpp */; };
 		ECE49F5E1F5A44AE004FE7C2 /* TTNV12ToRGBFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE49F5C1F5A44AE004FE7C2 /* TTNV12ToRGBFilter.cpp */; };
@@ -331,6 +340,23 @@
 		ECC66E3F1F60E2D1003F2076 /* TTHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTHomeViewController.m; sourceTree = "<group>"; };
 		ECC66E431F60E2D1003F2076 /* TTPlayerBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayerBar.h; sourceTree = "<group>"; };
 		ECC66E441F60E2D1003F2076 /* TTPlayerBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPlayerBar.m; sourceTree = "<group>"; };
+		ECC66F741F614DAB003F2076 /* TTFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFileManager.h; sourceTree = "<group>"; };
+		ECC66F751F614DAB003F2076 /* TTFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFileManager.m; sourceTree = "<group>"; };
+		ECC66F781F6180F1003F2076 /* TTMovieListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTMovieListViewController.h; sourceTree = "<group>"; };
+		ECC66F791F6180F1003F2076 /* TTMovieListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTMovieListViewController.m; sourceTree = "<group>"; };
+		ECC66F7B1F62313D003F2076 /* TTMovieListViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTMovieListViewModel.h; sourceTree = "<group>"; };
+		ECC66F7C1F62313D003F2076 /* TTMovieListViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTMovieListViewModel.m; sourceTree = "<group>"; };
+		ECC66F7E1F6281A8003F2076 /* TTMovieItemViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTMovieItemViewModel.h; sourceTree = "<group>"; };
+		ECC66F7F1F6281A8003F2076 /* TTMovieItemViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTMovieItemViewModel.m; sourceTree = "<group>"; };
+		ECC66F811F629E1C003F2076 /* TTBaseTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTBaseTabViewController.h; sourceTree = "<group>"; };
+		ECC66F821F629E1C003F2076 /* TTBaseTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTBaseTabViewController.m; sourceTree = "<group>"; };
+		ECC66F851F629ECF003F2076 /* TTMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTMainViewController.h; sourceTree = "<group>"; };
+		ECC66F861F629ECF003F2076 /* TTMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTMainViewController.m; sourceTree = "<group>"; };
+		ECC66F8A1F62A3E0003F2076 /* TTCaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCaptureViewController.h; sourceTree = "<group>"; };
+		ECC66F8B1F62A3E0003F2076 /* TTCaptureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TTCaptureViewController.mm; sourceTree = "<group>"; };
+		ECC66F8D1F62B98D003F2076 /* TTCaptureButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCaptureButton.h; sourceTree = "<group>"; };
+		ECC66F8E1F62B98D003F2076 /* TTCaptureButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTCaptureButton.m; sourceTree = "<group>"; };
+		ECC66F911F639EAD003F2076 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		ECE49F551F59AEDA004FE7C2 /* TTCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCapture.h; sourceTree = "<group>"; };
 		ECE49F561F59AEDA004FE7C2 /* TTCapture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TTCapture.mm; sourceTree = "<group>"; };
 		ECE49F581F59D22F004FE7C2 /* TTNV12ToRGBFilter_ios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTNV12ToRGBFilter_ios.cpp; sourceTree = "<group>"; };
@@ -352,6 +378,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECC66F921F639EAD003F2076 /* MediaPlayer.framework in Frameworks */,
 				EC8D83EC1D846E7B00C25D03 /* CoreVideo.framework in Frameworks */,
 				EC0189551D81C3EB005E46B9 /* libswresample.a in Frameworks */,
 				EC35E7501D7C10C200F0659A /* libbz2.tbd in Frameworks */,
@@ -712,6 +739,7 @@
 				EC3D8F751B99BD8F006FC622 /* TTPlayerExample */,
 				EC3D8F8F1B99BD8F006FC622 /* TTPlayerExampleTests */,
 				EC3D8F741B99BD8F006FC622 /* Products */,
+				ECC66F901F639EAD003F2076 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -893,8 +921,12 @@
 		ECC66E371F60E2D1003F2076 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				ECC66E381F60E2D1003F2076 /* Base */,
+				ECC66F891F62A36F003F2076 /* Capture */,
+				ECC66F881F62A358003F2076 /* Edit */,
+				ECC66F771F6180AD003F2076 /* MovieList */,
 				ECC66E3D1F60E2D1003F2076 /* Home */,
+				ECC66F841F629EAE003F2076 /* Main */,
+				ECC66E381F60E2D1003F2076 /* Base */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -906,6 +938,8 @@
 				ECC66E3A1F60E2D1003F2076 /* TTBaseViewController.m */,
 				ECC66E3B1F60E2D1003F2076 /* TTBaseViewModel.h */,
 				ECC66E3C1F60E2D1003F2076 /* TTBaseViewModel.m */,
+				ECC66F811F629E1C003F2076 /* TTBaseTabViewController.h */,
+				ECC66F821F629E1C003F2076 /* TTBaseTabViewController.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -922,6 +956,8 @@
 		ECC66E401F60E2D1003F2076 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				ECC66F741F614DAB003F2076 /* TTFileManager.h */,
+				ECC66F751F614DAB003F2076 /* TTFileManager.m */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -938,6 +974,8 @@
 			children = (
 				ECC66E431F60E2D1003F2076 /* TTPlayerBar.h */,
 				ECC66E441F60E2D1003F2076 /* TTPlayerBar.m */,
+				ECC66F8D1F62B98D003F2076 /* TTCaptureButton.h */,
+				ECC66F8E1F62B98D003F2076 /* TTCaptureButton.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -954,6 +992,52 @@
 			children = (
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		ECC66F771F6180AD003F2076 /* MovieList */ = {
+			isa = PBXGroup;
+			children = (
+				ECC66F781F6180F1003F2076 /* TTMovieListViewController.h */,
+				ECC66F791F6180F1003F2076 /* TTMovieListViewController.m */,
+				ECC66F7B1F62313D003F2076 /* TTMovieListViewModel.h */,
+				ECC66F7C1F62313D003F2076 /* TTMovieListViewModel.m */,
+				ECC66F7E1F6281A8003F2076 /* TTMovieItemViewModel.h */,
+				ECC66F7F1F6281A8003F2076 /* TTMovieItemViewModel.m */,
+			);
+			path = MovieList;
+			sourceTree = "<group>";
+		};
+		ECC66F841F629EAE003F2076 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				ECC66F851F629ECF003F2076 /* TTMainViewController.h */,
+				ECC66F861F629ECF003F2076 /* TTMainViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		ECC66F881F62A358003F2076 /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		ECC66F891F62A36F003F2076 /* Capture */ = {
+			isa = PBXGroup;
+			children = (
+				ECC66F8A1F62A3E0003F2076 /* TTCaptureViewController.h */,
+				ECC66F8B1F62A3E0003F2076 /* TTCaptureViewController.mm */,
+			);
+			path = Capture;
+			sourceTree = "<group>";
+		};
+		ECC66F901F639EAD003F2076 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ECC66F911F639EAD003F2076 /* MediaPlayer.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		ECE49F541F59AEDA004FE7C2 /* source */ = {
@@ -1095,8 +1179,11 @@
 				EC4E9C991F1A7DE5005C8E36 /* AAPLEAGLLayer.m in Sources */,
 				EC4E9CA51F1B9E99005C8E36 /* TTOpenGLView.mm in Sources */,
 				ECB053E31F3C632D00A49FA5 /* TTAudioQueue.cpp in Sources */,
+				ECC66F7A1F6180F1003F2076 /* TTMovieListViewController.m in Sources */,
+				ECC66F831F629E1C003F2076 /* TTBaseTabViewController.m in Sources */,
 				EC01895C1D81D52A005E46B9 /* TTVideoCodec.cpp in Sources */,
 				ECE49F5E1F5A44AE004FE7C2 /* TTNV12ToRGBFilter.cpp in Sources */,
+				ECC66F871F629ECF003F2076 /* TTMainViewController.m in Sources */,
 				EC1A20921F43FB0200632C0D /* TTFramebuffer.cpp in Sources */,
 				EC4E9C801F1A7C3E005C8E36 /* TTRender.cpp in Sources */,
 				ECC66E2E1F5A9951003F2076 /* TTTextureFilter_ios.cpp in Sources */,
@@ -1110,6 +1197,7 @@
 				EC4E9CA21F1A7DE5005C8E36 /* TTVideoLayer.m in Sources */,
 				EC11654D1F52B9B100AF56ED /* TTFilterGroup.cpp in Sources */,
 				EC4E9CA11F1A7DE5005C8E36 /* TTQueue.m in Sources */,
+				ECC66F761F614DAB003F2076 /* TTFileManager.m in Sources */,
 				EC41A9901F49F1F900321BD4 /* TTMovieWriter.mm in Sources */,
 				EC1A209E1F45333E00632C0D /* TTY420ToRGBFilter.cpp in Sources */,
 				EC35E7551D7C327700F0659A /* TTPacket.cpp in Sources */,
@@ -1120,10 +1208,12 @@
 				EC3D8F7C1B99BD8F006FC622 /* AppDelegate.m in Sources */,
 				EC4E9C9F1F1A7DE5005C8E36 /* TTPlayerFrame.m in Sources */,
 				ECB053E01F3C629100A49FA5 /* TTAudioQueue_ios.cpp in Sources */,
+				ECC66F801F6281A8003F2076 /* TTMovieItemViewModel.m in Sources */,
 				ECC66E461F60E2D1003F2076 /* TTBaseViewModel.m in Sources */,
 				ECB053E81F3DE7AA00A49FA5 /* TTClock.cpp in Sources */,
 				EC4E9CAB1F1FA937005C8E36 /* TTPlayer_ios.mm in Sources */,
 				EC4E9C9E1F1A7DE5005C8E36 /* TTPlayerControl.m in Sources */,
+				ECC66F7D1F62313D003F2076 /* TTMovieListViewModel.m in Sources */,
 				EC0189591D81D1E6005E46B9 /* TTQoS.cpp in Sources */,
 				EC4E9C701F1A7AA6005C8E36 /* TTQueue.cpp in Sources */,
 				EC4E9CA01F1A7DE5005C8E36 /* TTPlayerView.m in Sources */,
@@ -1137,9 +1227,11 @@
 				EC4727551D0C15100023EE51 /* TTTCPSocket.cpp in Sources */,
 				ECF92A191D67619D006BB111 /* TTFrame.cpp in Sources */,
 				ECB053EC1F3E94EC00A49FA5 /* easylogging++.cc in Sources */,
+				ECC66F8F1F62B98D003F2076 /* TTCaptureButton.m in Sources */,
 				ECF92A141D676181006BB111 /* TTFFStream.cpp in Sources */,
 				ECB053DA1F3C13AB00A49FA5 /* TTAudioCodec.cpp in Sources */,
 				EC1A20AA1F45816000632C0D /* TTImageView.mm in Sources */,
+				ECC66F8C1F62A3E0003F2076 /* TTCaptureViewController.mm in Sources */,
 				EC4E9C9C1F1A7DE5005C8E36 /* TTFFmpegReader.m in Sources */,
 				ECC66E471F60E2D1003F2076 /* TTHomeViewController.m in Sources */,
 				EC4E9C9B1F1A7DE5005C8E36 /* TTAVPlayerView.m in Sources */,

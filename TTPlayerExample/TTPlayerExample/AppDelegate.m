@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "TTMainViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
+//    TTMovieListViewController *movieList = [TTMovieListViewController new];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:movieList];
+    TTMainViewController *rootViewController = [TTMainViewController new];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = rootViewController;
+    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController.view.frame = self.window.bounds;
+    self.window.rootViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+    UIViewAutoresizingFlexibleHeight;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 

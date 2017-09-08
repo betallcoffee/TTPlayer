@@ -10,4 +10,8 @@
 
 @interface TTBaseViewController : UIViewController
 
+- (void)configViewModel;
+
+- (void)setupUI;
+
 @end
