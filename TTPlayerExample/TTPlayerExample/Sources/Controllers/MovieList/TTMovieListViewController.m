@@ -12,6 +12,8 @@
 #import "TTMovieListViewModel.h"
 #import "TTMovieItemViewModel.h"
 
+#import "TTCaptureButton.h"
+
 @interface TTMovieListViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     UITableView *_tableView;

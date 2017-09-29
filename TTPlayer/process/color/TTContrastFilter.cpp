@@ -25,12 +25,16 @@ static const GLchar *const kContrastFragmentShader = STRINGIZE
  }
  );
 
-ContrastFilter::ContrastFilter() : _contrast(0.5) {
+ContrastFilter::ContrastFilter() : _contrast(0.0), _contrastUniform(kInvalid) {
     
 }
 
 ContrastFilter::~ContrastFilter() {
     
+}
+
+void ContrastFilter::setContrast(float contrast) {
+    _contrast = contrast;
 }
 
 const GLchar *ContrastFilter::fragmentShader() {
@@ -43,6 +47,7 @@ void ContrastFilter::getUniformLocations() {
 }
 
 void ContrastFilter::resolveUniformLocations() {
+    Filter::resolveUniformLocations();
     glUniform1f(_contrastUniform, _contrast);
 }
 

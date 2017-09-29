@@ -11,5 +11,7 @@
 
 #define STRINGIZE(x) #x
 
+static const GLint kInvalid = 0;
+
 
 #endif /* TTdef_h */
