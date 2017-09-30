@@ -29,6 +29,7 @@
 		EC1A20B21F498EA200632C0D /* TTFilter_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC1A20B11F498EA200632C0D /* TTFilter_ios.mm */; };
 		EC35E7501D7C10C200F0659A /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EC35E74F1D7C10C200F0659A /* libbz2.tbd */; };
 		EC35E7551D7C327700F0659A /* TTPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC35E7531D7C327700F0659A /* TTPacket.cpp */; };
+		EC3AB2E51F7F377200614CFB /* TTSaturationFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC3AB2E31F7F377200614CFB /* TTSaturationFilter.cpp */; };
 		EC3D8F791B99BD8F006FC622 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F781B99BD8F006FC622 /* main.m */; };
 		EC3D8F7C1B99BD8F006FC622 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F7B1B99BD8F006FC622 /* AppDelegate.m */; };
 		EC3D8F7F1B99BD8F006FC622 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC3D8F7E1B99BD8F006FC622 /* ViewController.mm */; };
@@ -85,6 +86,17 @@
 		ECE49F5E1F5A44AE004FE7C2 /* TTNV12ToRGBFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE49F5C1F5A44AE004FE7C2 /* TTNV12ToRGBFilter.cpp */; };
 		ECF629CB1F7E4A4D0088CEEA /* TTContrastFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF629C91F7E4A4D0088CEEA /* TTContrastFilter.cpp */; };
 		ECF629CE1F7E4A710088CEEA /* TTBrightnessFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF629CC1F7E4A710088CEEA /* TTBrightnessFilter.cpp */; };
+		ECF629EA1F7E6A4E0088CEEA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECF629D01F7E6A4E0088CEEA /* Info.plist */; };
+		ECF629EB1F7E6A4E0088CEEA /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629D21F7E6A4E0088CEEA /* MASCompositeConstraint.m */; };
+		ECF629EC1F7E6A4E0088CEEA /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629D51F7E6A4E0088CEEA /* MASConstraint.m */; };
+		ECF629ED1F7E6A4E0088CEEA /* MASConstraintMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629D71F7E6A4E0088CEEA /* MASConstraintMaker.m */; };
+		ECF629EE1F7E6A4E0088CEEA /* MASLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629D91F7E6A4E0088CEEA /* MASLayoutConstraint.m */; };
+		ECF629EF1F7E6A4E0088CEEA /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629DD1F7E6A4E0088CEEA /* MASViewAttribute.m */; };
+		ECF629F01F7E6A4E0088CEEA /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629DF1F7E6A4E0088CEEA /* MASViewConstraint.m */; };
+		ECF629F11F7E6A4E0088CEEA /* NSArray+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629E11F7E6A4E0088CEEA /* NSArray+MASAdditions.m */; };
+		ECF629F21F7E6A4E0088CEEA /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629E41F7E6A4E0088CEEA /* NSLayoutConstraint+MASDebugAdditions.m */; };
+		ECF629F31F7E6A4E0088CEEA /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629E61F7E6A4E0088CEEA /* View+MASAdditions.m */; };
+		ECF629F41F7E6A4E0088CEEA /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF629E91F7E6A4E0088CEEA /* ViewController+MASAdditions.m */; };
 		ECF92A141D676181006BB111 /* TTFFStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A0E1D676181006BB111 /* TTFFStream.cpp */; };
 		ECF92A161D676181006BB111 /* TTStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A121D676181006BB111 /* TTStream.cpp */; };
 		ECF92A191D67619D006BB111 /* TTFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF92A171D67619D006BB111 /* TTFrame.cpp */; };
@@ -236,7 +248,7 @@
 		EC11654C1F52B9B100AF56ED /* TTFilterGroup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTFilterGroup.hpp; sourceTree = "<group>"; };
 		EC1280691D7BF0A400ACF31A /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		EC12806B1D7BF0AB00ACF31A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
-		EC194A1E1CCE056300032B9A /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "../../../../../../../usr/lib/libstdc++.6.0.9.dylib"; sourceTree = "<group>"; };
+		EC194A1E1CCE056300032B9A /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "/usr/lib/libstdc++.6.0.9.dylib"; sourceTree = "<absolute>"; };
 		EC1A20811F42FAE000632C0D /* TTClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTClass.cpp; sourceTree = "<group>"; };
 		EC1A20821F42FAE000632C0D /* TTClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTClass.hpp; sourceTree = "<group>"; };
 		EC1A208A1F43FB0200632C0D /* TTFramebuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTFramebuffer.hpp; sourceTree = "<group>"; };
@@ -258,6 +270,8 @@
 		EC35E74F1D7C10C200F0659A /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		EC35E7531D7C327700F0659A /* TTPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTPacket.cpp; sourceTree = "<group>"; };
 		EC35E7541D7C327700F0659A /* TTPacket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTPacket.hpp; sourceTree = "<group>"; };
+		EC3AB2E31F7F377200614CFB /* TTSaturationFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTSaturationFilter.cpp; sourceTree = "<group>"; };
+		EC3AB2E41F7F377200614CFB /* TTSaturationFilter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTSaturationFilter.hpp; sourceTree = "<group>"; };
 		EC3D8F731B99BD8F006FC622 /* TTPlayerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TTPlayerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC3D8F771B99BD8F006FC622 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC3D8F781B99BD8F006FC622 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -366,6 +380,32 @@
 		ECF629CA1F7E4A4D0088CEEA /* TTContrastFilter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTContrastFilter.hpp; sourceTree = "<group>"; };
 		ECF629CC1F7E4A710088CEEA /* TTBrightnessFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTBrightnessFilter.cpp; sourceTree = "<group>"; };
 		ECF629CD1F7E4A710088CEEA /* TTBrightnessFilter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTBrightnessFilter.hpp; sourceTree = "<group>"; };
+		ECF629D01F7E6A4E0088CEEA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ECF629D11F7E6A4E0088CEEA /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
+		ECF629D21F7E6A4E0088CEEA /* MASCompositeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASCompositeConstraint.m; sourceTree = "<group>"; };
+		ECF629D31F7E6A4E0088CEEA /* MASConstraint+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASConstraint+Private.h"; sourceTree = "<group>"; };
+		ECF629D41F7E6A4E0088CEEA /* MASConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASConstraint.h; sourceTree = "<group>"; };
+		ECF629D51F7E6A4E0088CEEA /* MASConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASConstraint.m; sourceTree = "<group>"; };
+		ECF629D61F7E6A4E0088CEEA /* MASConstraintMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASConstraintMaker.h; sourceTree = "<group>"; };
+		ECF629D71F7E6A4E0088CEEA /* MASConstraintMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASConstraintMaker.m; sourceTree = "<group>"; };
+		ECF629D81F7E6A4E0088CEEA /* MASLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASLayoutConstraint.h; sourceTree = "<group>"; };
+		ECF629D91F7E6A4E0088CEEA /* MASLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASLayoutConstraint.m; sourceTree = "<group>"; };
+		ECF629DA1F7E6A4E0088CEEA /* Masonry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Masonry.h; sourceTree = "<group>"; };
+		ECF629DB1F7E6A4E0088CEEA /* MASUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASUtilities.h; sourceTree = "<group>"; };
+		ECF629DC1F7E6A4E0088CEEA /* MASViewAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASViewAttribute.h; sourceTree = "<group>"; };
+		ECF629DD1F7E6A4E0088CEEA /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
+		ECF629DE1F7E6A4E0088CEEA /* MASViewConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASViewConstraint.h; sourceTree = "<group>"; };
+		ECF629DF1F7E6A4E0088CEEA /* MASViewConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
+		ECF629E01F7E6A4E0088CEEA /* NSArray+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MASAdditions.h"; sourceTree = "<group>"; };
+		ECF629E11F7E6A4E0088CEEA /* NSArray+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+MASAdditions.m"; sourceTree = "<group>"; };
+		ECF629E21F7E6A4E0088CEEA /* NSArray+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MASShorthandAdditions.h"; sourceTree = "<group>"; };
+		ECF629E31F7E6A4E0088CEEA /* NSLayoutConstraint+MASDebugAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+MASDebugAdditions.h"; sourceTree = "<group>"; };
+		ECF629E41F7E6A4E0088CEEA /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
+		ECF629E51F7E6A4E0088CEEA /* View+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASAdditions.h"; sourceTree = "<group>"; };
+		ECF629E61F7E6A4E0088CEEA /* View+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "View+MASAdditions.m"; sourceTree = "<group>"; };
+		ECF629E71F7E6A4E0088CEEA /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
+		ECF629E81F7E6A4E0088CEEA /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
+		ECF629E91F7E6A4E0088CEEA /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
 		ECF92A0E1D676181006BB111 /* TTFFStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFFStream.cpp; sourceTree = "<group>"; };
 		ECF92A0F1D676181006BB111 /* TTFFStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTFFStream.hpp; sourceTree = "<group>"; };
 		ECF92A121D676181006BB111 /* TTStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTStream.cpp; sourceTree = "<group>"; };
@@ -733,11 +773,6 @@
 		EC3D8F6A1B99BD8F006FC622 = {
 			isa = PBXGroup;
 			children = (
-				EC8D83EB1D846E7B00C25D03 /* CoreVideo.framework */,
-				EC35E74F1D7C10C200F0659A /* libbz2.tbd */,
-				EC12806B1D7BF0AB00ACF31A /* libiconv.tbd */,
-				EC1280691D7BF0A400ACF31A /* libz.tbd */,
-				EC194A1E1CCE056300032B9A /* libstdc++.6.0.9.dylib */,
 				EC3D8F751B99BD8F006FC622 /* TTPlayerExample */,
 				EC3D8F8F1B99BD8F006FC622 /* TTPlayerExampleTests */,
 				EC3D8F741B99BD8F006FC622 /* Products */,
@@ -985,6 +1020,7 @@
 		ECC66E491F60EA5A003F2076 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				ECF629CF1F7E6A4E0088CEEA /* Masonry */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -1037,6 +1073,11 @@
 		ECC66F901F639EAD003F2076 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EC35E74F1D7C10C200F0659A /* libbz2.tbd */,
+				EC12806B1D7BF0AB00ACF31A /* libiconv.tbd */,
+				EC1280691D7BF0A400ACF31A /* libz.tbd */,
+				EC194A1E1CCE056300032B9A /* libstdc++.6.0.9.dylib */,
+				EC8D83EB1D846E7B00C25D03 /* CoreVideo.framework */,
 				ECC66F911F639EAD003F2076 /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
@@ -1067,8 +1108,43 @@
 				ECF629CA1F7E4A4D0088CEEA /* TTContrastFilter.hpp */,
 				ECF629CC1F7E4A710088CEEA /* TTBrightnessFilter.cpp */,
 				ECF629CD1F7E4A710088CEEA /* TTBrightnessFilter.hpp */,
+				EC3AB2E31F7F377200614CFB /* TTSaturationFilter.cpp */,
+				EC3AB2E41F7F377200614CFB /* TTSaturationFilter.hpp */,
 			);
 			path = color;
+			sourceTree = "<group>";
+		};
+		ECF629CF1F7E6A4E0088CEEA /* Masonry */ = {
+			isa = PBXGroup;
+			children = (
+				ECF629D01F7E6A4E0088CEEA /* Info.plist */,
+				ECF629D11F7E6A4E0088CEEA /* MASCompositeConstraint.h */,
+				ECF629D21F7E6A4E0088CEEA /* MASCompositeConstraint.m */,
+				ECF629D31F7E6A4E0088CEEA /* MASConstraint+Private.h */,
+				ECF629D41F7E6A4E0088CEEA /* MASConstraint.h */,
+				ECF629D51F7E6A4E0088CEEA /* MASConstraint.m */,
+				ECF629D61F7E6A4E0088CEEA /* MASConstraintMaker.h */,
+				ECF629D71F7E6A4E0088CEEA /* MASConstraintMaker.m */,
+				ECF629D81F7E6A4E0088CEEA /* MASLayoutConstraint.h */,
+				ECF629D91F7E6A4E0088CEEA /* MASLayoutConstraint.m */,
+				ECF629DA1F7E6A4E0088CEEA /* Masonry.h */,
+				ECF629DB1F7E6A4E0088CEEA /* MASUtilities.h */,
+				ECF629DC1F7E6A4E0088CEEA /* MASViewAttribute.h */,
+				ECF629DD1F7E6A4E0088CEEA /* MASViewAttribute.m */,
+				ECF629DE1F7E6A4E0088CEEA /* MASViewConstraint.h */,
+				ECF629DF1F7E6A4E0088CEEA /* MASViewConstraint.m */,
+				ECF629E01F7E6A4E0088CEEA /* NSArray+MASAdditions.h */,
+				ECF629E11F7E6A4E0088CEEA /* NSArray+MASAdditions.m */,
+				ECF629E21F7E6A4E0088CEEA /* NSArray+MASShorthandAdditions.h */,
+				ECF629E31F7E6A4E0088CEEA /* NSLayoutConstraint+MASDebugAdditions.h */,
+				ECF629E41F7E6A4E0088CEEA /* NSLayoutConstraint+MASDebugAdditions.m */,
+				ECF629E51F7E6A4E0088CEEA /* View+MASAdditions.h */,
+				ECF629E61F7E6A4E0088CEEA /* View+MASAdditions.m */,
+				ECF629E71F7E6A4E0088CEEA /* View+MASShorthandAdditions.h */,
+				ECF629E81F7E6A4E0088CEEA /* ViewController+MASAdditions.h */,
+				ECF629E91F7E6A4E0088CEEA /* ViewController+MASAdditions.m */,
+			);
+			path = Masonry;
 			sourceTree = "<group>";
 		};
 		ECF92A0D1D676181006BB111 /* stream */ = {
@@ -1134,9 +1210,11 @@
 					EC3D8F721B99BD8F006FC622 = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = 4B2QYB9XQX;
+						ProvisioningStyle = Automatic;
 					};
 					EC3D8F8B1B99BD8F006FC622 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 4B2QYB9XQX;
 						TestTargetID = EC3D8F721B99BD8F006FC622;
 					};
 				};
@@ -1171,6 +1249,7 @@
 				EC3EC4A61B9DD9D700C1438F /* Info.plist in Resources */,
 				EC4E9CAF1F2390A4005C8E36 /* test.mp4 in Resources */,
 				EC3D8F841B99BD8F006FC622 /* Images.xcassets in Resources */,
+				ECF629EA1F7E6A4E0088CEEA /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1192,12 +1271,15 @@
 				EC4E9C991F1A7DE5005C8E36 /* AAPLEAGLLayer.m in Sources */,
 				EC4E9CA51F1B9E99005C8E36 /* TTOpenGLView.mm in Sources */,
 				ECB053E31F3C632D00A49FA5 /* TTAudioQueue.cpp in Sources */,
+				ECF629EB1F7E6A4E0088CEEA /* MASCompositeConstraint.m in Sources */,
+				ECF629EF1F7E6A4E0088CEEA /* MASViewAttribute.m in Sources */,
 				ECC66F7A1F6180F1003F2076 /* TTMovieListViewController.m in Sources */,
 				ECC66F831F629E1C003F2076 /* TTBaseTabViewController.m in Sources */,
 				EC01895C1D81D52A005E46B9 /* TTVideoCodec.cpp in Sources */,
 				ECE49F5E1F5A44AE004FE7C2 /* TTNV12ToRGBFilter.cpp in Sources */,
 				ECC66F871F629ECF003F2076 /* TTMainViewController.m in Sources */,
 				EC1A20921F43FB0200632C0D /* TTFramebuffer.cpp in Sources */,
+				ECF629F11F7E6A4E0088CEEA /* NSArray+MASAdditions.m in Sources */,
 				EC4E9C801F1A7C3E005C8E36 /* TTRender.cpp in Sources */,
 				ECC66E2E1F5A9951003F2076 /* TTTextureFilter_ios.cpp in Sources */,
 				EC1A20831F42FAE000632C0D /* TTClass.cpp in Sources */,
@@ -1205,16 +1287,19 @@
 				ECC66E311F5A9AB3003F2076 /* TTTextureFilter.cpp in Sources */,
 				EC3D8F7F1B99BD8F006FC622 /* ViewController.mm in Sources */,
 				EC4E9C6A1F1A6400005C8E36 /* TTMutex.cpp in Sources */,
+				ECF629F41F7E6A4E0088CEEA /* ViewController+MASAdditions.m in Sources */,
 				EC4E9C9D1F1A7DE5005C8E36 /* TTOpenGLLayer.m in Sources */,
 				EC1A20951F43FB0200632C0D /* TTFilter.cpp in Sources */,
 				EC4E9CA21F1A7DE5005C8E36 /* TTVideoLayer.m in Sources */,
 				EC11654D1F52B9B100AF56ED /* TTFilterGroup.cpp in Sources */,
 				EC4E9CA11F1A7DE5005C8E36 /* TTQueue.m in Sources */,
 				ECC66F761F614DAB003F2076 /* TTFileManager.m in Sources */,
+				ECF629F01F7E6A4E0088CEEA /* MASViewConstraint.m in Sources */,
 				EC41A9901F49F1F900321BD4 /* TTMovieWriter.mm in Sources */,
 				EC1A209E1F45333E00632C0D /* TTY420ToRGBFilter.cpp in Sources */,
 				EC35E7551D7C327700F0659A /* TTPacket.cpp in Sources */,
 				ECE49F571F59AEDA004FE7C2 /* TTCapture.mm in Sources */,
+				ECF629EE1F7E6A4E0088CEEA /* MASLayoutConstraint.m in Sources */,
 				ECC66E481F60E2D1003F2076 /* TTPlayerBar.m in Sources */,
 				EC1A20931F43FB0200632C0D /* TTProgram.cpp in Sources */,
 				EC4E9C9A1F1A7DE5005C8E36 /* TTAssetReader.m in Sources */,
@@ -1225,10 +1310,12 @@
 				ECC66E461F60E2D1003F2076 /* TTBaseViewModel.m in Sources */,
 				ECB053E81F3DE7AA00A49FA5 /* TTClock.cpp in Sources */,
 				EC4E9CAB1F1FA937005C8E36 /* TTPlayer_ios.mm in Sources */,
+				ECF629EC1F7E6A4E0088CEEA /* MASConstraint.m in Sources */,
 				EC4E9C9E1F1A7DE5005C8E36 /* TTPlayerControl.m in Sources */,
 				ECC66F7D1F62313D003F2076 /* TTMovieListViewModel.m in Sources */,
 				EC0189591D81D1E6005E46B9 /* TTQoS.cpp in Sources */,
 				EC4E9C701F1A7AA6005C8E36 /* TTQueue.cpp in Sources */,
+				ECF629F21F7E6A4E0088CEEA /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				EC4E9CA01F1A7DE5005C8E36 /* TTPlayerView.m in Sources */,
 				ECF92A161D676181006BB111 /* TTStream.cpp in Sources */,
 				EC4E9C6D1F1A6572005C8E36 /* TTCond.cpp in Sources */,
@@ -1236,6 +1323,7 @@
 				ECF92A2B1D69EFA7006BB111 /* TTPlayer.cpp in Sources */,
 				ECF629CE1F7E4A710088CEEA /* TTBrightnessFilter.cpp in Sources */,
 				ECC66E451F60E2D1003F2076 /* TTBaseViewController.m in Sources */,
+				ECF629F31F7E6A4E0088CEEA /* View+MASAdditions.m in Sources */,
 				EC1A20B21F498EA200632C0D /* TTFilter_ios.mm in Sources */,
 				EC4727551D0C15100023EE51 /* TTTCPSocket.cpp in Sources */,
 				ECF629CB1F7E4A4D0088CEEA /* TTContrastFilter.cpp in Sources */,
@@ -1249,6 +1337,8 @@
 				EC4E9C9C1F1A7DE5005C8E36 /* TTFFmpegReader.m in Sources */,
 				ECC66E471F60E2D1003F2076 /* TTHomeViewController.m in Sources */,
 				EC4E9C9B1F1A7DE5005C8E36 /* TTAVPlayerView.m in Sources */,
+				ECF629ED1F7E6A4E0088CEEA /* MASConstraintMaker.m in Sources */,
+				EC3AB2E51F7F377200614CFB /* TTSaturationFilter.cpp in Sources */,
 				EC4E9CA91F1BC21E005C8E36 /* TTShaderYUV420p.cpp in Sources */,
 				EC3D8F791B99BD8F006FC622 /* main.m in Sources */,
 				EC1A209B1F43FB6A00632C0D /* TTGLContext_ios.mm in Sources */,
@@ -1381,6 +1471,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4B2QYB9XQX;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1412,6 +1503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4B2QYB9XQX;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1441,6 +1533,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 4B2QYB9XQX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1461,6 +1554,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 4B2QYB9XQX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

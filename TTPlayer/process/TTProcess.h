@@ -12,7 +12,9 @@
 #include "TTFilter.hpp"
 #include "TTFilterGroup.hpp"
 
+#include "TTBrightnessFilter.hpp"
 #include "TTContrastFilter.hpp"
+#include "TTSaturationFilter.hpp"
 
 #include "TTY420ToRGBFilter.hpp"
 #include "TTNV12ToRGBFilter.hpp"

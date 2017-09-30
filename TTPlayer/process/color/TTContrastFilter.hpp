@@ -17,6 +17,8 @@ namespace TT {
         ContrastFilter();
         ~ContrastFilter();
         
+        /** Contrast ranges from 0.0 to 4.0 (max contrast), with 1.0 as the normal level
+         */
         void setContrast(float contrast);
         
     private:
