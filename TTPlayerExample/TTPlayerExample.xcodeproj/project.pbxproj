@@ -1541,6 +1541,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					ELPP_DISABLE_PERFORMANCE_TRACKING,
 				);
 				INFOPLIST_FILE = TTPlayerExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

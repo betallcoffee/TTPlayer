@@ -84,7 +84,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TTMovieItemViewModel *item = [self.viewModel itemAtIndex:indexPath.row];
     MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:item.url];
-    [self.navigationController pushViewController:playerVC animated:YES];
+    [self presentViewController:playerVC animated:YES completion:nil];
 }
 
 #pragma mark -

@@ -45,5 +45,7 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Tina want access your camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Tina want access you microphone</string>
 </dict>
 </plist>

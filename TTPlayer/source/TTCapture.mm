@@ -14,13 +14,19 @@
 @interface TTCapture () <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
 {
     AVCaptureSession *_captureSession;
+    
     AVCaptureDevice *_inputCamera;
     AVCaptureDevicePosition _cameraPosition;
-    AVCaptureDevice *_microphone;
     AVCaptureDeviceInput *_videoInput;
     AVCaptureVideoDataOutput *_videoOutput;
+    
+    AVCaptureDevice *_microphone;
+    AVCaptureDeviceInput *_audioInput;
+    AVCaptureAudioDataOutput *_audioOutput;
+    
     BOOL _captrueAsYUV;
 
+    dispatch_queue_t _captureSessionQueue;
     dispatch_queue_t _cameraProcessingQueue;
     dispatch_queue_t _audioProcessingQueue;
     
@@ -41,8 +47,10 @@
     self = [super init];
     if (self) {
         _videoLayer = [TTVideoLayer new];
-        _cameraProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0);
-        _cameraPosition = AVCaptureDevicePositionBack;
+        _captureSessionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+        _cameraProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+        _cameraPosition = AVCaptureDevicePositionFront;
+        _audioProcessingQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         _captureSessionPreset = AVCaptureSessionPreset640x480;
         _captrueAsYUV = NO;
     }
@@ -53,7 +61,7 @@
     _filter.addFilter(filter);
 }
 
-- (BOOL)setUpVideoCapture {
+- (BOOL)setupVideoCapture {
     NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
     for (AVCaptureDevice *device in devices)
     {
@@ -68,17 +76,23 @@
         return NO;
     }
     
-    // Create the capture session
-    _captureSession = [[AVCaptureSession alloc] init];
-    
     [_captureSession beginConfiguration];
     
     // Add the video input
     NSError *error = nil;
     _videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:_inputCamera error:&error];
-    if ([_captureSession canAddInput:_videoInput])
-    {
+    if (_videoInput == nil) {
+        LOG(ERROR) << "Create video input error: " << [error.description cStringUsingEncoding:NSUTF8StringEncoding];
+        [_captureSession commitConfiguration];
+        return NO;
+    }
+    
+    if ([_captureSession canAddInput:_videoInput]) {
         [_captureSession addInput:_videoInput];
+    } else {
+        LOG(ERROR) << "Can't add video input";
+        [_captureSession commitConfiguration];
+        return NO;
     }
     
     // Add the video frame output
@@ -88,20 +102,15 @@
     if (_captrueAsYUV) {
         BOOL supportsFullYUVRange = NO;
         NSArray *supportedPixelFormats = _videoOutput.availableVideoCVPixelFormatTypes;
-        for (NSNumber *currentPixelFormat in supportedPixelFormats)
-        {
-            if ([currentPixelFormat intValue] == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)
-            {
+        for (NSNumber *currentPixelFormat in supportedPixelFormats) {
+            if ([currentPixelFormat intValue] == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
                 supportsFullYUVRange = YES;
             }
         }
         
-        if (supportsFullYUVRange)
-        {
+        if (supportsFullYUVRange) {
             [_videoOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8PlanarFullRange] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
-        }
-        else
-        {
+        } else {
             [_videoOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
         }
     } else {
@@ -110,13 +119,11 @@
 
     
     [_videoOutput setSampleBufferDelegate:self queue:_cameraProcessingQueue];
-    if ([_captureSession canAddOutput:_videoOutput])
-    {
+    if ([_captureSession canAddOutput:_videoOutput]) {
         [_captureSession addOutput:_videoOutput];
-    }
-    else
-    {
+    } else {
         LOG(ERROR) << "Couldn't add video output";
+        [_captureSession commitConfiguration];
         return NO;
     }
     
@@ -137,6 +144,38 @@
     return YES;
 }
 
+- (bool)setupAudioCapture {
+    [_captureSession beginConfiguration];
+    
+    _microphone = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+    
+    NSError *error;
+    _audioInput = [AVCaptureDeviceInput deviceInputWithDevice:_microphone error:&error];
+    if (_audioInput == nil) {
+        LOG(ERROR) << "Create audio input error: " << [error.description cStringUsingEncoding:NSUTF8StringEncoding];
+        [_captureSession commitConfiguration];
+        return NO;
+    }
+    
+    if ([_captureSession canAddInput:_audioInput]) {
+        [_captureSession addInput:_audioInput];
+    }
+
+    _audioOutput = [[AVCaptureAudioDataOutput alloc] init];
+    if ([_captureSession canAddOutput:_audioOutput]) {
+        [_captureSession addOutput:_audioOutput];
+    } else {
+        LOG(ERROR) << "Couldn't add video output";
+        [_captureSession commitConfiguration];
+        return NO;
+    }
+    [_audioOutput setSampleBufferDelegate:self queue:_audioProcessingQueue];
+    
+    [_captureSession commitConfiguration];
+    
+    return YES;
+}
+
 #pragma mark -
 #pragma mark Manage the camera video stream
 
@@ -145,22 +184,31 @@
     return [_captureSession isRunning];
 }
 
-- (void)startCameraCapture
-{
-    if (![_captureSession isRunning])
-    {
+- (void)startCaptureVideo:(BOOL)hasVideo andAudio:(BOOL)hasAudio {
+    if (![_captureSession isRunning]) {
         _startingCaptureTime = [NSDate date];
-        [self setUpVideoCapture];
-        [_captureSession startRunning];
-    };
+        // Create the capture session
+        _captureSession = [[AVCaptureSession alloc] init];
+        dispatch_async(_captureSessionQueue, ^{
+            if (hasVideo) {
+                [self setupVideoCapture];
+            }
+            if (hasAudio) {
+                [self setupAudioCapture];
+            }
+            
+            [_captureSession startRunning];
+        });
+    }
 }
 
 - (void)stopCameraCapture
 {
-    if ([_captureSession isRunning])
-    {
-        [_captureSession stopRunning];
-    }
+    dispatch_async(_captureSessionQueue, ^{
+        if ([_captureSession isRunning]) {
+            [_captureSession stopRunning];
+        }
+    });
 }
 
 #pragma mark -
@@ -170,18 +218,21 @@
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection
 {
-    if (![self isRunning])
-    {
+    if (![self isRunning]) {
         return;
-    }
-    else if (captureOutput == _videoOutput)
-    {
+    } else if (captureOutput == _videoOutput) {
         _filter.processFrame(sampleBuffer);
+    } else if (captureOutput == _audioOutput) {
+        [_movieWriter processAudioBuffer:sampleBuffer];
     }
 }
 
 #pragma mark -
-#pragma getter/setter
+#pragma mark getter/setter
+
+- (void)setMovieWriter:(TTMovieWriter *)movieWriter {
+    _movieWriter = movieWriter;
+}
 
 - (void)setOutputImageOrientation:(AVCaptureVideoOrientation)outputImageOrientation {
     _outputImageOrientation = outputImageOrientation;

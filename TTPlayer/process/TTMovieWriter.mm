@@ -30,7 +30,8 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
     NSString *_fileType;
     CGSize _videoSize;
     
-    NSMutableDictionary *_outputSettings;
+    NSMutableDictionary *_videoOutputSettings;
+    NSMutableDictionary *_audioOutputSettings;
     
     CMTime _startTime, _previousFrameTime, _previousAudioTime;
     CMTime _offsetTime;
@@ -39,6 +40,8 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
     AVAssetWriterInput *_assetWriterAudioInput;
     AVAssetWriterInput *_assetWriterVideoInput;
     AVAssetWriterInputPixelBufferAdaptor *_assetWriterPixelBufferInput;
+    
+    dispatch_queue_t _movieWriterQueue;
 }
 
 @end
@@ -49,13 +52,15 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
     return [self initWithMovieURL:newMovieURL
                              size:newSize
                          fileType:AVFileTypeQuickTimeMovie
-                   outputSettings:nil];
+              videoOutputSettings:nil
+              audioOutputSettings:nil];
 }
 
 - (instancetype)initWithMovieURL:(NSURL *)newMovieURL
                             size:(CGSize)newSize
                         fileType:(NSString *)newFileType
-                  outputSettings:(NSMutableDictionary *)outputSettings {
+             videoOutputSettings:(NSMutableDictionary *)videoOutputSettings
+             audioOutputSettings:(NSDictionary *)audioOutputSettings {
     self = [super init];
     if (self) {
         _movieURL = [newMovieURL copy];
@@ -64,35 +69,23 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
         _startTime = kCMTimeInvalid;
         _previousFrameTime = kCMTimeNegativeInfinity;
         _previousAudioTime = kCMTimeNegativeInfinity;
-        _outputSettings = [outputSettings copy];
+        _videoOutputSettings = [videoOutputSettings copy];
+        _audioOutputSettings = [audioOutputSettings copy];
+        
+        _movieWriterQueue = dispatch_queue_create("movie writer", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
 
-- (void)setUp {
-    [self finish];
-    LOG(DEBUG) << "framebuffer size: " << [self filter]->srcFramebuffer()->width() << " " << [self filter]->srcFramebuffer()->height();
-    LOG(DEBUG) << "video size: " << _videoSize.width << " " << _videoSize.height;
-    
-    NSError *error = nil;
-    _assetWriter = [[AVAssetWriter alloc] initWithURL:_movieURL fileType:_fileType error:&error];
-    if (error != nil)
-    {
-        const char *err = [[error description] cStringUsingEncoding:NSUTF8StringEncoding];
-        LOG(ERROR) << err;
-    }
-    
-    // Set this to make sure that a functional movie is produced, even if the recording is cut off mid-stream. Only the last second should be lost in that case.
-    _assetWriter.movieFragmentInterval = CMTimeMakeWithSeconds(1.0, 1000);
-    
+- (void)setupVideoWriter {
     // use default output settings if none specified
-    if (_outputSettings == nil)
+    if (_videoOutputSettings == nil)
     {
         NSMutableDictionary *settings = [[NSMutableDictionary alloc] init];
         [settings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
         [settings setObject:[NSNumber numberWithInt:_videoSize.width] forKey:AVVideoWidthKey];
         [settings setObject:[NSNumber numberWithInt:_videoSize.height] forKey:AVVideoHeightKey];
-        _outputSettings = settings;
+        _videoOutputSettings = settings;
     }
     
     /*
@@ -119,10 +112,10 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
      */
     
     _assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo
-                                                                outputSettings:_outputSettings];
+                                                                outputSettings:_videoOutputSettings];
     
     // TODO live
-    _assetWriterVideoInput.expectsMediaDataInRealTime = NO;
+    _assetWriterVideoInput.expectsMediaDataInRealTime = YES;
     
     // You need to use BGRA for the video in order to get realtime encoding. I use a color-swizzling shader to line up glReadPixels' normal RGBA output with the movie input's BGRA.
     NSDictionary *sourcePixelBufferAttributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithInt:kCVPixelFormatType_32BGRA], kCVPixelBufferPixelFormatTypeKey,
@@ -137,12 +130,92 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
     [_assetWriter addInput:_assetWriterVideoInput];
 }
 
-- (void)tearDown {
+- (void)teardownVideoWriter {
     
 }
 
+- (void)setupAudioWriter {
+    AVAudioSession *sharedAudioSession = [AVAudioSession sharedInstance];
+    double preferredHardwareSampleRate;
+    
+    if ([sharedAudioSession respondsToSelector:@selector(sampleRate)]) {
+        preferredHardwareSampleRate = [sharedAudioSession sampleRate];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        preferredHardwareSampleRate = [[AVAudioSession sharedInstance] currentHardwareSampleRate];
+#pragma clang diagnostic pop
+    }
+    
+    AudioChannelLayout acl;
+    bzero( &acl, sizeof(acl));
+    acl.mChannelLayoutTag = kAudioChannelLayoutTag_Mono;
+    
+    if (_audioOutputSettings == nil) {
+        _audioOutputSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                [ NSNumber numberWithInt: kAudioFormatMPEG4AAC], AVFormatIDKey,
+                                [ NSNumber numberWithInt: 1 ], AVNumberOfChannelsKey,
+                                [ NSNumber numberWithFloat: preferredHardwareSampleRate ], AVSampleRateKey,
+                                [ NSData dataWithBytes: &acl length: sizeof( acl ) ], AVChannelLayoutKey,
+                                //[ NSNumber numberWithInt:AVAudioQualityLow], AVEncoderAudioQualityKey,
+                                [ NSNumber numberWithInt: 64000 ], AVEncoderBitRateKey,
+                                nil];
+    }
+    
+    
+    /*
+     AudioChannelLayout acl;
+     bzero( &acl, sizeof(acl));
+     acl.mChannelLayoutTag = kAudioChannelLayoutTag_Mono;
+     
+     audioOutputSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+     [ NSNumber numberWithInt: kAudioFormatMPEG4AAC ], AVFormatIDKey,
+     [ NSNumber numberWithInt: 1 ], AVNumberOfChannelsKey,
+     [ NSNumber numberWithFloat: 44100.0 ], AVSampleRateKey,
+     [ NSNumber numberWithInt: 64000 ], AVEncoderBitRateKey,
+     [ NSData dataWithBytes: &acl length: sizeof( acl ) ], AVChannelLayoutKey,
+     nil];*/
+    
+    _assetWriterAudioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio
+                                                                outputSettings:_audioOutputSettings];
+    _assetWriterAudioInput.expectsMediaDataInRealTime = YES;
+    [_assetWriter addInput:_assetWriterAudioInput];
+}
+
+- (void)teardownAudioWriter {
+    
+}
+
+- (void)setup {
+    [self finish];
+    if ([self filter]->srcFramebuffer()) {
+        LOG(DEBUG) << "framebuffer size: " << [self filter]->srcFramebuffer()->width() << " " << [self filter]->srcFramebuffer()->height();
+    }
+    LOG(DEBUG) << "video size: " << _videoSize.width << " " << _videoSize.height;
+    
+    NSError *error = nil;
+    _assetWriter = [[AVAssetWriter alloc] initWithURL:_movieURL fileType:_fileType error:&error];
+    if (error != nil)
+    {
+        const char *err = [[error description] cStringUsingEncoding:NSUTF8StringEncoding];
+        LOG(ERROR) << err;
+        return ;
+    }
+    
+    // Set this to make sure that a functional movie is produced, even if the recording is cut off mid-stream. Only the last second should be lost in that case.
+    _assetWriter.movieFragmentInterval = CMTimeMakeWithSeconds(1.0, 1000);
+    
+    [self setupVideoWriter];
+    [self setupAudioWriter];
+}
+
+- (void)teardown {
+    [self teardownVideoWriter];
+    [self teardownAudioWriter];
+}
+
 - (void)start {
-    [self setUp];
+    [self setup];
     
     [_assetWriter startWriting];
 }
@@ -156,7 +229,7 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
         
     }];
     
-    [self tearDown];
+    [self teardown];
 }
 
 - (void)cancel {
@@ -170,7 +243,7 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
 
     [_assetWriter cancelWriting];
     
-    [self tearDown];
+    [self teardown];
 }
 
 - (const GLchar *)fragmentShader {
@@ -178,43 +251,74 @@ static const GLchar *const kColorSwizzlingFragmentShader = STRINGIZE
 }
 
 - (void)notifyFramebufferToFilters:(int64_t)timestamp {
-    CMTime frameTime = CMTimeMake(timestamp, 1000);
-    if (CMTIME_IS_INVALID(_startTime)) {
-        [self start];
-        _startTime = frameTime;
-        [_assetWriter startSessionAtSourceTime:_startTime];
-    }
-    
-    CVPixelBufferRef pixelBuffer = NULL;
-    CVReturn status = CVPixelBufferPoolCreatePixelBuffer(NULL, [_assetWriterPixelBufferInput pixelBufferPool], &pixelBuffer);
-    if ((pixelBuffer == NULL) || (status != kCVReturnSuccess)) {
-        LOG(WARNING) << "Create Pixel buffer failed " << status;
-        CVPixelBufferRelease(pixelBuffer);
-        return;
-    } else {
-        CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-        
-        GLubyte *pixelBufferData = (GLubyte *)CVPixelBufferGetBaseAddress(pixelBuffer);
-        glReadPixels(0, 0, _videoSize.width, _videoSize.height,
-                     GL_RGBA, GL_UNSIGNED_BYTE, pixelBufferData);
-    }
-    
-    if (!_assetWriterVideoInput.readyForMoreMediaData) {
-        LOG(DEBUG) << "Assert writer did not ready for more media datd: " << timestamp;
-    } else if(_assetWriter.status == AVAssetWriterStatusWriting) {
-        if ([_assetWriterPixelBufferInput appendPixelBuffer:pixelBuffer withPresentationTime:frameTime]) {
-            LOG(TRACE) << "Appending pixel buffer at time: " << timestamp;
-        } else {
-            LOG(WARNING) << "Problem appending pixel buffer at time: " << timestamp;
+    dispatch_sync(_movieWriterQueue, ^{
+        CMTime frameTime = CMTimeMake(timestamp, 1000);
+        if (CMTIME_IS_INVALID(_startTime)) {
+            if (_assetWriter.status != AVAssetWriterStatusWriting) {
+                [self start];
+            }
+
+            _startTime = frameTime;
+            [_assetWriter startSessionAtSourceTime:_startTime];
         }
-    } else {
-        LOG(WARNING) << "Couldn't write a frame at time: " << timestamp;
-    }
+        
+        CVPixelBufferRef pixelBuffer = NULL;
+        CVReturn status = CVPixelBufferPoolCreatePixelBuffer(NULL, [_assetWriterPixelBufferInput pixelBufferPool], &pixelBuffer);
+        if ((pixelBuffer == NULL) || (status != kCVReturnSuccess)) {
+            LOG(WARNING) << "Create Pixel buffer failed " << status;
+            CVPixelBufferRelease(pixelBuffer);
+            return;
+        } else {
+            CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+            
+            GLubyte *pixelBufferData = (GLubyte *)CVPixelBufferGetBaseAddress(pixelBuffer);
+            glReadPixels(0, 0, _videoSize.width, _videoSize.height,
+                         GL_RGBA, GL_UNSIGNED_BYTE, pixelBufferData);
+        }
+        
+        if (!_assetWriterVideoInput.readyForMoreMediaData) {
+            LOG(DEBUG) << "Assert writer did not ready for more media data: " << timestamp;
+        } else if(_assetWriter.status == AVAssetWriterStatusWriting) {
+            if ([_assetWriterPixelBufferInput appendPixelBuffer:pixelBuffer withPresentationTime:frameTime]) {
+                LOG(TRACE) << "Appending pixel buffer at time: " << timestamp;
+            } else {
+                LOG(WARNING) << "Problem appending pixel buffer at time: " << timestamp;
+            }
+        } else {
+            LOG(WARNING) << "Couldn't write a frame at time: " << timestamp;
+        }
+        
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+        CVPixelBufferRelease(pixelBuffer);
+        
+        _previousFrameTime = frameTime;
+    });
+}
 
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    CVPixelBufferRelease(pixelBuffer);
-
-    _previousFrameTime = frameTime;
+- (void)processAudioBuffer:(CMSampleBufferRef)audioBuffer {
+    dispatch_sync(_movieWriterQueue, ^{
+        CMTime currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(audioBuffer);
+        if (CMTIME_IS_INVALID(_startTime)) {
+            if (_assetWriter.status != AVAssetWriterStatusWriting) {
+                [self start];
+            }
+            _startTime = currentSampleTime;
+            [_assetWriter startSessionAtSourceTime:currentSampleTime];
+        }
+        _previousAudioTime = currentSampleTime;
+        
+        if (!_assetWriterAudioInput.readyForMoreMediaData) {
+            LOG(DEBUG) << "2: Had to drop an audio frame " << CMTimeGetSeconds(currentSampleTime);
+        } else if(_assetWriter.status == AVAssetWriterStatusWriting) {
+            if (![_assetWriterAudioInput appendSampleBuffer:audioBuffer]) {
+                LOG(TRACE) << "Appending audio buffer at time: " << CMTimeGetSeconds(currentSampleTime);
+            } else {
+                LOG(WARNING) << "Problem appending audio buffer at time: " << CMTimeGetSeconds(currentSampleTime);
+            }
+        }else {
+            LOG(WARNING) << "Couldn't write audio sample at time: " << CMTimeGetSeconds(currentSampleTime);
+        }
+    });
 }
 
 @end

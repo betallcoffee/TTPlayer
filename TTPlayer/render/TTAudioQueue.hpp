@@ -31,10 +31,10 @@ namespace TT {
     class AudioQueue {
     public:
         AudioQueue() {}
-        virtual ~AudioQueue() { stop(); tearDown(); }
+        virtual ~AudioQueue() { stop(); teardown(); }
         
-        virtual bool setUp(AudioDesc &desc) = 0;
-        virtual void tearDown() {};
+        virtual bool setup(AudioDesc &desc) = 0;
+        virtual void teardown() {};
         
         virtual void start() = 0;
         virtual void stop() {};

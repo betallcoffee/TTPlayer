@@ -58,14 +58,14 @@ AudioStreamBasicDescription CreateASBDWithSampleRate(float sampleRate,bool isFlo
     return asbd;
 }
 
-bool AudioQueue_ios::setUp(AudioDesc &desc) {
+bool AudioQueue_ios::setup(AudioDesc &desc) {
     _audioFormat = CreateASBDWithSampleRate(desc.sampleRate, true, desc.channels, true);
     CheckError(AudioQueueNewOutput(&_audioFormat,
                                      AudioQueue_ios::queueCallback,
                                      this,
-                                     NULL,                   // run loop
+                                     NULL,  // run loop
                                      NULL,  // run loop mode
-                                     0,                      // flags
+                                     0,     // flags
                                      &_playQueue), "AudioQueueNewOutput error");
     
     
@@ -85,7 +85,7 @@ bool AudioQueue_ios::setUp(AudioDesc &desc) {
     return true;
 }
 
-void AudioQueue_ios::tearDown() {
+void AudioQueue_ios::teardown() {
     stop();
     
     for (int t = 0; t < kNumberOfAudioDataBuffers; ++t) {

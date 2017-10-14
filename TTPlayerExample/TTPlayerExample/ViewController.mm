@@ -186,7 +186,7 @@ using namespace TT;
         [self.capture stopCameraCapture];
     } else {
         button.selected = YES;
-        [self.capture startCameraCapture];
+        [self.capture startCaptureVideo:YES andAudio:YES];
     }
 }
 

@@ -25,7 +25,7 @@ static const GLchar *const kContrastFragmentShader = STRINGIZE
  }
  );
 
-ContrastFilter::ContrastFilter() : _contrast(0.0), _contrastUniform(kInvalid) {
+ContrastFilter::ContrastFilter() : _contrast(1.0), _contrastUniform(kInvalid) {
     
 }
 

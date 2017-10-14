@@ -21,8 +21,8 @@ namespace TT {
         AudioQueue_ios() {}
         ~AudioQueue_ios() {}
         
-        bool setUp(AudioDesc &desc);
-        void tearDown();
+        bool setup(AudioDesc &desc);
+        void teardown();
         
         void start();
         void stop();

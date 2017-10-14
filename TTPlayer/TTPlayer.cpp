@@ -225,7 +225,7 @@ bool Player::close() {
         LOG(DEBUG) << "Audio/Video decode stopped.";
         
         if (_audioQueue) {
-            _audioQueue->tearDown();
+            _audioQueue->teardown();
         }
         
         _aPacketQueue.close();
@@ -457,7 +457,7 @@ void Player::renderLoop() {
 
 void Player::audioCodecCB(TT::AudioDesc &desc) {
     if (_audioQueue) {
-        _audioQueue->setUp(desc);
+        _audioQueue->setup(desc);
     }
 }
 

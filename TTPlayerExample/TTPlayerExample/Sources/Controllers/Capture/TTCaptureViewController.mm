@@ -174,7 +174,6 @@
     _movieWriter = [[TTMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640, 480)];
     _filterGroup->addFilter([_movieWriter filter], 1);
     
-    
     _saturationFilter = std::make_shared<SaturationFilter>();
     _saturationFilter->addFilter(_filterGroup);
     
@@ -187,6 +186,7 @@
 
 - (void)setupCapture {
     self.capture.outputImageOrientation = AVCaptureVideoOrientationPortrait;
+    self.capture.movieWriter = _movieWriter;
     [self.capture addFilter:_brightnessFilter];
 }
 
@@ -265,7 +265,7 @@
         [self.capture stopCameraCapture];
     } else {
         button.selected = YES;
-        [self.capture startCameraCapture];
+        [self.capture startCaptureVideo:YES andAudio:YES];
     }
 }
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-#include "TTFilter.hpp"
+#include "TTProcess.h"
 
 #import "TTVideoLayer.h"
 
@@ -18,6 +18,8 @@
 // Test
 @property (nonatomic, strong) TTVideoLayer *videoLayer;
 
+@property (nonatomic, strong) TTMovieWriter *movieWriter;
+
 // This enables the capture session preset to be changed on the fly
 @property (nonatomic, copy) NSString *captureSessionPreset;
 /// This determines the rotation applied to the output image, based on the source material
@@ -25,7 +27,7 @@
 
 - (void)addFilter:(std::shared_ptr<TT::Filter>)filter;
 
-- (void)startCameraCapture;
+- (void)startCaptureVideo:(BOOL)hasVideo andAudio:(BOOL)hasAudio;
 - (void)stopCameraCapture;
 
 @end

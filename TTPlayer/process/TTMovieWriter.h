@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 #import "TTFilter_ios.h"
 
@@ -17,10 +18,13 @@
 - (id)initWithMovieURL:(NSURL *)newMovieURL
                   size:(CGSize)newSize
               fileType:(NSString *)newFileType
-        outputSettings:(NSDictionary *)outputSettings;
+   videoOutputSettings:(NSDictionary *)videoOutputSettings
+   audioOutputSettings:(NSDictionary *)audioOutputSettings;
 
 - (void)start;
 - (void)finish;
 - (void)cancel;
+
+- (void)processAudioBuffer:(CMSampleBufferRef)audioBuffer;
 
 @end
