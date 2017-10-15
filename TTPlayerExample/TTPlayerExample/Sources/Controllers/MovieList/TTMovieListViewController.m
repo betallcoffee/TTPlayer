@@ -55,10 +55,12 @@
 #pragma mark UI
 
 - (void)setupUI {
-    self.tableView.frame = self.view.bounds;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.tableView.superview);
+    }];
 }
 
 #pragma mark -

@@ -6,8 +6,6 @@
 //  Copyright © 2017年 tina. All rights reserved.
 //
 
-#import "Masonry.h"
-
 #import "TTPlayer_ios.h"
 #include "TTProcess.h"
 #import "TTCapture.h"
@@ -78,7 +76,7 @@
 #pragma mark UI
 
 - (void)setupUI {
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     _imageView = [TTImageView new];
     _imageView.contentMode = UIViewContentModeScaleAspectFit;

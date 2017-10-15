@@ -76,7 +76,7 @@
 		ECC66F7A1F6180F1003F2076 /* TTMovieListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F791F6180F1003F2076 /* TTMovieListViewController.m */; };
 		ECC66F7D1F62313D003F2076 /* TTMovieListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F7C1F62313D003F2076 /* TTMovieListViewModel.m */; };
 		ECC66F801F6281A8003F2076 /* TTMovieItemViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F7F1F6281A8003F2076 /* TTMovieItemViewModel.m */; };
-		ECC66F831F629E1C003F2076 /* TTBaseTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F821F629E1C003F2076 /* TTBaseTabViewController.m */; };
+		ECC66F831F629E1C003F2076 /* TTTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F821F629E1C003F2076 /* TTTabViewController.m */; };
 		ECC66F871F629ECF003F2076 /* TTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F861F629ECF003F2076 /* TTMainViewController.m */; };
 		ECC66F8C1F62A3E0003F2076 /* TTCaptureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F8B1F62A3E0003F2076 /* TTCaptureViewController.mm */; };
 		ECC66F8F1F62B98D003F2076 /* TTCaptureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ECC66F8E1F62B98D003F2076 /* TTCaptureButton.m */; };
@@ -361,8 +361,8 @@
 		ECC66F7C1F62313D003F2076 /* TTMovieListViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTMovieListViewModel.m; sourceTree = "<group>"; };
 		ECC66F7E1F6281A8003F2076 /* TTMovieItemViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTMovieItemViewModel.h; sourceTree = "<group>"; };
 		ECC66F7F1F6281A8003F2076 /* TTMovieItemViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTMovieItemViewModel.m; sourceTree = "<group>"; };
-		ECC66F811F629E1C003F2076 /* TTBaseTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTBaseTabViewController.h; sourceTree = "<group>"; };
-		ECC66F821F629E1C003F2076 /* TTBaseTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTBaseTabViewController.m; sourceTree = "<group>"; };
+		ECC66F811F629E1C003F2076 /* TTTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabViewController.h; sourceTree = "<group>"; };
+		ECC66F821F629E1C003F2076 /* TTTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTabViewController.m; sourceTree = "<group>"; };
 		ECC66F851F629ECF003F2076 /* TTMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTMainViewController.h; sourceTree = "<group>"; };
 		ECC66F861F629ECF003F2076 /* TTMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTMainViewController.m; sourceTree = "<group>"; };
 		ECC66F8A1F62A3E0003F2076 /* TTCaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCaptureViewController.h; sourceTree = "<group>"; };
@@ -975,8 +975,8 @@
 				ECC66E3A1F60E2D1003F2076 /* TTBaseViewController.m */,
 				ECC66E3B1F60E2D1003F2076 /* TTBaseViewModel.h */,
 				ECC66E3C1F60E2D1003F2076 /* TTBaseViewModel.m */,
-				ECC66F811F629E1C003F2076 /* TTBaseTabViewController.h */,
-				ECC66F821F629E1C003F2076 /* TTBaseTabViewController.m */,
+				ECC66F811F629E1C003F2076 /* TTTabViewController.h */,
+				ECC66F821F629E1C003F2076 /* TTTabViewController.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1274,7 +1274,7 @@
 				ECF629EB1F7E6A4E0088CEEA /* MASCompositeConstraint.m in Sources */,
 				ECF629EF1F7E6A4E0088CEEA /* MASViewAttribute.m in Sources */,
 				ECC66F7A1F6180F1003F2076 /* TTMovieListViewController.m in Sources */,
-				ECC66F831F629E1C003F2076 /* TTBaseTabViewController.m in Sources */,
+				ECC66F831F629E1C003F2076 /* TTTabViewController.m in Sources */,
 				EC01895C1D81D52A005E46B9 /* TTVideoCodec.cpp in Sources */,
 				ECE49F5E1F5A44AE004FE7C2 /* TTNV12ToRGBFilter.cpp in Sources */,
 				ECC66F871F629ECF003F2076 /* TTMainViewController.m in Sources */,

@@ -6,8 +6,8 @@
 //  Copyright © 2017年 tina. All rights reserved.
 //
 
-#import "TTBaseTabViewController.h"
+#import "TTTabViewController.h"
 
-@interface TTMainViewController : TTBaseTabViewController
+@interface TTMainViewController : TTTabViewController
 
 @end

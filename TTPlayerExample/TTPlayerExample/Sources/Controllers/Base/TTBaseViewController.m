@@ -14,6 +14,19 @@
 
 @implementation TTBaseViewController
 
+- (instancetype) init {
+    self = [super init];
+    if (self) {
+        
+    }
+    NSLog(@"%@:%@", self.class, NSStringFromSelector(_cmd));
+    return self;
+}
+
+- (void)dealloc {
+    NSLog(@"%@:%@", self.class, NSStringFromSelector(_cmd));
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -45,14 +58,11 @@
 
 }
 
-
 #pragma mark -
 #pragma mark ViewModel
 
 - (void)configViewModel {
     
 }
-
-
 
 @end

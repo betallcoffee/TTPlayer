@@ -24,15 +24,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _movieListVC = [TTMovieListViewController new];
-        UINavigationController *movieListNav = [[UINavigationController alloc] initWithRootViewController:_movieListVC];
-        movieListNav.tabBarItem.title = @"视频";
         
-        _captureVC = [TTCaptureViewController new];
-        UINavigationController *captureNav = [[UINavigationController alloc] initWithRootViewController:_captureVC];
-        captureNav.tabBarItem.title = @"录制";
-        
-        self.viewControllers = @[movieListNav, captureNav];
     }
     
     return self;
@@ -57,5 +49,28 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark --
+#pragma mark UI
+- (void)setupUI {
+    [super setupUI];
+    
+//    self.interactive = YES;
+    
+    _movieListVC = [TTMovieListViewController new];
+    _movieListVC.tabBarItem.tag = 0;
+    _movieListVC.tabBarItem.title = @"视频";
+    
+    _captureVC = [TTCaptureViewController new];
+    _captureVC.tabBarItem.tag = 1;
+    _captureVC.tabBarItem.title = @"录制";
+    
+    self.tabBar.items = @[_movieListVC.tabBarItem, _captureVC.tabBarItem];
+    self.tabBar.selectedItem = _movieListVC.tabBarItem;
+    self.tabBar.itemPositioning = UITabBarItemPositioningFill;
+    
+    self.viewControllers = @[_movieListVC, _captureVC];
+
+}
 
 @end
