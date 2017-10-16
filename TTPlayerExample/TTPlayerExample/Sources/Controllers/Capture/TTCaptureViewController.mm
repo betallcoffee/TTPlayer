@@ -9,6 +9,7 @@
 #import "TTPlayer_ios.h"
 #include "TTProcess.h"
 #import "TTCapture.h"
+#import "TTCaptureButton.h"
 
 #import "TTCaptureViewController.h"
 #import "TTFileManager.h"
@@ -25,7 +26,7 @@
 }
 
 @property (nonatomic, strong) TTCapture *capture;
-@property (nonatomic, strong) UIButton *captureButton;
+@property (nonatomic, strong) TTCaptureButton *captureButton;
 
 @property (nonatomic, strong) UILabel *brightnessLabel;
 @property (nonatomic, strong) UISlider *brightnessSlider;
@@ -85,14 +86,13 @@
         make.edges.equalTo(_imageView.superview);
     }];
     
-    self.captureButton.backgroundColor = [UIColor redColor];
     [self.captureButton addTarget:self
                            action:@selector(onClickCapture:)
                  forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.captureButton];
     [self.captureButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(44);
-        make.height.mas_equalTo(44);
+        make.width.mas_equalTo(60);
+        make.height.mas_equalTo(60);
         make.centerX.equalTo(self.captureButton.superview);
         make.bottom.equalTo(self.captureButton.superview).with.offset(-50);
     }];
@@ -102,7 +102,7 @@
     [self.view addSubview:self.brightnessLabel];
     [self.brightnessLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.brightnessLabel.superview).with.offset(5);
-        make.bottom.equalTo(self.captureButton.mas_top).with.offset(-10);
+        make.bottom.equalTo(self.captureButton.mas_top).with.offset(-40);
     }];
     
     self.brightnessSlider.minimumValue = -1.0;
@@ -205,9 +205,9 @@
     return _capture;
 }
 
-- (UIButton *)captureButton {
+- (TTCaptureButton *)captureButton {
     if (_captureButton == nil) {
-        _captureButton = [UIButton new];
+        _captureButton = [TTCaptureButton new];
     }
     return _captureButton;
 }
