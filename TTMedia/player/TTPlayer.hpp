@@ -20,8 +20,10 @@
 #include "TTRender.hpp"
 #include "TTY420ToRGBFilter.hpp"
 
+#include "TTStream.hpp"
+
 namespace TT {
-    class FFStream;
+    class FFDemuxer;
     class Packet;
     class AudioCodec;
     class VideoCodec;
@@ -84,13 +86,18 @@ namespace TT {
         double getMasterClock();
         
     private:
+        bool openStream();
+        
+        
         std::shared_ptr<URL> _url;
         
         ePlayerStatus _status;
         pthread_cond_t _statusCond;
         pthread_mutex_t _statusMutex;
         
-        std::shared_ptr<FFStream> _stream;
+        std::shared_ptr<Stream> _stream;
+        
+        std::shared_ptr<FFDemuxer> _demuxer;
         Queue<std::shared_ptr<Packet>> _vPacketQueue;
         Queue<std::shared_ptr<Packet>> _aPacketQueue;
         

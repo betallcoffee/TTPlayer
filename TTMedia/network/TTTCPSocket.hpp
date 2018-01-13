@@ -16,6 +16,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
+#include "TTURL.hpp"
+
 namespace TT {
     class TCPSocket {
     public:
@@ -26,9 +28,16 @@ namespace TT {
         void uninit();
         
         bool setTimeout(int seconds);
-        bool connect(const char *ip, uint8_t port);
-        size_t read(uint8_t *buf, size_t size);
-        size_t write(const uint8_t *buf, size_t size);
+        
+        typedef std::function<bool(void *)> InterruptCallback;
+        void setInterruptCallback(InterruptCallback callback) {
+            _interruptCB = callback;
+        }
+        
+        
+        bool connect(std::shared_ptr<URL> url);
+        int read(uint8_t *buf, size_t size);
+        int write(const uint8_t *buf, size_t size);
         
     private:
         bool setNonBlock();
@@ -36,7 +45,9 @@ namespace TT {
     private:
         int _fd;
         struct sockaddr_in _addr;
-        int _timeout; // 单位秒
+        int _timeout = 0; // 单位秒
+        InterruptCallback _interruptCB = nullptr;
+        void *_opaque = nullptr;
     };
 }
 

@@ -21,11 +21,28 @@ URL::URL(const std::string &&url) {
     }
     _scheme = std::string(iterBegin, iterBegin + posScheme);
     
-    auto posHost = _url.find("/", posScheme + 3);
+    auto posHost = _url.find(":", posScheme + 3);
     if (posHost == std::string::npos) {
-        return;
+        posHost = _url.find("/", posScheme + 3);
+        if (posHost == std::string::npos) {
+            return;
+        }
+        _host = std::string(iterBegin + posScheme + 3, iterBegin + posHost);
+    } else {
+        _host = std::string(iterBegin + posScheme + 3, iterBegin + posHost);
+        
+        auto posPort = _url.find("/", posHost);
+        if (posPort != std::string::npos) {
+            _port = std::string(iterBegin + posHost + 1, iterBegin + posPort);
+            posHost = posPort;
+        }
     }
-    _host = std::string(iterBegin + posScheme + 3, iterBegin + posHost);
+    
+    if (_port.empty()) {
+        if ("http" == _scheme) {
+            _port = "80";
+        }
+    }
     
     auto posPath = _url.find("?", posHost + 1);
     if (posPath ==  std::string::npos) {

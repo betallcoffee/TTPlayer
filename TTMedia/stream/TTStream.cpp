@@ -1,9 +1,19 @@
 //
 //  TTStream.cpp
-//  TTPlayer
+//  TTPlayerExample
 //
-//  Created by liang on 6/11/16.
-//  Copyright © 2016 tina. All rights reserved.
+//  Created by liang on 4/7/17.
+//  Copyright © 2017年 tina. All rights reserved.
 //
 
 #include "TTStream.hpp"
+
+using namespace TT;
+
+Stream::Stream() {
+    
+}
+
+Stream::~Stream() {
+    
+}

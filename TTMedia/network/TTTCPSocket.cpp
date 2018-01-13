@@ -7,8 +7,12 @@
 //
 
 #include <string>
+#include <stdlib.h>
+
+#include "easylogging++.h"
 
 #include "TTTCPSocket.hpp"
+#include "TTDNSClient.hpp"
 
 using namespace TT;
 
@@ -73,22 +77,46 @@ bool TCPSocket::setTimeout(int seconds) {
     return true;
 }
 
-bool TCPSocket::connect(const char *ip, uint8_t port) {
-    if (ip == NULL) {
+bool TCPSocket::connect(std::shared_ptr<URL> url) {
+    struct addrinfo *ai;
+    if (!DNSClient::resolveHost(url, &ai)) {
         return false;
     }
     
-    memset(&_addr, 0, sizeof(struct sockaddr_in));
-    _addr.sin_family = AF_INET;
-    _addr.sin_port = htons(port);
-    _addr.sin_addr.s_addr = ::inet_addr(ip);
-
-    int ret = ::connect(_fd, (struct sockaddr *)&_addr, sizeof(struct sockaddr_in));
+    int ret = 0;
+    uint16_t port = std::stoi(url->port().c_str());
+    struct addrinfo *curAi = ai;
+    while (curAi) {
+        LOG(INFO) << "Try addrinfo ai_flags:" << curAi->ai_flags
+        << " ai_family:" << curAi->ai_family
+        << " ai_socktype:" << curAi->ai_socktype
+        << " ai_protocol:" << curAi->ai_protocol;
+        
+        if (curAi->ai_family == AF_INET6) {
+            struct sockaddr_in6 *in6 = reinterpret_cast<struct sockaddr_in6 *>(curAi->ai_addr);
+            in6->sin6_port = htons(port);
+        } else {
+            struct sockaddr_in *addr = (struct sockaddr_in *)curAi->ai_addr;
+            char *ip = inet_ntoa(addr->sin_addr);
+            uint16_t port = ntohs(addr->sin_port);
+            LOG(INFO) << "Try connect ip:" << ip << " port:" << port;
+        }
+        
+        ret = ::connect(_fd, curAi->ai_addr, sizeof(struct sockaddr));
+        
+        if (ret == 0) {
+            return true;
+        } else {
+            curAi = curAi->ai_next;
+            LOG(WARNING) << "Test next addrinfo";
+        }
+    }
     
-    return ret == 0;
+    LOG(ERROR) << "Connect failed" << url->string();
+    return false;
 }
 
-size_t TCPSocket::read(uint8_t *buf, size_t size) {
+int TCPSocket::read(uint8_t *buf, size_t size) {
     if (_fd == kValidFD || buf == NULL || size <= 0) {
         return -1;
     }
@@ -97,13 +125,36 @@ size_t TCPSocket::read(uint8_t *buf, size_t size) {
     return ret;
 }
 
-size_t TCPSocket::write(const uint8_t *buf, size_t size) {
+int TCPSocket::write(const uint8_t *buf, size_t size) {
     if (_fd == kValidFD || buf == NULL || size <= 0) {
         return -1;
     }
     
-    size_t ret = ::write(_fd, buf, size);
-    return ret;
+    size_t sendSize = 0;
+    while (true) {
+        if (_interruptCB) {
+            if (_interruptCB(_opaque)) {
+                break;
+            }
+        }
+        
+        if (sendSize >= size) {
+            break;
+        }
+        
+        ssize_t ret = ::write(_fd, buf + sendSize, size - sendSize);
+        if (ret >= 0) {
+            sendSize += ret;
+        } else if (errno == EINTR ||
+                   errno == EAGAIN ||
+                   errno == EWOULDBLOCK) {
+            continue;
+        } else {
+            break;
+        }
+    }
+
+    return sendSize;
 }
 
 

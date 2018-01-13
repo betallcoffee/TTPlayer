@@ -12,7 +12,7 @@
 
 @interface TTMovieListViewModel ()
 {
-
+    NSMutableArray<NSURL *> *_movieList;
 }
 
 @property (nonatomic, strong, readonly) NSArray<NSURL *> *movieList;
@@ -23,7 +23,7 @@
 
 - (TTMovieItemViewModel *)itemAtIndex:(NSUInteger)index {
     TTMovieItemViewModel *item = [TTMovieItemViewModel new];
-    NSURL *url = [[TTFileManager sharedInstance].movieURLList objectAtIndex:index];
+    NSURL *url = [self.movieList objectAtIndex:index];
     [item configData:url];
     return item;
 }
@@ -36,7 +36,11 @@
 }
 
 - (NSArray<NSURL *> *)movieList {
-    return [TTFileManager sharedInstance].movieURLList;
+    if (_movieList == nil) {
+        _movieList = [NSMutableArray new];
+        [_movieList addObjectsFromArray:[TTFileManager sharedInstance].movieURLList];
+    }
+    return _movieList;
 }
 
 @end

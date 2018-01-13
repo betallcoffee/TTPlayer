@@ -1,16 +1,16 @@
 //
-//  TTFFStream.cpp
+//  TTFFDemuxer.cpp
 //  TTPlayer
 //
 //  Created by liang on 6/11/16.
 //  Copyright © 2016 tina. All rights reserved.
 //
 
-#include "TTFFStream.hpp"
+#include "TTFFDemuxer.hpp"
 
 using namespace TT;
 
-bool FFStream::open(std::shared_ptr<URL> url) {
+bool FFDemuxer::open(std::shared_ptr<URL> url) {
     _url = url;
     
     _formatContext = avformat_alloc_context();
@@ -52,13 +52,13 @@ bool FFStream::open(std::shared_ptr<URL> url) {
     return true;
 }
 
-void FFStream::close() {
+void FFDemuxer::close() {
     if (_formatContext) {
         avformat_close_input(&_formatContext);
     }
 }
 
-std::shared_ptr<Packet> FFStream::read() {
+std::shared_ptr<Packet> FFDemuxer::read() {
     if (_formatContext == nullptr) {
         return nullptr;
     }
@@ -78,11 +78,11 @@ std::shared_ptr<Packet> FFStream::read() {
     return nullptr;
 }
 
-bool FFStream::write(std::shared_ptr<Packet> packet) {
+bool FFDemuxer::write(std::shared_ptr<Packet> packet) {
     return false;
 }
 
-bool FFStream::seek(uint64_t pos) {
+bool FFDemuxer::seek(uint64_t pos) {
     return false;
 }
 

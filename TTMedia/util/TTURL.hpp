@@ -18,20 +18,23 @@ namespace TT {
         URL(const std::string &&url);
         ~URL() {};
         
-        const char *cStr() { return _url.c_str(); }
-        std::string &scheme() { return _scheme; }
-        std::string &host() { return _host; }
-        std::string &path() { return _path; }
-        std::string &extension() { return _extension; }
-        std::string &query() { return _query; }
+        const char *cStr() const { return _url.c_str(); }
+        const std::string &string() const { return _url; }
+        const std::string &scheme() const { return _scheme; }
+        const std::string &host() const { return _host; }
+        const std::string &port() const { return _port; }
+        const std::string &path() const { return _path; }
+        const std::string &extension() const { return _extension; }
+        const std::string &query() const { return _query; }
         
     private:
-        std::string _url;
-        std::string _scheme;
-        std::string _host;
-        std::string _path;
-        std::string _extension;
-        std::string _query;
+        std::string _url = "";
+        std::string _scheme = "";
+        std::string _host = "";
+        std::string _port = "";
+        std::string _path = "";
+        std::string _extension = "";
+        std::string _query = "";
     };
 }
 

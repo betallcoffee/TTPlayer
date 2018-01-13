@@ -15,7 +15,8 @@
 #include "TTMutex.hpp"
 #include "TTURL.hpp"
 
-#include "TTFFStream.hpp"
+#include "TTHTTPStream.hpp"
+#include "TTFFDemuxer.hpp"
 #include "TTAudioCodec.hpp"
 #include "TTVideoCodec.hpp"
 
@@ -161,22 +162,24 @@ void Player::waitStatusChange() {
 
 bool Player::open() {
     if (_status == kPlayerOpen) {
+        openStream();
+        
         _vPTS = 0;
         _aClock.reset();
         _vClock.reset();
         _eClock.reset();
         
-        _stream = std::make_shared<FFStream>();
-        _stream->open(_url);
+        _demuxer = std::make_shared<FFDemuxer>();
+        _demuxer->open(_url);
         
-        if (_stream->hasAudio()) {
-            _audioCodec = std::make_shared<AudioCodec>(_stream->audioStream());
+        if (_demuxer->hasAudio()) {
+            _audioCodec = std::make_shared<AudioCodec>(_demuxer->audioStream());
             _audioCodec->setCodecCallback(std::bind(&Player::audioCodecCB, this, std::placeholders::_1));
             _audioCodec->open();
         }
         
-        if (_stream->hasVideo()) {
-            _videoCodec = std::make_shared<VideoCodec>(_stream->videoStream());
+        if (_demuxer->hasVideo()) {
+            _videoCodec = std::make_shared<VideoCodec>(_demuxer->videoStream());
             _videoCodec->open();
         }
         
@@ -185,6 +188,11 @@ bool Player::open() {
     }
     
     return true;;
+}
+
+bool Player::openStream() {
+    _stream = std::make_shared<HTTPStream>();
+    return _stream->open(_url, 0, 0);
 }
 
 bool Player::close() {
@@ -240,9 +248,9 @@ bool Player::close() {
             _videoCodec.reset();
         }
         
-        if (_stream) {
-            _stream->close();
-            _stream.reset();
+        if (_demuxer) {
+            _demuxer->close();
+            _demuxer.reset();
         }
         
         setStatus(kPlayerStoped);
@@ -290,7 +298,7 @@ void Player::inputLoop() {
                 break;
             case kPlayerPlaying:
             {
-                std::shared_ptr<Packet> packet = _stream->read();
+                std::shared_ptr<Packet> packet = _demuxer->read();
                 if (packet) {
                     switch (packet->type) {
                         case kPacketTypeAudio:
@@ -477,12 +485,12 @@ std::shared_ptr<Frame> Player::audioQueueCB() {
 
 void Player::setMasterSyncType(AVSyncClock clock) {
     if (clock == AV_SYNC_VIDEO_MASTER) {
-        if (_stream->hasVideo())
+        if (_demuxer->hasVideo())
             _clock = AV_SYNC_VIDEO_MASTER;
         else
             _clock = AV_SYNC_AUDIO_MASTER;
     } else if (clock == AV_SYNC_AUDIO_MASTER) {
-        if (_stream->hasAudio())
+        if (_demuxer->hasAudio())
             _clock = AV_SYNC_AUDIO_MASTER;
         else
             _clock = AV_SYNC_EXTERNAL_CLOCK;

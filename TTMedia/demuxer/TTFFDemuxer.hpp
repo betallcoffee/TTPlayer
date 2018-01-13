@@ -1,15 +1,13 @@
 //
-//  TTFFStream.hpp
+//  TTFFDemuxer.hpp
 //  TTPlayer
 //
 //  Created by liang on 6/11/16.
 //  Copyright © 2016 tina. All rights reserved.
 //
 
-#ifndef TTFFStream_hpp
-#define TTFFStream_hpp
-
-#include <stdio.h>
+#ifndef TTFFDemuxer_hpp
+#define TTFFDemuxer_hpp
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,14 +17,14 @@ extern "C" {
 };
 #endif
 
-#include "TTStream.hpp"
+#include "TTDemuxer.hpp"
 
 namespace TT {
-    class FFStream : public Stream {
+    class FFDemuxer : public Demuxer {
     public:
-        FFStream() : _formatContext(nullptr), _option(nullptr),
+        FFDemuxer() : _formatContext(nullptr), _option(nullptr),
         _audioStream(nullptr), _videoStream(nullptr) {};
-        ~FFStream() {};
+        ~FFDemuxer() {};
         
         bool open(std::shared_ptr<URL> url);
         void close();
@@ -53,4 +51,4 @@ namespace TT {
     };
 }
 
-#endif /* TTFFStream_hpp */
+#endif /* TTFFDemuxer_hpp */

@@ -46,9 +46,9 @@ using namespace TT;
     
     [self setUpFilter];
     
-//    [self setUpPlayer];
+    [self setUpPlayer];
     
-    [self setUpCapture];
+//    [self setUpCapture];
 
     [self setUpUI];
 }
@@ -66,13 +66,13 @@ using namespace TT;
     self.playButton.backgroundColor = [UIColor blueColor];
     self.playButton.center = self.view.center;
     [self.playButton addTarget:self action:@selector(onClickPlay:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:self.playButton];
+    [self.view addSubview:self.playButton];
     
     self.captureButton.bounds = CGRectMake(0, 0, 44, 44);
     self.captureButton.backgroundColor = [UIColor blackColor];
     self.captureButton.center = CGPointMake(self.view.center.x, self.view.center.y/2);
     [self.captureButton addTarget:self action:@selector(onClickCapture:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.captureButton];
+//    [self.view addSubview:self.captureButton];
 }
 
 - (void)setUpFilter {
@@ -173,9 +173,11 @@ using namespace TT;
         button.selected = YES;
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
 //        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"audio_HEv2" ofType:@"flv"];
-        const char *cFilePath = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
+//        const char *cFilePath = [filePath cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *cFilePath = "http://1251845595.vod2.myqcloud.com/9d67116cvodgzp1251845595/eb800eaf9031868223333695199/playlist.m3u8";
         std::shared_ptr<URL> url = std::make_shared<URL>(cFilePath);
 //        std::shared_ptr<URL> url = std::make_shared<URL>("rtmp://live.hkstv.hk.lxdns.com/live/hks");
+        
         _player->play(url);
     }
 }
