@@ -89,7 +89,7 @@ void HTTPClient::Get(std::shared_ptr<URL> url,
                     }
                 } else if (kParseBody == _parseStatus) {
                     if (dataCallback) {
-                        dataCallback();
+                        dataCallback(_buffer);
                     }
                 }
             } while (true);

@@ -24,7 +24,7 @@ namespace TT {
         ~HTTPClient();
         
         typedef std::map<std::string, std::string> HeaderMap;
-        typedef std::function<void()> DataRecivedCallback;
+        typedef std::function<void(Buffer &dataxs)> DataRecivedCallback;
         typedef std::function<void()> ErrorCallback;
         void Get(std::shared_ptr<URL> url, const HeaderMap &headers, DataRecivedCallback dataCallback, ErrorCallback errorCallback);
         

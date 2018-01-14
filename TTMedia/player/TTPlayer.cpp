@@ -43,6 +43,7 @@ Player::Player() : _status(kPlayerNone),
  _vPacketQueue("video_packet_queue", kMaxPacketCount), _aPacketQueue("audio_packet_queue", kMaxPacketCount),
  _vFrameQueue("video_frame_queue", kMaxFrameCount), _aFrameQueue("audio_frame_queue", kMaxFrameCount),
  _inputCond(PTHREAD_COND_INITIALIZER), _inputMutex(PTHREAD_MUTEX_INITIALIZER),
+ _demuxCond(PTHREAD_COND_INITIALIZER), _demuxMutex(PTHREAD_MUTEX_INITIALIZER),
  _audioCond(PTHREAD_COND_INITIALIZER), _audioMutex(PTHREAD_MUTEX_INITIALIZER), _audioDecoding(false),
  _videoCond(PTHREAD_COND_INITIALIZER), _videoMutex(PTHREAD_MUTEX_INITIALIZER), _videoDecoding(false),
  _renderCond(PTHREAD_COND_INITIALIZER), _renderMutex(PTHREAD_MUTEX_INITIALIZER), _renderring(false),
@@ -52,6 +53,7 @@ Player::Player() : _status(kPlayerNone),
      el::Loggers::setLoggingLevel(el::Level::Info);
      LOG(DEBUG) << "ffmpeg build configure: " << avcodec_configuration();
      pthread_create(&_inputThread, nullptr, Player::inputThreadEntry, this);
+     pthread_create(&_demuxThread, nullptr, Player::demuxThreadEntry, this);
      pthread_create(&_audioThread, nullptr, Player::audioThreadEntry, this);
      pthread_create(&_videoThread, nullptr, Player::videoThreadEntry, this);
      pthread_create(&_renderThread, nullptr, Player::renderThreadEntry, this);
@@ -197,13 +199,17 @@ bool Player::openStream() {
 
 bool Player::close() {
     if (_status == kPlayerClose) {
-        
         LOG(DEBUG) << "Waiting audio/video decode stop.";
         
         _aPacketQueue.clear();
         _vPacketQueue.clear();
         _aFrameQueue.clear();
         _vFrameQueue.clear();
+        
+        Mutex d(&_demuxMutex);
+        while (_demuxing) {
+            pthread_cond_wait(&_demuxCond, &_demuxMutex);
+        }
         
         Mutex a(&_audioMutex);
         while (_audioDecoding) {
@@ -296,8 +302,28 @@ void Player::inputLoop() {
             case kPlayerClose:
                 close();
                 break;
+            default:
+            {
+                usleep(1000);
+                break;
+            }
+        }
+    }
+}
+
+void *Player::demuxThreadEntry(void *arg) {
+    Player *self = (Player *)arg;
+    self->demuxLoop();
+    return nullptr;
+}
+
+void Player::demuxLoop() {
+    while (!isQuit()) {
+        switch (_status) {
             case kPlayerPlaying:
             {
+                Mutex m(&_demuxMutex);
+                _demuxing = true;
                 std::shared_ptr<Packet> packet = _demuxer->read();
                 if (packet) {
                     switch (packet->type) {
@@ -313,11 +339,15 @@ void Player::inputLoop() {
                 } else {
                     usleep(1000);
                 }
+                
+                _demuxing = false;
+                pthread_cond_broadcast(&_demuxCond);
+                
                 break;
             }
             default:
             {
-                usleep(1000);
+                waitStatusChange();
                 break;
             }
         }

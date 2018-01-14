@@ -70,6 +70,9 @@ namespace TT {
         static void *inputThreadEntry(void *arg);
         void inputLoop();
         
+        static void *demuxThreadEntry(void *arg);
+        void demuxLoop();
+        
         static void *videoThreadEntry(void *arg);
         void videoLoop();
         
@@ -110,6 +113,11 @@ namespace TT {
         pthread_t _inputThread;
         pthread_cond_t _inputCond;
         pthread_mutex_t _inputMutex;
+        
+        pthread_t _demuxThread;
+        pthread_cond_t _demuxCond;
+        pthread_mutex_t _demuxMutex;
+        bool _demuxing;
         
         pthread_t _audioThread;
         pthread_cond_t _audioCond;

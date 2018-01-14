@@ -9,8 +9,12 @@
 #ifndef TTHTTPStream_hpp
 #define TTHTTPStream_hpp
 
+#include <pthread.h>
+
 #include "TTHTTPClient.hpp"
 #include "TTStream.hpp"
+#include "TTBuffer.hpp"
+#include "TTMutex.hpp"
 
 namespace TT {
     class HTTPStream : public Stream {
@@ -33,7 +37,12 @@ namespace TT {
         int64_t speed() override;
         
     private:
+        void onDataRecived(Buffer &data);
+        
+        pthread_mutex_t _mutex;
         HTTPClient _client;
+        Buffer _buffer;
+        
     };
 }
 

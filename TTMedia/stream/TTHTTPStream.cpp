@@ -20,7 +20,7 @@ HTTPStream::~HTTPStream() {
 
 bool HTTPStream::open(std::shared_ptr<URL> url, uint64_t offset, int flag) {
     HTTPClient::HeaderMap headers;
-    _client.Get(url, headers, nullptr, nullptr);
+    _client.Get(url, headers, std::bind(&HTTPStream::onDataRecived, this, std::placeholders::_1), nullptr);
     return true;
 }
 
@@ -33,6 +33,23 @@ void HTTPStream::close() {
 }
 
 size_t HTTPStream::read(uint8_t *pBuf, size_t size) {
+    if (nullptr == pBuf || size <= 0) {
+        return 0;
+    }
+    
+    Mutex m(&_mutex);
+    if (_buffer.empty()) {
+        return 0;
+    }
+    
+    const char *begin = _buffer.beginRead();
+    if (begin) {
+        size_t readSize = _buffer.readableBytes();
+        size = size <= readSize ? size : readSize;
+        memcpy(pBuf, begin, size);
+        return size;
+    }
+    
     return 0;
 }
 
@@ -62,6 +79,11 @@ int64_t HTTPStream::downPos() {
 
 int64_t HTTPStream::speed() {
     return 0;
+}
+
+void HTTPStream::onDataRecived(Buffer &data) {
+    Mutex m(&_mutex);
+    _buffer.appendBuffer(data);
 }
 
 
