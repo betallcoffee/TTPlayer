@@ -10,6 +10,9 @@
 
 using namespace TT;
 
+URL::URL(const std::string &url) {
+    
+}
 
 URL::URL(const std::string &&url) {
     _url = url;

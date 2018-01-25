@@ -16,6 +16,7 @@ namespace TT {
     class URL {
     public:
         URL(const std::string &&url);
+        URL(const std::string &url);
         ~URL() {};
         
         const char *cStr() const { return _url.c_str(); }
