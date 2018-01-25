@@ -37,6 +37,7 @@ namespace TT {
         ePacketType type;
         int64_t dts;
         int64_t pts;
+        int64_t pos;
         
         AVPacket *avpacket() { return _avpacket; }
         

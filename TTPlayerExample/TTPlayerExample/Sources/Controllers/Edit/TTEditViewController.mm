@@ -6,11 +6,15 @@
 //  Copyright © 2018年 tina. All rights reserved.
 //
 
+#include "TTEdit.hpp"
+
 #import "TTEditViewController.h"
 
 @interface TTEditViewController ()
-
-@property (nonatomic, copy) NSURL *url;
+{
+    std::shared_ptr<TT::Edit> _edit;
+    std::shared_ptr<TT::URL> _url;
+}
 
 @end
 
@@ -19,7 +23,9 @@
 - (instancetype)initWithURL:(NSURL *)url {
     self = [super init];
     if (self) {
-        _url = [url copy];
+        const char *str = [url.absoluteString cStringUsingEncoding:NSUTF8StringEncoding];
+        _url = std::make_shared<TT::URL>(str);
+        _edit = std::make_shared<TT::Edit>();
     }
     
     return self;

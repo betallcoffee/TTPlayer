@@ -17,6 +17,7 @@ Packet::Packet(AVPacket *avpacket) :_avpacket(avpacket) {
     if (_avpacket) {
         pts = _avpacket->pts;
         dts = _avpacket->dts;
+        pos = _avpacket->pos;
     }
 }
 

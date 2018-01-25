@@ -60,6 +60,8 @@
 		EC55088E1FE6619000C115A8 /* TTHTTPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC55088C1FE6619000C115A8 /* TTHTTPClient.cpp */; };
 		EC5508911FE661AD00C115A8 /* TTHTTPStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC55088F1FE661AD00C115A8 /* TTHTTPStream.cpp */; };
 		EC5508941FE6A3E500C115A8 /* TTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC5508921FE6A3E500C115A8 /* TTBuffer.cpp */; };
+		EC55089B200BADD600C115A8 /* TTArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC550899200BADD600C115A8 /* TTArray.cpp */; };
+		EC55089E2014DA9900C115A8 /* TTEditViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC55089D2014DA9900C115A8 /* TTEditViewController.mm */; };
 		EC6600511F95A8C100042B2A /* TTPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC66004D1F95A8C100042B2A /* TTPlayer.cpp */; };
 		EC6600521F95A8C100042B2A /* TTPlayer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC6600501F95A8C100042B2A /* TTPlayer_ios.mm */; };
 		EC6600631F95BF8500042B2A /* TTImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = EC6600601F95BF8500042B2A /* TTImageView.mm */; };
@@ -335,6 +337,10 @@
 		EC5508901FE661AD00C115A8 /* TTHTTPStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTHTTPStream.hpp; sourceTree = "<group>"; };
 		EC5508921FE6A3E500C115A8 /* TTBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTBuffer.cpp; sourceTree = "<group>"; };
 		EC5508931FE6A3E500C115A8 /* TTBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTBuffer.hpp; sourceTree = "<group>"; };
+		EC550899200BADD600C115A8 /* TTArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTArray.cpp; sourceTree = "<group>"; };
+		EC55089A200BADD600C115A8 /* TTArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTArray.hpp; sourceTree = "<group>"; };
+		EC55089C2014DA9900C115A8 /* TTEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTEditViewController.h; sourceTree = "<group>"; };
+		EC55089D2014DA9900C115A8 /* TTEditViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TTEditViewController.mm; sourceTree = "<group>"; };
 		EC66004D1F95A8C100042B2A /* TTPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTPlayer.cpp; sourceTree = "<group>"; };
 		EC66004E1F95A8C100042B2A /* TTPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTPlayer.hpp; sourceTree = "<group>"; };
 		EC66004F1F95A8C100042B2A /* TTPlayer_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPlayer_ios.h; sourceTree = "<group>"; };
@@ -886,6 +892,8 @@
 			children = (
 				EC4E9C6E1F1A7AA6005C8E36 /* TTQueue.cpp */,
 				EC4E9C6F1F1A7AA6005C8E36 /* TTQueue.hpp */,
+				EC550899200BADD600C115A8 /* TTArray.cpp */,
+				EC55089A200BADD600C115A8 /* TTArray.hpp */,
 				EC4727611D0C5B4F0023EE51 /* TTURL.cpp */,
 				EC4727621D0C5B4F0023EE51 /* TTURL.hpp */,
 				EC0189571D81D1E6005E46B9 /* TTQoS.cpp */,
@@ -1116,6 +1124,8 @@
 		ECC66F881F62A358003F2076 /* Edit */ = {
 			isa = PBXGroup;
 			children = (
+				EC55089C2014DA9900C115A8 /* TTEditViewController.h */,
+				EC55089D2014DA9900C115A8 /* TTEditViewController.mm */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -1356,6 +1366,7 @@
 				EC5508911FE661AD00C115A8 /* TTHTTPStream.cpp in Sources */,
 				ECC66F801F6281A8003F2076 /* TTMovieItemViewModel.m in Sources */,
 				ECC66E461F60E2D1003F2076 /* TTBaseViewModel.m in Sources */,
+				EC55089E2014DA9900C115A8 /* TTEditViewController.mm in Sources */,
 				ECB053E81F3DE7AA00A49FA5 /* TTClock.cpp in Sources */,
 				EC5508871FE6610A00C115A8 /* TTPacket.cpp in Sources */,
 				ECF629EC1F7E6A4E0088CEEA /* MASConstraint.m in Sources */,
@@ -1390,6 +1401,7 @@
 				EC6600511F95A8C100042B2A /* TTPlayer.cpp in Sources */,
 				EC6600631F95BF8500042B2A /* TTImageView.mm in Sources */,
 				EC4E9CA91F1BC21E005C8E36 /* TTShaderYUV420p.cpp in Sources */,
+				EC55089B200BADD600C115A8 /* TTArray.cpp in Sources */,
 				EC3D8F791B99BD8F006FC622 /* main.m in Sources */,
 				EC1A209B1F43FB6A00632C0D /* TTGLContext_ios.mm in Sources */,
 			);

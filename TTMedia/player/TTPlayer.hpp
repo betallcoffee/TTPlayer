@@ -20,14 +20,13 @@
 #include "TTRender.hpp"
 #include "TTY420ToRGBFilter.hpp"
 
-#include "TTStream.hpp"
-
 namespace TT {
-    class FFDemuxer;
     class Packet;
+    class Frame;
+    class Stream;
+    class FFDemuxer;
     class AudioCodec;
     class VideoCodec;
-    class Frame;
     
     typedef enum {
         kPlayerNone,
@@ -64,6 +63,8 @@ namespace TT {
         bool open();
         bool close();
         
+        bool openStream();
+        
         void quit();
         bool isQuit();
         
@@ -89,9 +90,6 @@ namespace TT {
         double getMasterClock();
         
     private:
-        bool openStream();
-        
-        
         std::shared_ptr<URL> _url;
         
         ePlayerStatus _status;

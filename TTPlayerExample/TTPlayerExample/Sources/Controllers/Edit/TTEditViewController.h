@@ -6,8 +6,10 @@
 //  Copyright © 2018年 tina. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "TTBaseViewController.h"
 
-@interface TTEditViewController : UIViewController
+@interface TTEditViewController : TTBaseViewController
+
+- (instancetype)initWithURL:(NSURL *)url;
 
 @end

@@ -14,11 +14,9 @@
 
 #import "TTOpenGLView.h"
 
-using namespace TT;
+TT::Player *createPlayer_ios();
 
-Player *createPlayer_ios();
-
-BOOL bindGLView_ios(Player *player, TTOpenGLView *view);
+BOOL bindGLView_ios(TT::Player *player, TTOpenGLView *view);
 
 
 #endif /* TTPlayer_ios_h */

@@ -61,9 +61,9 @@
     } else {
         NSError *error;
         _movieURLList = [_fileManager contentsOfDirectoryAtURL:self.movieDir
-                                                     includingPropertiesForKeys:nil
-                                                                        options:NSDirectoryEnumerationSkipsHiddenFiles
-                                                                          error:&error];
+                                    includingPropertiesForKeys:nil
+                                                       options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                         error:&error];
         if (error) {
             NSLog(@"TTFileManager movie list error: %@", error);
         }

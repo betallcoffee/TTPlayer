@@ -16,10 +16,10 @@
 
 @interface TTCaptureViewController ()
 {
-    std::shared_ptr<FilterGroup> _filterGroup;
-    std::shared_ptr<BrightnessFilter> _brightnessFilter;
-    std::shared_ptr<ContrastFilter> _contrastFilter;
-    std::shared_ptr<SaturationFilter> _saturationFilter;
+    std::shared_ptr<TT::FilterGroup> _filterGroup;
+    std::shared_ptr<TT::BrightnessFilter> _brightnessFilter;
+    std::shared_ptr<TT::ContrastFilter> _contrastFilter;
+    std::shared_ptr<TT::SaturationFilter> _saturationFilter;
     
     TTImageView *_imageView;
     TTMovieWriter *_movieWriter;
@@ -165,20 +165,20 @@
 }
 
 - (void)setupFilter {
-    _filterGroup = std::make_shared<FilterGroup>();
+    _filterGroup = std::make_shared<TT::FilterGroup>();
     _filterGroup->addFilter([_imageView filter]);
     
     NSURL *movieURL = [[TTFileManager sharedInstance] newMovieURL];
     _movieWriter = [[TTMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640, 480)];
     _filterGroup->addFilter([_movieWriter filter], 1);
     
-    _saturationFilter = std::make_shared<SaturationFilter>();
+    _saturationFilter = std::make_shared<TT::SaturationFilter>();
     _saturationFilter->addFilter(_filterGroup);
     
-    _contrastFilter = std::make_shared<ContrastFilter>();
+    _contrastFilter = std::make_shared<TT::ContrastFilter>();
     _contrastFilter->addFilter(_saturationFilter);
     
-    _brightnessFilter = std::make_shared<BrightnessFilter>();
+    _brightnessFilter = std::make_shared<TT::BrightnessFilter>();
     _brightnessFilter->addFilter(_contrastFilter);
 }
 

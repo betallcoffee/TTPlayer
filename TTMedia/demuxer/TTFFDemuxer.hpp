@@ -9,6 +9,8 @@
 #ifndef TTFFDemuxer_hpp
 #define TTFFDemuxer_hpp
 
+#include <pthread.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -42,6 +44,8 @@ namespace TT {
         
     private:
         std::shared_ptr<URL> _url;
+        
+        pthread_mutex_t _mutex;
         
         AVFormatContext *_formatContext;
         AVDictionary *_option;

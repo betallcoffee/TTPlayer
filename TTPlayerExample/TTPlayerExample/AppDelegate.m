@@ -20,10 +20,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-//    TTMainViewController *rootViewController = [TTMainViewController new];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    self.window.rootViewController = rootViewController;
-    self.window.rootViewController = [ViewController new];
+    self.window.rootViewController = [TTMainViewController new];
+//    self.window.rootViewController = [ViewController new];
     
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController.view.frame = self.window.bounds;

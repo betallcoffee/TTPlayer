@@ -24,7 +24,7 @@ static void renderTeardown(void *opaque) {
     
 }
 
-static bool renderDisplay(void *opaque, std::shared_ptr<Frame> frame) {
+static bool renderDisplay(void *opaque, std::shared_ptr<TT::Frame> frame) {
     if (opaque == nullptr) {
         return false;
     }
@@ -33,20 +33,20 @@ static bool renderDisplay(void *opaque, std::shared_ptr<Frame> frame) {
     return [view render:frame];
 }
 
-Player *createPlayer_ios() {
-    Player *player = new(std::nothrow) Player;
+TT::Player *createPlayer_ios() {
+    TT::Player *player = new(std::nothrow) TT::Player;
     if (player != nullptr) {
         player->bindAudioQueue(std::make_shared<TT::AudioQueue_ios>());
     }
     return player;
 }
 
-BOOL bindGLView_ios(Player *player, TTOpenGLView *view) {
+BOOL bindGLView_ios(TT::Player *player, TTOpenGLView *view) {
     if (player == nullptr || view == nil) {
         return NO;
     }
     
-    RenderContext ctx;
+    TT::RenderContext ctx;
     ctx.opaque = (__bridge void *)view;
     ctx.setup = renderSetup;
     ctx.teardown = renderTeardown;

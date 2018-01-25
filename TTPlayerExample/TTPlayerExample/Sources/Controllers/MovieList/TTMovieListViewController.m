@@ -8,6 +8,8 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "TTEditViewController.h"
+
 #import "TTMovieListViewController.h"
 #import "TTMovieListViewModel.h"
 #import "TTMovieItemViewModel.h"
@@ -85,7 +87,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TTMovieItemViewModel *item = [self.viewModel itemAtIndex:indexPath.row];
-    MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:item.url];
+//    MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:item.url];
+    TTEditViewController *playerVC = [[TTEditViewController alloc] initWithURL:item.url];
     [self presentViewController:playerVC animated:YES completion:nil];
 }
 

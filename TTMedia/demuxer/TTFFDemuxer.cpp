@@ -6,6 +6,7 @@
 //  Copyright © 2016 tina. All rights reserved.
 //
 
+#include "TTMutex.hpp"
 #include "TTFFDemuxer.hpp"
 
 using namespace TT;
@@ -59,6 +60,7 @@ void FFDemuxer::close() {
 }
 
 std::shared_ptr<Packet> FFDemuxer::read() {
+    Mutex m(&_mutex);
     if (_formatContext == nullptr) {
         return nullptr;
     }
@@ -83,6 +85,11 @@ bool FFDemuxer::write(std::shared_ptr<Packet> packet) {
 }
 
 bool FFDemuxer::seek(uint64_t pos) {
+    Mutex m(&_mutex);
+    if (_formatContext == nullptr) {
+        return nullptr;
+    }
+    
     return false;
 }
 
