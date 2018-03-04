@@ -27,8 +27,12 @@ namespace TT {
         const std::string &path() const { return _path; }
         const std::string &extension() const { return _extension; }
         const std::string &query() const { return _query; }
+        const std::string &dir() const { return _dir; }
+        const std::string &lastComponent() const { return _lastComponent; }
         
     private:
+        void parse();
+        
         std::string _url = "";
         std::string _scheme = "";
         std::string _host = "";
@@ -36,6 +40,8 @@ namespace TT {
         std::string _path = "";
         std::string _extension = "";
         std::string _query = "";
+        std::string _dir = "";
+        std::string _lastComponent = "";
     };
 }
 

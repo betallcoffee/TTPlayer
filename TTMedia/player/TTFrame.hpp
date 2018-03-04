@@ -42,8 +42,9 @@ namespace TT {
         ~Frame();
         
         bool reallocData(size_t dataSize, int index);
+        bool isKeyframe();
         
-        static const size_t kNumOfPlanars = 3;
+        enum {kNumOfPlanars = 3};
         
         DataType type;
         

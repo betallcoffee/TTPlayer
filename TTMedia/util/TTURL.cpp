@@ -11,12 +11,16 @@
 using namespace TT;
 
 URL::URL(const std::string &url) {
-    
+    _url = url;
+    parse();
 }
 
 URL::URL(const std::string &&url) {
     _url = url;
-    
+    parse();
+}
+
+void URL::parse() {
     auto iterBegin = _url.begin();
     auto posScheme = _url.find("://");
     if (posScheme == std::string::npos) {
@@ -58,6 +62,14 @@ URL::URL(const std::string &&url) {
     auto posExtension = _path.find_last_of(".");
     if (posExtension != std::string::npos) {
         _extension = std::string(_path.begin() + posExtension + 1, _path.end());
+    }
+    
+    auto posLastComponent = _path.find_last_of("/");
+    if (posLastComponent != std::string::npos) {
+        _lastComponent = std::string(_path.begin() + posLastComponent + 1, _path.end());
+        _dir = std::string(_path.begin(), _path.begin() + posLastComponent);
+    } else {
+        _lastComponent = _path;
     }
 }
 

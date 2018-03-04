@@ -10,7 +10,7 @@
 
 #import "TTPlayer_ios.h"
 #include "TTProcess.h"
-#include "TTCapture.h"
+#import "TTCapture.h"
 
 #import "TTAVPlayerView.h"
 #import "ViewController.h"

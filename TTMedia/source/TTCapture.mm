@@ -240,15 +240,15 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (AVCaptureConnection *)videoOutputConnection {
-    if (_videoOutputConnection == nil) {
-        for (AVCaptureConnection *connection in [_videoOutput connections] ) {
-            for ( AVCaptureInputPort *port in [connection inputPorts] ) {
-                if ( [[port mediaType] isEqual:AVMediaTypeVideo] ) {
-                    _videoOutputConnection = connection;
-                }
-            }
-        }
-    }
+//    if (_videoOutputConnection == nil) {
+//        for (AVCaptureConnection *connection in [_videoOutput connections] ) {
+//            for ( AVCaptureInputPort *port in [connection inputPorts] ) {
+//                if ( [[port mediaType] isEqual:AVMediaTypeVideo] ) {
+//                    _videoOutputConnection = connection;
+//                }
+//            }
+//        }
+//    }
     return _videoOutputConnection;
 }
 

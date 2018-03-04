@@ -29,7 +29,7 @@ static bool renderDisplay(void *opaque, std::shared_ptr<TT::Frame> frame) {
         return false;
     }
     
-    TTOpenGLView *view = (__bridge  TTOpenGLView *)opaque;
+    TTOpenGLView *view = (__bridge TTOpenGLView *)opaque;
     return [view render:frame];
 }
 

@@ -10,6 +10,7 @@
 #define TTArray_hpp
 
 #include <vector>
+#include <functional>
 #include <pthread.h>
 
 #include "TTMutex.hpp"
@@ -43,6 +44,15 @@ namespace TT {
             return _array[index];
         }
         
+        int pushBack(T &elm) {
+            Mutex m(&_mutex);
+            if (!_full()) {
+                _array.push_back(elm);
+                return (int)_array.size() - 1;
+            }
+            return -1;
+        }
+        
         void insert(T &elm, int index) {
             Mutex m(&_mutex);
             if (!_full()) {
@@ -50,9 +60,43 @@ namespace TT {
             }
         }
         
+        void insert(T &elm, std::function<bool(T, T)> cmp) {
+            Mutex m(&_mutex);
+            
+            while (_full() && !_isClosed) {
+                pthread_cond_wait(&_cond, &_mutex);
+            }
+            
+            if (elm) {
+                typename std::vector<T>::const_reverse_iterator it = _array.rbegin();
+                for (; it != _array.rend(); it++) {
+                    if (cmp(*it, elm)) {
+                        break;
+                    }
+                }
+                if (it == _array.rend()) {
+                    _array.insert(_array.begin(), elm);
+                } else if (it == _array.rbegin()) {
+                    _array.push_back(elm);
+                } else {
+                    it--;
+                    typename std::vector<T>::const_iterator pos = it.base();
+                    _array.insert(pos, elm);
+                }
+//                _array.push_back(elm);
+//                std::sort(_array.begin(), _array.end(), cmp);
+            }
+            pthread_cond_broadcast(&_cond);
+        }
+        
         void erase(int index) {
             Mutex m(&_mutex);
             _array.erase(index);
+        }
+        
+        void clear() {
+            Mutex m(&_mutex);
+            _array.clear();
         }
         
     private:

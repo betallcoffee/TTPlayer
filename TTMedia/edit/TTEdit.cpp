@@ -13,6 +13,7 @@
 
 #include "TTHTTPStream.hpp"
 #include "TTFFDemuxer.hpp"
+#include "TTFFMuxer.hpp"
 #include "TTAudioCodec.hpp"
 #include "TTVideoCodec.hpp"
 
@@ -21,41 +22,62 @@
 using namespace TT;
 
 const static int kMaxPacketCount = 300;
-const static int kMaxFrameCount = 30;
+const static int kMaxFrameCount = 0;
 
 Edit::Edit() : _url(nullptr),
 _previews("video_preview_frame", kMaxFrameCount),
+_status(EditStatus::kNone), _statusCond(PTHREAD_COND_INITIALIZER), _statusMutex(PTHREAD_MUTEX_INITIALIZER),
+_statusCallback(nullptr), _eventCallback(nullptr), _decodeFrameCallback(nullptr),
+_stream(nullptr), _demuxer(nullptr),
 _vPacketQueue("video_packet_queue", kMaxPacketCount), _aPacketQueue("audio_packet_queue", kMaxPacketCount),
-_vFrameQueue("video_frame_queue", kMaxFrameCount), _aFrameQueue("audio_frame_queue", kMaxFrameCount),
+_vFrameArray("video_frame_array", kMaxFrameCount), _aFrameQueue("audio_frame_queue", kMaxFrameCount),
+_vPacketArray("video_packet_array", kMaxFrameCount),
 _inputCond(PTHREAD_COND_INITIALIZER), _inputMutex(PTHREAD_MUTEX_INITIALIZER),
-_demuxCond(PTHREAD_COND_INITIALIZER), _demuxMutex(PTHREAD_MUTEX_INITIALIZER),
-_audioCond(PTHREAD_COND_INITIALIZER), _audioMutex(PTHREAD_MUTEX_INITIALIZER), _audioDecoding(false),
-_videoCond(PTHREAD_COND_INITIALIZER), _videoMutex(PTHREAD_MUTEX_INITIALIZER), _videoDecoding(false) {
-     av_register_all();
-     avformat_network_init();
-     el::Loggers::setLoggingLevel(el::Level::Info);
-     LOG(DEBUG) << "ffmpeg build configure: " << avcodec_configuration();
-     pthread_create(&_inputThread, nullptr, Edit::inputThreadEntry, this);
-     pthread_create(&_demuxThread, nullptr, Edit::demuxThreadEntry, this);
-     pthread_create(&_audioThread, nullptr, Edit::audioThreadEntry, this);
-     pthread_create(&_videoThread, nullptr, Edit::videoThreadEntry, this);
+_demuxMutex(PTHREAD_MUTEX_INITIALIZER),
+_audioMutex(PTHREAD_MUTEX_INITIALIZER),
+_videoMutex(PTHREAD_MUTEX_INITIALIZER) {
+    av_register_all();
+    avformat_network_init();
+    el::Loggers::setLoggingLevel(el::Level::Debug);
+    LOG(DEBUG) << "ffmpeg build configure: " << avcodec_configuration();
+    pthread_create(&_inputThread, nullptr, Edit::inputThreadEntry, this);
 }
 
 Edit::~Edit() {
 }
 
+void Edit::setStatusCallback(StatusCallback cb) {
+    Mutex m(&_statusMutex);
+    _statusCallback = cb;
+}
+
+void Edit::setEventCallback(EventCallback cb) {
+    Mutex m(&_statusMutex);
+    _eventCallback = cb;
+}
+
+void Edit::setDecodeFrameCallback(DecodeFrameCallback cb) {
+    Mutex m(&_videoMutex);
+    _decodeFrameCallback = cb;
+}
+
 void Edit::start(std::shared_ptr<URL> url) {
-    if (_status == kNone ||
-        _status == kStoped) {
+    if (_status == EditStatus::kNone ||
+        _status == EditStatus::kStoped) {
         _url = url;
-        setStatus(kOpen);
+        setStatus(EditStatus::kOpen);
     }
 }
 
 void Edit::stop() {
-    setStatus(kClose);
+    setStatus(EditStatus::kClose);
     _aPacketQueue.clear();
     _vPacketQueue.clear();
+}
+
+void Edit::done(std::shared_ptr<URL> url) {
+    _saveUrl = url;
+    setStatus(EditStatus::kSave);
 }
 
 int Edit::previewCount() {
@@ -65,64 +87,94 @@ int Edit::previewCount() {
 std::shared_ptr<Frame> Edit::preview(int index) {
     if (0 <= index && index < previewCount()) {
         return _previews[index];
-    } else {
-        return nullptr;
     }
+    return nullptr;
 }
 
-void Edit::setStatus(eEditStatus status) {
+int Edit::videoFrameCount() {
+    return (int)_vFrameArray.size();
+}
+
+std::shared_ptr<Frame> Edit::videoFrame(int index) {
+    if (0 <= index && index < videoFrameCount()) {
+        return _vFrameArray[index];
+    }
+    return nullptr;
+}
+
+void Edit::setStatus(EditStatus status) {
     Mutex m(&_statusMutex);
-    LOG(DEBUG) << "Change status " << _status << " to " << status;
+    LOG(DEBUG) << "Will change status " << (int)_status << " to " << (int)status;
+    EditStatus oldStatus = _status;
     switch (status) {
-        case kOpen:
+        case EditStatus::kOpen:
         {
-            if (_status == kNone ||
-                _status == kError ||
-                _status == kStoped) {
-                _status = kOpen;
+            if (_status == EditStatus::kNone ||
+                _status == EditStatus::kError ||
+                _status == EditStatus::kStoped) {
+                _status = EditStatus::kOpen;
             }
             break;
         }
-        case kClose:
+        case EditStatus::kClose:
         {
-            if (_status == kError ||
-                _status == kOpen ||
-                _status == kPlaying ||
-                _status == kPaused) {
-                _status = kClose;
+            if (_status == EditStatus::kError ||
+                _status == EditStatus::kOpen ||
+                _status == EditStatus::kDecode ||
+                _status == EditStatus::kEdit ||
+                _status == EditStatus::kSave ||
+                _status == EditStatus::kPaused) {
+                _status = EditStatus::kClose;
             }
             break;
         }
-        case kPlaying:
+        case EditStatus::kDecode:
         {
-            if (_status == kOpen ||
-                _status == kPaused) {
-                _status = kPlaying;
+            if (_status == EditStatus::kOpen) {
+                _status = EditStatus::kDecode;
             }
             break;
         }
-        case kPaused:
+        case EditStatus::kEdit:
         {
-            if (_status == kPlaying) {
-                _status = kPaused;
+            if (_status == EditStatus::kDecode ||
+                _status == EditStatus::kSave) {
+                _status = EditStatus::kEdit;
             }
             break;
         }
-        case kStoped:
+        case EditStatus::kSave:
         {
-            if (_status == kClose) {
-                _status = kStoped;
+            if (_status == EditStatus::kEdit) {
+                _status = EditStatus::kSave;
+            }
+        }
+        case EditStatus::kPaused:
+        {
+            if (_status == EditStatus::kEdit) {
+                _status = EditStatus::kPaused;
             }
             break;
         }
-        case kQuit:
+        case EditStatus::kStoped:
         {
-            _status = kQuit;
+            if (_status == EditStatus::kClose) {
+                _status = EditStatus::kStoped;
+            }
+            break;
+        }
+        case EditStatus::kQuit:
+        {
+            _status = EditStatus::kQuit;
             break;
         }
             
         default:
             break;
+    }
+    if (oldStatus != _status && _statusCallback) {
+        LOG(DEBUG) << "Did change status " << (int)oldStatus << " to " << (int)_status;
+        _statusCallback(this, _status);
     }
     pthread_cond_broadcast(&_statusCond);
 }
@@ -132,14 +184,52 @@ void Edit::waitStatusChange() {
     pthread_cond_wait(&_statusCond, &_statusMutex);
 }
 
+void *Edit::inputThreadEntry(void *arg) {
+    pthread_setname_np("edit input thread");
+    Edit *self = (Edit *)arg;
+    self->inputLoop();
+    return nullptr;
+}
+
+void Edit::inputLoop() {
+    while (!isQuit()) {
+        switch (_status) {
+            case EditStatus::kOpen:
+            {
+                open();
+                break;
+            }
+            case EditStatus::kClose:
+            {
+                close();
+                break;
+            }
+            case EditStatus::kDecode:
+            {
+                decode();
+                break;
+            }
+            case EditStatus::kSave:
+            {
+                save();
+                break;
+            }
+            default:
+            {
+                usleep(1);
+                break;
+            }
+        }
+    }
+}
+
 bool Edit::open() {
-    if (_status == kOpen) {
+    if (_status == EditStatus::kOpen) {
         _demuxer = std::make_shared<FFDemuxer>();
         _demuxer->open(_url);
         
         if (_demuxer->hasAudio()) {
             _audioCodec = std::make_shared<AudioCodec>(_demuxer->audioStream());
-//            _audioCodec->setCodecCallback(std::bind(&Player::audioCodecCB, this, std::placeholders::_1));
             _audioCodec->open();
         }
         
@@ -148,40 +238,25 @@ bool Edit::open() {
             _videoCodec->open();
         }
         
-        setStatus(kPlaying);
+        setStatus(EditStatus::kDecode);
     }
     
     return true;;
 }
 
 bool Edit::close() {
-    if (_status == kClose) {
+    if (_status == EditStatus::kClose) {
         LOG(DEBUG) << "Waiting audio/video decode stop.";
         
         _aPacketQueue.clear();
         _vPacketQueue.clear();
         _aFrameQueue.clear();
-        _vFrameQueue.clear();
-        
-        Mutex d(&_demuxMutex);
-        while (_demuxing) {
-            pthread_cond_wait(&_demuxCond, &_demuxMutex);
-        }
-        
-        Mutex a(&_audioMutex);
-        while (_audioDecoding) {
-            pthread_cond_wait(&_audioCond, &_audioMutex);
-        }
-        
-        Mutex v(&_videoMutex);
-        while (_videoDecoding) {
-            pthread_cond_wait(&_videoCond, &_videoMutex);
-        }
+        _vFrameArray.clear();
         
         _aPacketQueue.clear();
         _vPacketQueue.clear();
         _aFrameQueue.clear();
-        _vFrameQueue.clear();
+        _vFrameArray.clear();
         
         LOG(DEBUG) << "Audio/Video decode stopped.";
         
@@ -202,169 +277,124 @@ bool Edit::close() {
             _demuxer.reset();
         }
         
-        setStatus(kStoped);
+        if (_muxer) {
+            _muxer->close();
+            _muxer.reset();
+        }
+        
+        setStatus(EditStatus::kStoped);
     }
     
     return true;
 }
 
 void Edit::quit() {
-    setStatus(kQuit);
+    setStatus(EditStatus::kQuit);
     pthread_join(_inputThread, nullptr);
 }
 
 bool Edit::isQuit() {
     Mutex m(&_statusMutex);
-    while (_status != kOpen &&
-           _status != kPlaying &&
-           _status != kClose &&
-           _status != kQuit) {
+    while (_status != EditStatus::kOpen &&
+           _status != EditStatus::kDecode &&
+           _status != EditStatus::kEdit &&
+           _status != EditStatus::kSave &&
+           _status != EditStatus::kClose &&
+           _status != EditStatus::kQuit) {
         pthread_cond_wait(&_statusCond, &_statusMutex);
-        LOG(DEBUG) << "thread loop wakeup: status:" << _status;
+        LOG(DEBUG) << "thread loop wakeup: status:" << (int)_status;
     }
     
-    if (_status == kQuit) {
+    if (_status == EditStatus::kQuit) {
         return true;
     } else {
         return false;
     }
 }
 
-void *Edit::inputThreadEntry(void *arg) {
-    Edit *self = (Edit *)arg;
-    self->inputLoop();
-    return nullptr;
-}
-
-void Edit::inputLoop() {
-    while (!isQuit()) {
-        switch (_status) {
-            case kOpen:
-                open();
+bool Edit::decode() {
+    std::shared_ptr<Packet> packet = _demuxer->read();
+    if (packet) {
+        switch (packet->type) {
+            case kPacketTypeAudio:
+//                _aPacketQueue.push(packet);
                 break;
-            case kClose:
-                close();
+            case kPacketTypeVideo:
+                videoDecode(packet);
+                _vPacketArray.pushBack(packet);
                 break;
             default:
-            {
-                usleep(1000);
                 break;
+        }
+        return true;
+    } else if (_demuxer->isEOF()) {
+        if (_eventCallback) {
+            _eventCallback(this, EditEvent::kDecodeEnd);
+        }
+        setStatus(EditStatus::kEdit);
+        return true;
+    }
+    
+    return false;
+}
+
+void Edit::videoDecode(std::shared_ptr<Packet> packet) {
+    if (packet && _videoCodec) {
+        std::shared_ptr<Frame> frame;
+        frame = _videoCodec->decode(packet);
+        if (frame) {
+            // Reorder with pts for B frame.
+            LOG(TRACE) << "Reorder begin " << frame->pts << " frame count:" << _vFrameArray.size();
+            _vFrameArray.insert(frame, [&](std::shared_ptr<Frame> l, std::shared_ptr<Frame> r) -> bool {
+                LOG(TRACE) << "Reorder " << l->pts << " " << r->pts;
+                return l->pts <= r->pts;
+            });
+            
+            LOG(TRACE) << "Reorder end " << frame->pts << " frame count:" << _vFrameArray.size();
+            
+            if (frame->isKeyframe()) {
+                LOG(TRACE) << "Decode keyframe pts:" << frame->pts;
+                _previews.pushBack(frame);
+            }
+            
+            if (_decodeFrameCallback) {
+                _decodeFrameCallback(this, _vFrameArray.size());
             }
         }
     }
 }
 
-void *Edit::demuxThreadEntry(void *arg) {
-    Edit *self = (Edit *)arg;
-    self->demuxLoop();
-    return nullptr;
-}
-
-void Edit::demuxLoop() {
-    while (!isQuit()) {
-        switch (_status) {
-            case kPlaying:
-            {
-                std::shared_ptr<Packet> packet = _demuxer->read();
-                if (packet) {
-                    switch (packet->type) {
-                        case kPacketTypeAudio:
-                            _aPacketQueue.push(packet);
-                            break;
-                        case kPacketTypeVideo:
-                            _vPacketQueue.push(packet);
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
-                    usleep(1000);
-                }
-                
-                _demuxing = false;
-                pthread_cond_broadcast(&_demuxCond);
-                
-                break;
-            }
-            default:
-            {
-                waitStatusChange();
-                break;
-            }
+bool Edit::save() {
+    if (_demuxer && _muxer == nullptr) {
+        _muxer = std::make_shared<FFMuxer>();
+        AVCodecParameters *audioCodecParam = nullptr;
+        AVCodecParameters *videoCodecParam = nullptr;
+        if (_demuxer->audioStream()) {
+            audioCodecParam = _demuxer->audioStream()->codecpar;
+        }
+        if (_demuxer->videoStream()) {
+            videoCodecParam = _demuxer->videoStream()->codecpar;
+        }
+        if (!_muxer->open(_saveUrl, audioCodecParam, videoCodecParam)) {
+            LOG(ERROR) << "Edit muxer open failed:" << _saveUrl;
+            _muxer->close();
+            _muxer = nullptr;
+            setStatus(EditStatus::kEdit);
+            return false;
         }
     }
-}
-
-void *Edit::audioThreadEntry(void *arg) {
-    Edit *self = (Edit *)arg;
-    self->audioLoop();
-    return nullptr;
-}
-
-void Edit::audioLoop() {
-    while (!isQuit()) {
-        switch (_status) {
-            case kPlaying:
-            {
-                Mutex m(&_audioMutex);
-                _audioDecoding = true;
-                std::shared_ptr<Packet> packet = _aPacketQueue.pop();
-                if (packet && _audioCodec) {
-                    std::shared_ptr<Frame> frame;
-                    frame = _audioCodec->decode(packet);
-                    if (frame) {
-                        _aFrameQueue.push(frame);
-                    }
-                }
-                _audioDecoding = false;
-                pthread_cond_broadcast(&_audioCond);
-                break;
-            }
-            default:
-            {
-                waitStatusChange();
-                break;
-            }
+    
+    if (_muxer) {
+        int count = _vPacketArray.size();
+        for (int i = 10; i < count; i++) {
+            std::shared_ptr<Packet> packet = _vPacketArray[i];
+            _muxer->write(packet);
         }
+        setStatus(EditStatus::kClose);
     }
+    return true;
 }
 
-void *Edit::videoThreadEntry(void *arg) {
-    Edit *self = (Edit *)arg;
-    self->videoLoop();
-    return nullptr;
-}
-
-void Edit::videoLoop() {
-    while (!isQuit()) {
-        switch (_status) {
-            case kPlaying:
-            {
-                Mutex m(&_videoMutex);
-                _videoDecoding = true;
-                std::shared_ptr<Packet> packet = _vPacketQueue.pop();
-                if (packet && _videoCodec) {
-                    std::shared_ptr<Frame> frame;
-                    frame = _videoCodec->decode(packet);
-                    if (frame) {
-                        // Reorder with pts for B frame.
-                        LOG(TRACE) << "Reorder begin " << frame->pts;
-                        _vFrameQueue.insert(frame, [&](std::shared_ptr<Frame> l, std::shared_ptr<Frame> r) -> bool {
-                            LOG(TRACE) << "Reorder " << l->pts << " " << r->pts;
-                            return l->pts <= r->pts;
-                        });
-                        LOG(TRACE) << "Reorder end " << frame->pts;
-                    }
-                }
-                _videoDecoding = false;
-                pthread_cond_broadcast(&_videoCond);
-                break;
-            }
-            default:
-            {
-                waitStatusChange();
-                break;
-            }
-        }
-    }
+bool Edit::encode() {
+    return false;
 }

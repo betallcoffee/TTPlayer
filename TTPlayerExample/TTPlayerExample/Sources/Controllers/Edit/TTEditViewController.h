@@ -10,6 +10,8 @@
 
 @interface TTEditViewController : TTBaseViewController
 
-- (instancetype)initWithURL:(NSURL *)url;
+@property (nonatomic, copy, readonly) NSArray<NSURL *> *urls;
+
+- (instancetype)initWithURLs:(NSArray<NSURL *> *)urls;
 
 @end

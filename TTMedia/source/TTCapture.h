@@ -6,6 +6,7 @@
 //  Copyright © 2017年 tina. All rights reserved.
 //
 
+#undef AVMediaType
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 

@@ -13,7 +13,7 @@ using namespace TT;
 
 bool FFDemuxer::open(std::shared_ptr<URL> url) {
     _url = url;
-    
+    _isEOF = false;
     _formatContext = avformat_alloc_context();
 //    av_dict_set_int(&_option, "probesize", 100*1024, 0);
     
@@ -69,19 +69,17 @@ std::shared_ptr<Packet> FFDemuxer::read() {
     int ret = av_read_frame(_formatContext, avpacket);
     if (ret == 0) {
         std::shared_ptr<Packet> packet = std::make_shared<Packet>(avpacket);
-        if (avpacket->stream_index == _audioStream->index) {
+        if (_audioStream && avpacket->stream_index == _audioStream->index) {
             packet->type = kPacketTypeAudio;
-        } else if (avpacket->stream_index == _videoStream->index) {
+        } else if (_videoStream && avpacket->stream_index == _videoStream->index) {
             packet->type = kPacketTypeVideo;
         }
         return packet;
+    } else if (ret == AVERROR_EOF) {
+        _isEOF = true;
     }
     
     return nullptr;
-}
-
-bool FFDemuxer::write(std::shared_ptr<Packet> packet) {
-    return false;
 }
 
 bool FFDemuxer::seek(uint64_t pos) {

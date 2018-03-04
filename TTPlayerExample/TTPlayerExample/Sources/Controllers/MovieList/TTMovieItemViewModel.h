@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong, readonly) NSString *name;
 @property (nonatomic, readonly) NSURL *url;
+@property (nonatomic, assign) NSNumber *size;
 
 - (void)configData:(NSURL *)url;
 

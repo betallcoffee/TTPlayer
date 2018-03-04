@@ -5,7 +5,7 @@
 //  Created by liang on 8/9/17.
 //  Copyright © 2017年 tina. All rights reserved.
 //
-
+// http://blog.devtang.com/2016/03/13/iOS-transition-guide/
 #import "TTTabViewController.h"
 
 @interface TTTabViewController ()<UITabBarDelegate>

@@ -28,16 +28,16 @@ namespace TT {
         _audioStream(nullptr), _videoStream(nullptr) {};
         ~FFDemuxer() {};
         
-        bool open(std::shared_ptr<URL> url);
-        void close();
+        bool open(std::shared_ptr<URL> url) override;
+        void close() override;
         
-        std::shared_ptr<Packet> read();
-        bool write(std::shared_ptr<Packet> packet);
+        std::shared_ptr<Packet> read() override;
         
-        bool seek(uint64_t pos);
+        bool seek(uint64_t pos) override;
+        bool isEOF() override { return _isEOF; };
         
-        bool hasAudio() { return _audioStream == nullptr ? false : true; }
-        bool hasVideo() { return _videoStream == nullptr ? false : true; }
+        bool hasAudio() override { return _audioStream == nullptr ? false : true; }
+        bool hasVideo() override { return _videoStream == nullptr ? false : true; }
         
         AVStream *audioStream() { return _audioStream; }
         AVStream *videoStream() { return _videoStream; }
@@ -46,6 +46,7 @@ namespace TT {
         std::shared_ptr<URL> _url;
         
         pthread_mutex_t _mutex;
+        bool _isEOF = false;
         
         AVFormatContext *_formatContext;
         AVDictionary *_option;

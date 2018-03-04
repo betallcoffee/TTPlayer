@@ -58,6 +58,7 @@
 //    self.interactive = YES;
     
     _movieListVC = [TTMovieListViewController new];
+    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:_movieListVC];
     _movieListVC.tabBarItem.tag = 0;
     _movieListVC.tabBarItem.title = @"视频";
     
@@ -69,7 +70,7 @@
     self.tabBar.selectedItem = _movieListVC.tabBarItem;
     self.tabBar.itemPositioning = UITabBarItemPositioningFill;
     
-    self.viewControllers = @[_movieListVC, _captureVC];
+    self.viewControllers = @[navVC, _captureVC];
 
 }
 

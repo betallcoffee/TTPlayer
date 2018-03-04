@@ -19,10 +19,12 @@
 @interface TTMovieListViewController () <UITableViewDelegate, UITableViewDataSource>
 {
     UITableView *_tableView;
+    NSMutableArray<NSURL *> *_selectedURL;
 }
 
 @property (nonatomic, strong) TTMovieListViewModel *viewModel;
 @property (nonatomic, strong, readonly) UITableView *tableView;
+@property (nonatomic, strong, readonly) NSMutableArray<NSURL *> *selectedURL;
 
 @end
 
@@ -88,8 +90,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TTMovieItemViewModel *item = [self.viewModel itemAtIndex:indexPath.row];
 //    MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:item.url];
-    TTEditViewController *playerVC = [[TTEditViewController alloc] initWithURL:item.url];
-    [self presentViewController:playerVC animated:YES completion:nil];
+//    [self presentViewController:playerVC animated:YES completion:nil];
+    TTEditViewController *editVC = [[TTEditViewController alloc] initWithURLs:self.viewModel.movieList];
+    [self.navigationController pushViewController:editVC animated:YES];
 }
 
 #pragma mark -
@@ -119,6 +122,13 @@
         _tableView = [UITableView new];
     }
     return _tableView;
+}
+
+- (NSMutableArray<NSURL *> *)selectedURL {
+    if (_selectedURL == nil) {
+        _selectedURL = [NSMutableArray new];
+    }
+    return _selectedURL;
 }
 
 @end

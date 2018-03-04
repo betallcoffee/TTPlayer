@@ -13,6 +13,7 @@
 @interface TTMovieListViewModel : TTBaseViewModel
 
 @property (nonatomic, readonly) NSUInteger total;
+@property (nonatomic, strong, readonly) NSArray<NSURL *> *movieList;
 
 - (TTMovieItemViewModel *)itemAtIndex:(NSUInteger)index;
 
