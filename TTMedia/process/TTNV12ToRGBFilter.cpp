@@ -32,8 +32,7 @@ static const GLchar *const kNV12FragmentShader = STRINGIZE
  }
  );
 
-NV12ToRGBFilter::NV12ToRGBFilter() :
-_frame(nullptr), _uniformColorConvertionMatrix(0) {
+NV12ToRGBFilter::NV12ToRGBFilter() : _uniformColorConvertionMatrix(0) {
     memset(_uniformSamplers, 0, sizeof(_uniformSamplers));
     memset(_textures, 0, sizeof(_textures));
 }
@@ -41,16 +40,6 @@ _frame(nullptr), _uniformColorConvertionMatrix(0) {
 NV12ToRGBFilter::~NV12ToRGBFilter() {
     if (_textures[0]) {
         glDeleteTextures(3, _textures);
-    }
-}
-
-void NV12ToRGBFilter::processFrame(std::shared_ptr<Frame> frame) {
-    if (frame) {
-        _frame = frame;
-        _width = _frame->width;
-        _height = _frame->height;
-        process(frame->pts);
-        _frame = nullptr;
     }
 }
 

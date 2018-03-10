@@ -13,10 +13,10 @@
 #include <OpenGLES/ES2/glext.h>
 #include <CoreMedia/CoreMedia.h>
 
-#include "TTTextureFilter.hpp"
+#include "TTFilterTexture.hpp"
 
 namespace TT {
-    class TextureFilter_ios : public TextureFilter {
+    class TextureFilter_ios : public FilterTexture {
     public:
         TextureFilter_ios();
         virtual ~TextureFilter_ios();

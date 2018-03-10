@@ -1,13 +1,13 @@
 //
-//  TTEdit.hpp
+//  TTVideoEdit.hpp
 //  TTPlayerExample
 //
 //  Created by liang on 17/10/17.
 //  Copyright © 2017年 tina. All rights reserved.
 //
 
-#ifndef TTEdit_hpp
-#define TTEdit_hpp
+#ifndef TTVideoEdit_hpp
+#define TTVideoEdit_hpp
 
 #include <pthread.h>
 #include <vector>
@@ -17,9 +17,11 @@
 #include "TTURL.hpp"
 
 #include "TTFrame.hpp"
+
+#include "TTFilterFrame.hpp"
+
 #include "TTAudioQueue.hpp"
 #include "TTRender.hpp"
-#include "TTY420ToRGBFilter.hpp"
 
 namespace TT {
     
@@ -27,7 +29,7 @@ namespace TT {
     class Frame;
     class Stream;
     class FFDemuxer;
-    class FFMuxer;
+    class FFWriter;
     class AudioCodec;
     class VideoCodec;
     
@@ -47,22 +49,26 @@ namespace TT {
     typedef enum class EditEvent {
         kNone,
         kDecodeEnd,
+        kSaveEnd,
     } eEditEvent;
     
-    class Edit {
+    class VideoEdit {
     public:
-        Edit();
-        ~Edit();
+        VideoEdit();
+        ~VideoEdit();
         
-        typedef std::function<void(Edit *, EditStatus)> StatusCallback;
+        typedef std::function<void(VideoEdit *, EditStatus)> StatusCallback;
         void setStatusCallback(StatusCallback cb);
         
-        typedef std::function<void(Edit *, size_t size)> DecodeFrameCallback;
+        typedef std::function<void(VideoEdit *, size_t size)> DecodeFrameCallback;
         void setDecodeFrameCallback(DecodeFrameCallback cb);
         
-        typedef std::function<void(Edit *, EditEvent event)> EventCallback;
+        typedef std::function<void(VideoEdit *, EditEvent event)> EventCallback;
         void setEventCallback(EventCallback cb);
         
+        int tag() { return _tag; }
+        void setTag(int tag) { _tag = tag; }
+
         void start(std::shared_ptr<URL> url);
         void stop();
         
@@ -94,6 +100,8 @@ namespace TT {
         void inputLoop();
         
     private:
+        int _tag = 0;
+        
         std::shared_ptr<URL> _url;
         std::shared_ptr<URL> _saveUrl;
         
@@ -106,7 +114,7 @@ namespace TT {
         std::shared_ptr<Stream> _stream;
         pthread_mutex_t _demuxMutex;
         std::shared_ptr<FFDemuxer> _demuxer;
-        std::shared_ptr<FFMuxer> _muxer;
+        std::shared_ptr<FFWriter> _writer;
         
         Queue<std::shared_ptr<Packet>> _vPacketQueue;
         Queue<std::shared_ptr<Packet>> _aPacketQueue;
@@ -128,4 +136,4 @@ namespace TT {
     };
 }
 
-#endif /* TTEdit_hpp */
+#endif /* TTVideoEdit_hpp */

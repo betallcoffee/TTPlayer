@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#include "TTEdit.hpp"
-
 @interface TTPreviewCell : UICollectionViewCell
 
 - (void)setupUI;

@@ -7,7 +7,7 @@
 //
 
 #include "easylogging++.h"
-#include "TTEdit.hpp"
+#include "TTVideoEdit.hpp"
 #include "TTProcess.h"
 
 #import "TTCapture.h"
@@ -22,7 +22,7 @@ static NSString *kPreviewCellIdentifier = @"previewCell";
   UICollectionViewDataSource,
   UICollectionViewDelegateFlowLayout>
 {
-    std::shared_ptr<TT::Edit> _edit;
+    std::shared_ptr<TT::VideoEdit> _edit;
     std::shared_ptr<TT::URL> _url;
     
     std::shared_ptr<TT::FilterGroup> _filterGroup;
@@ -34,13 +34,13 @@ static NSString *kPreviewCellIdentifier = @"previewCell";
 
 @property (nonatomic, strong, readwrite) UIButton *doneButton;
 
-- (void)edit:(TT::Edit *)edit statusCallback:(TT::EditStatus)status;
-- (void)edit:(TT::Edit *)edit eventCallback:(TT::EditEvent)event;
-- (void)edit:(TT::Edit *)edit decodeFrameCallback:(size_t)size;
+- (void)edit:(TT::VideoEdit *)edit statusCallback:(TT::EditStatus)status;
+- (void)edit:(TT::VideoEdit *)edit eventCallback:(TT::EditEvent)event;
+- (void)edit:(TT::VideoEdit *)edit decodeFrameCallback:(size_t)size;
 
 @end
 
-void EditStatusCallback(void *opaque, TT::Edit *edit, TT::EditStatus status) {
+void EditStatusCallback(void *opaque, TT::VideoEdit *edit, TT::EditStatus status) {
     if (opaque == nullptr) {
         return;
     }
@@ -51,7 +51,7 @@ void EditStatusCallback(void *opaque, TT::Edit *edit, TT::EditStatus status) {
     [vc edit:edit statusCallback:status];
 }
 
-void EditEventCallback(void *opaque, TT::Edit *edit, TT::EditEvent event) {
+void EditEventCallback(void *opaque, TT::VideoEdit *edit, TT::EditEvent event) {
     if (opaque == nullptr) {
         return;
     }
@@ -62,7 +62,7 @@ void EditEventCallback(void *opaque, TT::Edit *edit, TT::EditEvent event) {
     [vc edit:edit eventCallback:event];
 }
 
-void EditDecodeFrameCallback(void *opaque, TT::Edit *edit, size_t size) {
+void EditDecodeFrameCallback(void *opaque, TT::VideoEdit *edit, size_t size) {
     if (opaque == nullptr) {
         return;
     }
@@ -82,7 +82,7 @@ void EditDecodeFrameCallback(void *opaque, TT::Edit *edit, size_t size) {
         NSURL *url = [_urls objectAtIndex:0];
         const char *str = [url.absoluteString cStringUsingEncoding:NSUTF8StringEncoding];
         _url = std::make_shared<TT::URL>(str);
-        _edit = std::make_shared<TT::Edit>();
+        _edit = std::make_shared<TT::VideoEdit>();
         _edit->setStatusCallback(std::bind(EditStatusCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
         _edit->setEventCallback(std::bind(EditEventCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
         _edit->setDecodeFrameCallback(std::bind(EditDecodeFrameCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
@@ -175,26 +175,24 @@ void EditDecodeFrameCallback(void *opaque, TT::Edit *edit, size_t size) {
 }
 
 #pragma mark Edit callback
-- (void)edit:(TT::Edit *)edit statusCallback:(TT::eEditStatus)status {
+- (void)edit:(TT::VideoEdit *)edit statusCallback:(TT::eEditStatus)status {
 }
 
-- (void)edit:(TT::Edit *)edit eventCallback:(TT::EditEvent)event {
+- (void)edit:(TT::VideoEdit *)edit eventCallback:(TT::EditEvent)event {
     if (event == TT::EditEvent::kDecodeEnd) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [_previewBar reloadData];
-            std::shared_ptr<TT::Frame> frame = _edit->videoFrame(5);
-            _filterTexture->processFrame(frame);
         });
     }
 }
 
-- (void)edit:(TT::Edit *)edit decodeFrameCallback:(size_t)size {
+- (void)edit:(TT::VideoEdit *)edit decodeFrameCallback:(size_t)size {
 }
 
 #pragma mark -- UICollectionViewDataSource
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _edit->videoFrameCount();;
+    return _edit->videoFrameCount();
 }
 
 //定义展示的Section的个数

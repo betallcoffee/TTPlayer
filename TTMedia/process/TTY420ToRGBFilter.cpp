@@ -33,8 +33,7 @@ static const GLchar *const kY420FragmentShader = STRINGIZE
  }
  );
 
-Y420ToRGBFilter::Y420ToRGBFilter() :
- _frame(nullptr), _uniformColorConvertionMatrix(0) {
+Y420ToRGBFilter::Y420ToRGBFilter() : _uniformColorConvertionMatrix(0) {
     memset(_uniformSamplers, 0, sizeof(_uniformSamplers));
     memset(_textures, 0, sizeof(_textures));
 }
@@ -42,16 +41,6 @@ Y420ToRGBFilter::Y420ToRGBFilter() :
 Y420ToRGBFilter::~Y420ToRGBFilter() {
     if (_textures[0]) {
         glDeleteTextures(3, _textures);
-    }
-}
-
-void Y420ToRGBFilter::processFrame(std::shared_ptr<Frame> frame) {
-    if (frame) {
-        _frame = frame;
-        _width = _frame->width;
-        _height = _frame->height;
-        process(frame->pts);
-        _frame = nullptr;
     }
 }
 

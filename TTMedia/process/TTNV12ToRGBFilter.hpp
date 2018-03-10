@@ -12,16 +12,13 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 
-#include "TTFilter.hpp"
-#include "TTFrame.hpp"
+#include "TTFilterFrame.hpp"
 
 namespace TT {
-    class NV12ToRGBFilter : public Filter {
+    class NV12ToRGBFilter : public FilterFrame {
     public:
         NV12ToRGBFilter();
         virtual ~NV12ToRGBFilter();
-        
-        virtual void processFrame(std::shared_ptr<Frame> frame);
         
     protected:
         const GLchar *fragmentShader();
@@ -29,7 +26,6 @@ namespace TT {
         virtual void updateTexture();
         
     protected:
-        std::shared_ptr<Frame> _frame;
         
         GLuint _uniformSamplers[3];
         GLuint _uniformColorConvertionMatrix;

@@ -1,5 +1,5 @@
 //
-//  TTEdit.cpp
+//  TTVideoEdit.cpp
 //  TTPlayerExample
 //
 //  Created by liang on 17/10/17.
@@ -8,27 +8,26 @@
 
 #include "easylogging++.h"
 
-#include "TTEdit.hpp"
+#include "TTVideoEdit.hpp"
 #include "TTMutex.hpp"
 
 #include "TTHTTPStream.hpp"
 #include "TTFFDemuxer.hpp"
-#include "TTFFMuxer.hpp"
 #include "TTAudioCodec.hpp"
 #include "TTVideoCodec.hpp"
 
-#include "TTFilter.hpp"
+#include "TTFFWriter.hpp"
 
 using namespace TT;
 
 const static int kMaxPacketCount = 300;
 const static int kMaxFrameCount = 0;
 
-Edit::Edit() : _url(nullptr),
+VideoEdit::VideoEdit() : _url(nullptr),
 _previews("video_preview_frame", kMaxFrameCount),
 _status(EditStatus::kNone), _statusCond(PTHREAD_COND_INITIALIZER), _statusMutex(PTHREAD_MUTEX_INITIALIZER),
 _statusCallback(nullptr), _eventCallback(nullptr), _decodeFrameCallback(nullptr),
-_stream(nullptr), _demuxer(nullptr),
+_stream(nullptr), _demuxer(nullptr), _writer(nullptr),
 _vPacketQueue("video_packet_queue", kMaxPacketCount), _aPacketQueue("audio_packet_queue", kMaxPacketCount),
 _vFrameArray("video_frame_array", kMaxFrameCount), _aFrameQueue("audio_frame_queue", kMaxFrameCount),
 _vPacketArray("video_packet_array", kMaxFrameCount),
@@ -40,28 +39,28 @@ _videoMutex(PTHREAD_MUTEX_INITIALIZER) {
     avformat_network_init();
     el::Loggers::setLoggingLevel(el::Level::Debug);
     LOG(DEBUG) << "ffmpeg build configure: " << avcodec_configuration();
-    pthread_create(&_inputThread, nullptr, Edit::inputThreadEntry, this);
+    pthread_create(&_inputThread, nullptr, VideoEdit::inputThreadEntry, this);
 }
 
-Edit::~Edit() {
+VideoEdit::~VideoEdit() {
 }
 
-void Edit::setStatusCallback(StatusCallback cb) {
+void VideoEdit::setStatusCallback(StatusCallback cb) {
     Mutex m(&_statusMutex);
     _statusCallback = cb;
 }
 
-void Edit::setEventCallback(EventCallback cb) {
+void VideoEdit::setEventCallback(EventCallback cb) {
     Mutex m(&_statusMutex);
     _eventCallback = cb;
 }
 
-void Edit::setDecodeFrameCallback(DecodeFrameCallback cb) {
+void VideoEdit::setDecodeFrameCallback(DecodeFrameCallback cb) {
     Mutex m(&_videoMutex);
     _decodeFrameCallback = cb;
 }
 
-void Edit::start(std::shared_ptr<URL> url) {
+void VideoEdit::start(std::shared_ptr<URL> url) {
     if (_status == EditStatus::kNone ||
         _status == EditStatus::kStoped) {
         _url = url;
@@ -69,40 +68,40 @@ void Edit::start(std::shared_ptr<URL> url) {
     }
 }
 
-void Edit::stop() {
+void VideoEdit::stop() {
     setStatus(EditStatus::kClose);
     _aPacketQueue.clear();
     _vPacketQueue.clear();
 }
 
-void Edit::done(std::shared_ptr<URL> url) {
+void VideoEdit::done(std::shared_ptr<URL> url) {
     _saveUrl = url;
     setStatus(EditStatus::kSave);
 }
 
-int Edit::previewCount() {
+int VideoEdit::previewCount() {
     return (int)_previews.size();
 }
 
-std::shared_ptr<Frame> Edit::preview(int index) {
+std::shared_ptr<Frame> VideoEdit::preview(int index) {
     if (0 <= index && index < previewCount()) {
         return _previews[index];
     }
     return nullptr;
 }
 
-int Edit::videoFrameCount() {
+int VideoEdit::videoFrameCount() {
     return (int)_vFrameArray.size();
 }
 
-std::shared_ptr<Frame> Edit::videoFrame(int index) {
+std::shared_ptr<Frame> VideoEdit::videoFrame(int index) {
     if (0 <= index && index < videoFrameCount()) {
         return _vFrameArray[index];
     }
     return nullptr;
 }
 
-void Edit::setStatus(EditStatus status) {
+void VideoEdit::setStatus(EditStatus status) {
     Mutex m(&_statusMutex);
     LOG(DEBUG) << "Will change status " << (int)_status << " to " << (int)status;
     EditStatus oldStatus = _status;
@@ -179,19 +178,19 @@ void Edit::setStatus(EditStatus status) {
     pthread_cond_broadcast(&_statusCond);
 }
 
-void Edit::waitStatusChange() {
+void VideoEdit::waitStatusChange() {
     Mutex m(&_statusMutex);
     pthread_cond_wait(&_statusCond, &_statusMutex);
 }
 
-void *Edit::inputThreadEntry(void *arg) {
+void *VideoEdit::inputThreadEntry(void *arg) {
     pthread_setname_np("edit input thread");
-    Edit *self = (Edit *)arg;
+    VideoEdit *self = (VideoEdit *)arg;
     self->inputLoop();
     return nullptr;
 }
 
-void Edit::inputLoop() {
+void VideoEdit::inputLoop() {
     while (!isQuit()) {
         switch (_status) {
             case EditStatus::kOpen:
@@ -223,7 +222,7 @@ void Edit::inputLoop() {
     }
 }
 
-bool Edit::open() {
+bool VideoEdit::open() {
     if (_status == EditStatus::kOpen) {
         _demuxer = std::make_shared<FFDemuxer>();
         _demuxer->open(_url);
@@ -244,7 +243,7 @@ bool Edit::open() {
     return true;;
 }
 
-bool Edit::close() {
+bool VideoEdit::close() {
     if (_status == EditStatus::kClose) {
         LOG(DEBUG) << "Waiting audio/video decode stop.";
         
@@ -277,9 +276,9 @@ bool Edit::close() {
             _demuxer.reset();
         }
         
-        if (_muxer) {
-            _muxer->close();
-            _muxer.reset();
+        if (_writer) {
+            _writer->finish();
+            _writer.reset();
         }
         
         setStatus(EditStatus::kStoped);
@@ -288,12 +287,12 @@ bool Edit::close() {
     return true;
 }
 
-void Edit::quit() {
+void VideoEdit::quit() {
     setStatus(EditStatus::kQuit);
     pthread_join(_inputThread, nullptr);
 }
 
-bool Edit::isQuit() {
+bool VideoEdit::isQuit() {
     Mutex m(&_statusMutex);
     while (_status != EditStatus::kOpen &&
            _status != EditStatus::kDecode &&
@@ -312,7 +311,7 @@ bool Edit::isQuit() {
     }
 }
 
-bool Edit::decode() {
+bool VideoEdit::decode() {
     std::shared_ptr<Packet> packet = _demuxer->read();
     if (packet) {
         switch (packet->type) {
@@ -338,7 +337,7 @@ bool Edit::decode() {
     return false;
 }
 
-void Edit::videoDecode(std::shared_ptr<Packet> packet) {
+void VideoEdit::videoDecode(std::shared_ptr<Packet> packet) {
     if (packet && _videoCodec) {
         std::shared_ptr<Frame> frame;
         frame = _videoCodec->decode(packet);
@@ -364,9 +363,9 @@ void Edit::videoDecode(std::shared_ptr<Packet> packet) {
     }
 }
 
-bool Edit::save() {
-    if (_demuxer && _muxer == nullptr) {
-        _muxer = std::make_shared<FFMuxer>();
+bool VideoEdit::save() {
+    if (_demuxer && _writer == nullptr) {
+        _writer = std::make_shared<FFWriter>();
         AVCodecParameters *audioCodecParam = nullptr;
         AVCodecParameters *videoCodecParam = nullptr;
         if (_demuxer->audioStream()) {
@@ -375,26 +374,26 @@ bool Edit::save() {
         if (_demuxer->videoStream()) {
             videoCodecParam = _demuxer->videoStream()->codecpar;
         }
-        if (!_muxer->open(_saveUrl, audioCodecParam, videoCodecParam)) {
+        if (!_writer->start(_saveUrl, audioCodecParam, videoCodecParam)) {
             LOG(ERROR) << "Edit muxer open failed:" << _saveUrl;
-            _muxer->close();
-            _muxer = nullptr;
+            _writer->cancel();
+            _writer = nullptr;
             setStatus(EditStatus::kEdit);
             return false;
         }
     }
     
-    if (_muxer) {
+    if (_writer) {
         int count = _vPacketArray.size();
         for (int i = 10; i < count; i++) {
             std::shared_ptr<Packet> packet = _vPacketArray[i];
-            _muxer->write(packet);
+            _writer->processPacket(packet);
         }
         setStatus(EditStatus::kClose);
     }
     return true;
 }
 
-bool Edit::encode() {
+bool VideoEdit::encode() {
     return false;
 }

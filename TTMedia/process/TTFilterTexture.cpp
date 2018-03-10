@@ -1,5 +1,5 @@
 //
-//  TTTextureFilter.cpp
+//  TTFilterTexture.cpp
 //  TTPlayerExample
 //
 //  Created by liang on 2/9/17.
@@ -8,20 +8,20 @@
 
 #include "easylogging++.h"
 
-#include "TTTextureFilter.hpp"
+#include "TTFilterTexture.hpp"
 #include "TTGLContext_ios.h"
 
 using namespace TT;
 
-TextureFilter::TextureFilter() {
+FilterTexture::FilterTexture() {
     
 }
 
-TextureFilter::~TextureFilter() {
+FilterTexture::~FilterTexture() {
     
 }
 
-void TextureFilter::process(int64_t timestamp) {
+void FilterTexture::process(int64_t timestamp) {
     TIMED_FUNC(timer);
     GLContext::sharedProcessContext().use();
     

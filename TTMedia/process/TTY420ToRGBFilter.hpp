@@ -11,16 +11,13 @@
 
 #include <OpenGLES/ES2/gl.h>
 
-#include "TTFilter.hpp"
-#include "TTFrame.hpp"
+#include "TTFilterFrame.hpp"
 
 namespace TT {
-    class Y420ToRGBFilter : public Filter {
+    class Y420ToRGBFilter : public FilterFrame {
     public:
         Y420ToRGBFilter();
         virtual ~Y420ToRGBFilter();
-        
-        virtual void processFrame(std::shared_ptr<Frame> frame);
         
     protected:
         const GLchar *fragmentShader();
@@ -28,7 +25,6 @@ namespace TT {
         virtual void updateTexture();
         
     protected:
-        std::shared_ptr<Frame> _frame;
       
         GLuint _uniformSamplers[3];
         GLuint _uniformColorConvertionMatrix;
