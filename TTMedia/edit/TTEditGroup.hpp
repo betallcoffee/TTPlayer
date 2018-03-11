@@ -9,8 +9,11 @@
 #ifndef TTEditGroup_hpp
 #define TTEditGroup_hpp
 
+#include <vector>
+
 #include "TTFilterFrame.hpp"
-#include "TTVideoEdit.hpp"
+#include "TTMaterial.hpp"
+#include "TTVideo.hpp"
 
 namespace TT {
     class EditGroup {
@@ -18,11 +21,16 @@ namespace TT {
         EditGroup();
         ~EditGroup();
         
+        int materialCount();
+        std::shared_ptr<Material> material(int index);
         
+        void addMaterial(std::shared_ptr<Material> material);
+        void removeMaterial(int index);
+        
+        void finish();
         
     private:
-        
-        
+        std::vector<std::shared_ptr<Material>> _materials;
     };
 }
 

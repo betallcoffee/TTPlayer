@@ -1,5 +1,5 @@
 //
-//  TTVideoEdit.hpp
+//  TTVideo.hpp
 //  TTPlayerExample
 //
 //  Created by liang on 17/10/17.
@@ -16,12 +16,11 @@
 #include "TTQueue.hpp"
 #include "TTURL.hpp"
 
-#include "TTFrame.hpp"
-
 #include "TTFilterFrame.hpp"
-
 #include "TTAudioQueue.hpp"
 #include "TTRender.hpp"
+
+#include "TTMaterial.hpp"
 
 namespace TT {
     
@@ -33,65 +32,63 @@ namespace TT {
     class AudioCodec;
     class VideoCodec;
     
-    typedef enum class EditStatus {
+    typedef enum class VideoStatus {
         kNone = 0,
         kError = 1,
         kOpen = 2,
         kClose = 3,
-        kDecode = 4,
+        kRead = 4,
         kEdit = 5,
-        kSave = 6,
+        kWrite = 6,
         kPaused = 7,
         kStoped = 8,
         kQuit = 9,
     } eEditStatus;
     
-    typedef enum class EditEvent {
+    typedef enum class VideoEvent {
         kNone,
-        kDecodeEnd,
-        kSaveEnd,
+        kReadEnd,
+        kWriteEnd,
     } eEditEvent;
     
-    class VideoEdit {
+    class Video : public Material {
     public:
-        VideoEdit();
-        ~VideoEdit();
+        Video();
+        ~Video();
         
-        typedef std::function<void(VideoEdit *, EditStatus)> StatusCallback;
+        typedef std::function<void(Video *, VideoStatus)> StatusCallback;
         void setStatusCallback(StatusCallback cb);
         
-        typedef std::function<void(VideoEdit *, size_t size)> DecodeFrameCallback;
-        void setDecodeFrameCallback(DecodeFrameCallback cb);
+        typedef std::function<void(Video *, size_t size)> ReadFrameCallback;
+        void setReadFrameCallback(ReadFrameCallback cb);
         
-        typedef std::function<void(VideoEdit *, EditEvent event)> EventCallback;
+        typedef std::function<void(Video *, VideoEvent event)> EventCallback;
         void setEventCallback(EventCallback cb);
-        
-        int tag() { return _tag; }
-        void setTag(int tag) { _tag = tag; }
 
         void start(std::shared_ptr<URL> url);
         void stop();
         
-        void done(std::shared_ptr<URL> url);
-        
         int previewCount();
         std::shared_ptr<Frame> preview(int index);
         
-        int videoFrameCount();
-        std::shared_ptr<Frame> videoFrame(int index);
+        int frameCount() override;
+        std::shared_ptr<Frame> frame(int index) override;
+        
+        void save(std::shared_ptr<URL> url) override;
+        bool process() override { return false; };
         
     private:
-        void setStatus(EditStatus status);
+        void setStatus(VideoStatus status);
         void waitStatusChange();
         
         bool open();
         bool close();
-        bool save();
+        bool write();
         
         void quit();
         bool isQuit();
         
-        bool decode();
+        bool read();
         void videoDecode(std::shared_ptr<Packet> packet);
         
         bool encode();
@@ -100,9 +97,6 @@ namespace TT {
         void inputLoop();
         
     private:
-        int _tag = 0;
-        
-        std::shared_ptr<URL> _url;
         std::shared_ptr<URL> _saveUrl;
         
         eEditStatus _status;
@@ -128,7 +122,7 @@ namespace TT {
         Array<std::shared_ptr<Frame>> _vFrameArray;
         Array<std::shared_ptr<Packet>> _vPacketArray;
         Array<std::shared_ptr<Frame>> _previews;
-        DecodeFrameCallback _decodeFrameCallback;
+        ReadFrameCallback _readFrameCallback;
         
         pthread_t _inputThread;
         pthread_cond_t _inputCond;

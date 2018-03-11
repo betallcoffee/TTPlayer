@@ -7,7 +7,7 @@
 //
 
 #include "easylogging++.h"
-#include "TTVideoEdit.hpp"
+#include "TTVideo.hpp"
 #include "TTProcess.h"
 
 #import "TTCapture.h"
@@ -22,7 +22,7 @@ static NSString *kPreviewCellIdentifier = @"previewCell";
   UICollectionViewDataSource,
   UICollectionViewDelegateFlowLayout>
 {
-    std::shared_ptr<TT::VideoEdit> _edit;
+    std::shared_ptr<TT::Video> _video;
     std::shared_ptr<TT::URL> _url;
     
     std::shared_ptr<TT::FilterGroup> _filterGroup;
@@ -34,13 +34,13 @@ static NSString *kPreviewCellIdentifier = @"previewCell";
 
 @property (nonatomic, strong, readwrite) UIButton *doneButton;
 
-- (void)edit:(TT::VideoEdit *)edit statusCallback:(TT::EditStatus)status;
-- (void)edit:(TT::VideoEdit *)edit eventCallback:(TT::EditEvent)event;
-- (void)edit:(TT::VideoEdit *)edit decodeFrameCallback:(size_t)size;
+- (void)video:(TT::Video *)video statusCallback:(TT::VideoStatus)status;
+- (void)video:(TT::Video *)video eventCallback:(TT::VideoEvent)event;
+- (void)video:(TT::Video *)video readFrameCallback:(size_t)size;
 
 @end
 
-void EditStatusCallback(void *opaque, TT::VideoEdit *edit, TT::EditStatus status) {
+void VideoStatusCallback(void *opaque, TT::Video *video, TT::VideoStatus status) {
     if (opaque == nullptr) {
         return;
     }
@@ -48,10 +48,10 @@ void EditStatusCallback(void *opaque, TT::VideoEdit *edit, TT::EditStatus status
     LOG(DEBUG) << "Edit status change:" << (int)status;
 
     TTEditViewController *vc = (__bridge TTEditViewController *)opaque;
-    [vc edit:edit statusCallback:status];
+    [vc video:video statusCallback:status];
 }
 
-void EditEventCallback(void *opaque, TT::VideoEdit *edit, TT::EditEvent event) {
+void VideoEventCallback(void *opaque, TT::Video *video, TT::VideoEvent event) {
     if (opaque == nullptr) {
         return;
     }
@@ -59,10 +59,10 @@ void EditEventCallback(void *opaque, TT::VideoEdit *edit, TT::EditEvent event) {
     LOG(DEBUG) << "Edit event callback:" << (int)event;
     
     TTEditViewController *vc = (__bridge TTEditViewController *)opaque;
-    [vc edit:edit eventCallback:event];
+    [vc video:video eventCallback:event];
 }
 
-void EditDecodeFrameCallback(void *opaque, TT::VideoEdit *edit, size_t size) {
+void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
     if (opaque == nullptr) {
         return;
     }
@@ -70,7 +70,7 @@ void EditDecodeFrameCallback(void *opaque, TT::VideoEdit *edit, size_t size) {
 //    LOG(DEBUG) << "Edit decode frame size:" << size;
     
     TTEditViewController *vc = (__bridge TTEditViewController *)opaque;
-    [vc edit:edit decodeFrameCallback:size];
+    [vc video:video readFrameCallback:size];
 }
 
 @implementation TTEditViewController
@@ -82,10 +82,10 @@ void EditDecodeFrameCallback(void *opaque, TT::VideoEdit *edit, size_t size) {
         NSURL *url = [_urls objectAtIndex:0];
         const char *str = [url.absoluteString cStringUsingEncoding:NSUTF8StringEncoding];
         _url = std::make_shared<TT::URL>(str);
-        _edit = std::make_shared<TT::VideoEdit>();
-        _edit->setStatusCallback(std::bind(EditStatusCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
-        _edit->setEventCallback(std::bind(EditEventCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
-        _edit->setDecodeFrameCallback(std::bind(EditDecodeFrameCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
+        _video = std::make_shared<TT::Video>();
+        _video->setStatusCallback(std::bind(VideoStatusCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
+        _video->setEventCallback(std::bind(VideoEventCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
+        _video->setReadFrameCallback(std::bind(VideoReadFrameCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
     }
     
     return self;
@@ -96,7 +96,7 @@ void EditDecodeFrameCallback(void *opaque, TT::VideoEdit *edit, size_t size) {
     // Do any additional setup after loading the view.
     
     [self setupFilter];
-    _edit->start(_url);
+    _video->start(_url);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -171,28 +171,28 @@ void EditDecodeFrameCallback(void *opaque, TT::VideoEdit *edit, size_t size) {
 - (void)onDoneButton:(UIButton *)button {
     std::string url = _url->scheme() + ":///" + _url->dir() + "/liangliang.mp4";
     std::shared_ptr<TT::URL> _outUrl = std::make_shared<TT::URL>(url);
-    _edit->done(_outUrl);
+    _video->save(_outUrl);
 }
 
 #pragma mark Edit callback
-- (void)edit:(TT::VideoEdit *)edit statusCallback:(TT::eEditStatus)status {
+- (void)video:(TT::Video *)video statusCallback:(TT::eEditStatus)status {
 }
 
-- (void)edit:(TT::VideoEdit *)edit eventCallback:(TT::EditEvent)event {
-    if (event == TT::EditEvent::kDecodeEnd) {
+- (void)video:(TT::Video *)video eventCallback:(TT::VideoEvent)event {
+    if (event == TT::VideoEvent::kReadEnd) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [_previewBar reloadData];
         });
     }
 }
 
-- (void)edit:(TT::VideoEdit *)edit decodeFrameCallback:(size_t)size {
+- (void)video:(TT::Video *)video readFrameCallback:(size_t)size {
 }
 
 #pragma mark -- UICollectionViewDataSource
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _edit->videoFrameCount();
+    return _video->frameCount();
 }
 
 //定义展示的Section的个数
@@ -210,7 +210,7 @@ void EditDecodeFrameCallback(void *opaque, TT::VideoEdit *edit, size_t size) {
                                             blue:((30 * indexPath.row)/255.0)
                                            alpha:1.0f];
     
-    std::shared_ptr<TT::Frame> frame = _edit->videoFrame(indexPath.row);
+    std::shared_ptr<TT::Frame> frame = _video->frame(indexPath.row);
     [cell setupUI];
     [cell showFrame:frame];
     
@@ -243,7 +243,7 @@ void EditDecodeFrameCallback(void *opaque, TT::VideoEdit *edit, size_t size) {
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell * cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    std::shared_ptr<TT::Frame> frame = _edit->videoFrame(indexPath.row);
+    std::shared_ptr<TT::Frame> frame = _video->frame(indexPath.row);
     _filterTexture->processFrame(frame);
 }
 
