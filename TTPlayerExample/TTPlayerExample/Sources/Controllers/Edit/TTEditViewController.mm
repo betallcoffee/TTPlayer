@@ -23,8 +23,6 @@ static NSString *kPreviewCellIdentifier = @"previewCell";
   UICollectionViewDelegateFlowLayout>
 {
     std::shared_ptr<TT::EditGroup> _editGroup;
-    std::shared_ptr<TT::Video> _video;
-    std::shared_ptr<TT::URL> _url;
     
     std::shared_ptr<TT::FilterGroup> _filterGroup;
     std::shared_ptr<TT::Y420ToRGBFilter> _filterTexture;
@@ -79,18 +77,8 @@ void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
 - (instancetype)initWithURLs:(NSArray<NSURL *> *)urls {
     self = [super init];
     if (self) {
-        _urls = [urls mutableCopy];
-        NSURL *url = [_urls objectAtIndex:0];
-        const char *str = [url.absoluteString cStringUsingEncoding:NSUTF8StringEncoding];
-        _url = std::make_shared<TT::URL>(str);
-        
         _editGroup = std::make_shared<TT::EditGroup>();
-        
-        _video = std::make_shared<TT::Video>();
-        _video->setStatusCallback(std::bind(VideoStatusCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
-        _video->setEventCallback(std::bind(VideoEventCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
-        _video->setReadFrameCallback(std::bind(VideoReadFrameCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
-        _editGroup->addMaterial(_video);
+        _urls = [urls mutableCopy];
     }
     
     return self;
@@ -99,9 +87,11 @@ void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     [self setupFilter];
-    _video->open(_url);
+    
+    [_urls enumerateObjectsUsingBlock:^(NSURL * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self addMaterial:obj];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -174,9 +164,20 @@ void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
 
 #pragma mark target/action
 - (void)onDoneButton:(UIButton *)button {
-    std::string url = _url->scheme() + ":///" + _url->dir() + "/liangliang.mp4";
-    std::shared_ptr<TT::URL> _outUrl = std::make_shared<TT::URL>(url);
-    _video->save(_outUrl);
+//    std::string url = _url->scheme() + ":///" + _url->dir() + "/liangliang.mp4";
+//    std::shared_ptr<TT::URL> _outUrl = std::make_shared<TT::URL>(url);
+//    _video->save(_outUrl);
+}
+
+#pragma mark Edit Material
+- (void)addMaterial:(NSURL *)url {
+    std::shared_ptr<TT::Video> video = std::make_shared<TT::Video>();
+    video->setStatusCallback(std::bind(VideoStatusCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
+    video->setEventCallback(std::bind(VideoEventCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
+    video->setReadFrameCallback(std::bind(VideoReadFrameCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
+    _editGroup->addMaterial(video);
+    const char *str = [url.absoluteString cStringUsingEncoding:NSUTF8StringEncoding];
+    video->open(std::make_shared<TT::URL>(str));
 }
 
 #pragma mark Edit callback
@@ -197,12 +198,16 @@ void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
 #pragma mark -- UICollectionViewDataSource
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _video->frameCount();
+    std::shared_ptr<TT::Material> material = _editGroup->material(section);
+    if (material) {
+        return material->frameCount();
+    }
+    return 0;
 }
 
 //定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+    return _editGroup->materialCount();
 }
 
 //每个UICollectionView展示的内容
@@ -215,11 +220,14 @@ void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
                                             blue:((30 * indexPath.row)/255.0)
                                            alpha:1.0f];
     
-    std::shared_ptr<TT::Frame> frame = _video->frame(indexPath.row);
-    [cell setupUI];
-    [cell showFrame:frame];
-    
-    _filterTexture->processFrame(frame);
+    std::shared_ptr<TT::Material> material = _editGroup->material(indexPath.section);
+    if(material) {
+        std::shared_ptr<TT::Frame> frame = material->frame(indexPath.row);
+        [cell setupUI];
+        [cell showFrame:frame];
+        
+        _filterTexture->processFrame(frame);
+    }
     
     return cell;
 }
@@ -248,8 +256,12 @@ void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell * cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    std::shared_ptr<TT::Frame> frame = _video->frame(indexPath.row);
-    _filterTexture->processFrame(frame);
+    
+    std::shared_ptr<TT::Material> material = _editGroup->material(indexPath.section);
+    if(material) {
+        std::shared_ptr<TT::Frame> frame = material->frame(indexPath.row);
+        _filterTexture->processFrame(frame);
+    }
 }
 
 //返回这个UICollectionView是否可以被选择
