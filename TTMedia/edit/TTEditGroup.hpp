@@ -9,11 +9,11 @@
 #ifndef TTEditGroup_hpp
 #define TTEditGroup_hpp
 
+#include <pthread.h>
 #include <vector>
 
 #include "TTFilterFrame.hpp"
 #include "TTMaterial.hpp"
-#include "TTVideo.hpp"
 
 namespace TT {
     class EditGroup {
@@ -30,7 +30,14 @@ namespace TT {
         void finish();
         
     private:
+        static void * editThreadEntry(void *opaque);
+        void editThreadLoop();
+        
         std::vector<std::shared_ptr<Material>> _materials;
+        
+        bool _isQuit;
+        pthread_t _editThread;
+        pthread_mutex_t _editMutex;
     };
 }
 

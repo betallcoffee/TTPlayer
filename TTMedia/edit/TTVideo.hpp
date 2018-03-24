@@ -56,6 +56,15 @@ namespace TT {
         Video();
         ~Video();
         
+        bool process() override;
+        
+        bool open(std::shared_ptr<URL> url) override;
+        bool close() override;
+        void save(std::shared_ptr<URL> url) override;
+        
+        int frameCount() override;
+        std::shared_ptr<Frame> frame(int index) override;
+        
         typedef std::function<void(Video *, VideoStatus)> StatusCallback;
         void setStatusCallback(StatusCallback cb);
         
@@ -64,25 +73,16 @@ namespace TT {
         
         typedef std::function<void(Video *, VideoEvent event)> EventCallback;
         void setEventCallback(EventCallback cb);
-
-        void start(std::shared_ptr<URL> url);
-        void stop();
         
         int previewCount();
         std::shared_ptr<Frame> preview(int index);
-        
-        int frameCount() override;
-        std::shared_ptr<Frame> frame(int index) override;
-        
-        void save(std::shared_ptr<URL> url) override;
-        bool process() override { return false; };
         
     private:
         void setStatus(VideoStatus status);
         void waitStatusChange();
         
         bool open();
-        bool close();
+        bool close_();
         bool write();
         
         void quit();
@@ -123,10 +123,6 @@ namespace TT {
         Array<std::shared_ptr<Packet>> _vPacketArray;
         Array<std::shared_ptr<Frame>> _previews;
         ReadFrameCallback _readFrameCallback;
-        
-        pthread_t _inputThread;
-        pthread_cond_t _inputCond;
-        pthread_mutex_t _inputMutex;
     };
 }
 

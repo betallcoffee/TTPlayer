@@ -7,7 +7,7 @@
 //
 
 #include "easylogging++.h"
-#include "TTVideo.hpp"
+#include "TTEdit.h"
 #include "TTProcess.h"
 
 #import "TTCapture.h"
@@ -22,6 +22,7 @@ static NSString *kPreviewCellIdentifier = @"previewCell";
   UICollectionViewDataSource,
   UICollectionViewDelegateFlowLayout>
 {
+    std::shared_ptr<TT::EditGroup> _editGroup;
     std::shared_ptr<TT::Video> _video;
     std::shared_ptr<TT::URL> _url;
     
@@ -82,10 +83,14 @@ void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
         NSURL *url = [_urls objectAtIndex:0];
         const char *str = [url.absoluteString cStringUsingEncoding:NSUTF8StringEncoding];
         _url = std::make_shared<TT::URL>(str);
+        
+        _editGroup = std::make_shared<TT::EditGroup>();
+        
         _video = std::make_shared<TT::Video>();
         _video->setStatusCallback(std::bind(VideoStatusCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
         _video->setEventCallback(std::bind(VideoEventCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
         _video->setReadFrameCallback(std::bind(VideoReadFrameCallback, (__bridge void *)self, std::placeholders::_1, std::placeholders::_2));
+        _editGroup->addMaterial(_video);
     }
     
     return self;
@@ -96,7 +101,7 @@ void VideoReadFrameCallback(void *opaque, TT::Video *video, size_t size) {
     // Do any additional setup after loading the view.
     
     [self setupFilter];
-    _video->start(_url);
+    _video->open(_url);
 }
 
 - (void)didReceiveMemoryWarning {

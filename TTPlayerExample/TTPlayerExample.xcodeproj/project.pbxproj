@@ -310,6 +310,7 @@
 		EC48ACF5205427E00009C0C2 /* TTEditGroup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TTEditGroup.hpp; sourceTree = "<group>"; };
 		EC48ACF7205451320009C0C2 /* TTMaterial.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TTMaterial.cpp; sourceTree = "<group>"; };
 		EC48ACF8205451320009C0C2 /* TTMaterial.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TTMaterial.hpp; sourceTree = "<group>"; };
+		EC48ACFA2065F7630009C0C2 /* TTEdit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTEdit.h; sourceTree = "<group>"; };
 		EC4E9C681F1A6400005C8E36 /* TTMutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTMutex.cpp; sourceTree = "<group>"; };
 		EC4E9C691F1A6400005C8E36 /* TTMutex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTMutex.hpp; sourceTree = "<group>"; };
 		EC4E9C6B1F1A6572005C8E36 /* TTCond.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTCond.cpp; sourceTree = "<group>"; };
@@ -1044,6 +1045,7 @@
 		EC6600651F95C15900042B2A /* edit */ = {
 			isa = PBXGroup;
 			children = (
+				EC48ACFA2065F7630009C0C2 /* TTEdit.h */,
 				EC48ACF7205451320009C0C2 /* TTMaterial.cpp */,
 				EC48ACF8205451320009C0C2 /* TTMaterial.hpp */,
 				EC6600661F95C19B00042B2A /* TTVideo.cpp */,

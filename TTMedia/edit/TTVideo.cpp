@@ -31,7 +31,6 @@ _stream(nullptr), _demuxer(nullptr), _writer(nullptr),
 _vPacketQueue("video_packet_queue", kMaxPacketCount), _aPacketQueue("audio_packet_queue", kMaxPacketCount),
 _vFrameArray("video_frame_array", kMaxFrameCount), _aFrameQueue("audio_frame_queue", kMaxFrameCount),
 _vPacketArray("video_packet_array", kMaxFrameCount),
-_inputCond(PTHREAD_COND_INITIALIZER), _inputMutex(PTHREAD_MUTEX_INITIALIZER),
 _demuxMutex(PTHREAD_MUTEX_INITIALIZER),
 _audioMutex(PTHREAD_MUTEX_INITIALIZER),
 _videoMutex(PTHREAD_MUTEX_INITIALIZER) {
@@ -39,10 +38,61 @@ _videoMutex(PTHREAD_MUTEX_INITIALIZER) {
     avformat_network_init();
     el::Loggers::setLoggingLevel(el::Level::Debug);
     LOG(DEBUG) << "ffmpeg build configure: " << avcodec_configuration();
-    pthread_create(&_inputThread, nullptr, Video::inputThreadEntry, this);
 }
 
 Video::~Video() {
+}
+
+bool Video::process() {
+    switch (_status) {
+        case VideoStatus::kOpen: {
+            return open();
+        }
+        case VideoStatus::kClose: {
+            return close();
+        }
+        case VideoStatus::kRead: {
+            return read();
+        }
+        case VideoStatus::kWrite: {
+            return write();
+        }
+        default: break;
+    }
+    return false;
+}
+
+bool Video::open(std::shared_ptr<URL> url) {
+    if (_status == VideoStatus::kNone ||
+        _status == VideoStatus::kStoped) {
+        _url = url;
+        setStatus(VideoStatus::kOpen);
+        return true;
+    }
+    return false;
+}
+
+bool Video::close() {
+    setStatus(VideoStatus::kClose);
+    _aPacketQueue.clear();
+    _vPacketQueue.clear();
+    return true;
+}
+
+void Video::save(std::shared_ptr<URL> url) {
+    _saveUrl = url;
+    setStatus(VideoStatus::kWrite);
+}
+
+int Video::frameCount() {
+    return (int)_vFrameArray.size();
+}
+
+std::shared_ptr<Frame> Video::frame(int index) {
+    if (0 <= index && index < frameCount()) {
+        return _vFrameArray[index];
+    }
+    return nullptr;
 }
 
 void Video::setStatusCallback(StatusCallback cb) {
@@ -60,25 +110,6 @@ void Video::setReadFrameCallback(ReadFrameCallback cb) {
     _readFrameCallback = cb;
 }
 
-void Video::start(std::shared_ptr<URL> url) {
-    if (_status == VideoStatus::kNone ||
-        _status == VideoStatus::kStoped) {
-        _url = url;
-        setStatus(VideoStatus::kOpen);
-    }
-}
-
-void Video::stop() {
-    setStatus(VideoStatus::kClose);
-    _aPacketQueue.clear();
-    _vPacketQueue.clear();
-}
-
-void Video::save(std::shared_ptr<URL> url) {
-    _saveUrl = url;
-    setStatus(VideoStatus::kWrite);
-}
-
 int Video::previewCount() {
     return (int)_previews.size();
 }
@@ -90,24 +121,12 @@ std::shared_ptr<Frame> Video::preview(int index) {
     return nullptr;
 }
 
-int Video::frameCount() {
-    return (int)_vFrameArray.size();
-}
-
-std::shared_ptr<Frame> Video::frame(int index) {
-    if (0 <= index && index < frameCount()) {
-        return _vFrameArray[index];
-    }
-    return nullptr;
-}
-
 void Video::setStatus(VideoStatus status) {
     Mutex m(&_statusMutex);
     LOG(DEBUG) << "Will change status " << (int)_status << " to " << (int)status;
     VideoStatus oldStatus = _status;
     switch (status) {
-        case VideoStatus::kOpen:
-        {
+        case VideoStatus::kOpen: {
             if (_status == VideoStatus::kNone ||
                 _status == VideoStatus::kError ||
                 _status == VideoStatus::kStoped) {
@@ -115,8 +134,7 @@ void Video::setStatus(VideoStatus status) {
             }
             break;
         }
-        case VideoStatus::kClose:
-        {
+        case VideoStatus::kClose: {
             if (_status == VideoStatus::kError ||
                 _status == VideoStatus::kOpen ||
                 _status == VideoStatus::kRead ||
@@ -127,43 +145,37 @@ void Video::setStatus(VideoStatus status) {
             }
             break;
         }
-        case VideoStatus::kRead:
-        {
+        case VideoStatus::kRead: {
             if (_status == VideoStatus::kOpen) {
                 _status = VideoStatus::kRead;
             }
             break;
         }
-        case VideoStatus::kEdit:
-        {
+        case VideoStatus::kEdit: {
             if (_status == VideoStatus::kRead ||
                 _status == VideoStatus::kWrite) {
                 _status = VideoStatus::kEdit;
             }
             break;
         }
-        case VideoStatus::kWrite:
-        {
+        case VideoStatus::kWrite: {
             if (_status == VideoStatus::kEdit) {
                 _status = VideoStatus::kWrite;
             }
         }
-        case VideoStatus::kPaused:
-        {
+        case VideoStatus::kPaused: {
             if (_status == VideoStatus::kEdit) {
                 _status = VideoStatus::kPaused;
             }
             break;
         }
-        case VideoStatus::kStoped:
-        {
+        case VideoStatus::kStoped: {
             if (_status == VideoStatus::kClose) {
                 _status = VideoStatus::kStoped;
             }
             break;
         }
-        case VideoStatus::kQuit:
-        {
+        case VideoStatus::kQuit: {
             _status = VideoStatus::kQuit;
             break;
         }
@@ -176,50 +188,6 @@ void Video::setStatus(VideoStatus status) {
         _statusCallback(this, _status);
     }
     pthread_cond_broadcast(&_statusCond);
-}
-
-void Video::waitStatusChange() {
-    Mutex m(&_statusMutex);
-    pthread_cond_wait(&_statusCond, &_statusMutex);
-}
-
-void *Video::inputThreadEntry(void *arg) {
-    pthread_setname_np("edit input thread");
-    Video *self = (Video *)arg;
-    self->inputLoop();
-    return nullptr;
-}
-
-void Video::inputLoop() {
-    while (!isQuit()) {
-        switch (_status) {
-            case VideoStatus::kOpen:
-            {
-                open();
-                break;
-            }
-            case VideoStatus::kClose:
-            {
-                close();
-                break;
-            }
-            case VideoStatus::kRead:
-            {
-                read();
-                break;
-            }
-            case VideoStatus::kWrite:
-            {
-                write();
-                break;
-            }
-            default:
-            {
-                usleep(1);
-                break;
-            }
-        }
-    }
 }
 
 bool Video::open() {
@@ -238,12 +206,13 @@ bool Video::open() {
         }
         
         setStatus(VideoStatus::kRead);
+        return true;
     }
     
-    return true;;
+    return false;
 }
 
-bool Video::close() {
+bool Video::close_() {
     if (_status == VideoStatus::kClose) {
         LOG(DEBUG) << "Waiting audio/video decode stop.";
         
@@ -282,33 +251,10 @@ bool Video::close() {
         }
         
         setStatus(VideoStatus::kStoped);
-    }
-    
-    return true;
-}
-
-void Video::quit() {
-    setStatus(VideoStatus::kQuit);
-    pthread_join(_inputThread, nullptr);
-}
-
-bool Video::isQuit() {
-    Mutex m(&_statusMutex);
-    while (_status != VideoStatus::kOpen &&
-           _status != VideoStatus::kRead &&
-           _status != VideoStatus::kEdit &&
-           _status != VideoStatus::kWrite &&
-           _status != VideoStatus::kClose &&
-           _status != VideoStatus::kQuit) {
-        pthread_cond_wait(&_statusCond, &_statusMutex);
-        LOG(DEBUG) << "thread loop wakeup: status:" << (int)_status;
-    }
-    
-    if (_status == VideoStatus::kQuit) {
         return true;
-    } else {
-        return false;
     }
+    
+    return false;
 }
 
 bool Video::read() {
@@ -379,19 +325,21 @@ bool Video::write() {
             _writer->cancel();
             _writer = nullptr;
             setStatus(VideoStatus::kEdit);
-            return false;
+            return true;
         }
     }
     
     if (_writer) {
-        int count = _vPacketArray.size();
+        int count = (int)_vPacketArray.size();
         for (int i = 10; i < count; i++) {
             std::shared_ptr<Packet> packet = _vPacketArray[i];
             _writer->processPacket(packet);
         }
         setStatus(VideoStatus::kClose);
+        return true;
     }
-    return true;
+    
+    return false;
 }
 
 bool Video::encode() {
